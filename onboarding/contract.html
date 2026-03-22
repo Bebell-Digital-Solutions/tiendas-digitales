@@ -1,1 +1,876 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Compromiso del Fundador - Bebell Digital Solutions</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <!-- NOTA: EmailJS removido del cliente por seguridad. Ahora gestionado por Master Vault (Albato/Emailit) -->
 
+  <style>
+    :root {
+      --bg-color: #f2f1fb;
+      --primary: #8b84f5;
+      --secondary: #e07dd1;
+      --title-color: #4b4998;
+      --text-color: #707070;
+      --card-bg: #ffffff;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      font-family: 'Inter', sans-serif;
+      color: var(--text-color);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    h1, h2, h3, h4, .poppins {
+      font-family: 'Poppins', sans-serif;
+      color: var(--title-color);
+      line-height: 1.2;
+    }
+
+    /* Bebell Branding Styles */
+    .brand-logo-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    
+    .brand-logo {
+      width: 150px;
+      height: 150px;
+      object-fit: contain;
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      cursor: pointer;
+    }
+
+    .brand-logo:hover {
+      transform: scale(1.1);
+    }
+
+    .gradient-text {
+      font-size: 32px;
+      font-weight: 800;
+      margin-bottom: 8px;
+      text-align: center;
+      background-image: linear-gradient(90deg, rgb(0, 178, 255), rgb(214, 97, 240) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .subtitle-text {
+      font-size: 16px;
+      color: var(--text-color);
+      text-align: center;
+      max-width: 600px;
+      margin: 0 auto 32px auto;
+      line-height: 1.5;
+    }
+
+    .form-card {
+      background: var(--card-bg);
+      border-radius: 24px;
+      box-shadow: 0 10px 25px rgba(75, 73, 152, 0.05);
+      max-width: 900px;
+      margin: 20px auto;
+      padding: 40px 50px;
+    }
+
+    /* Buttons */
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      transition: all 0.3s ease;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      border-radius: 12px;
+      padding: 12px 24px;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      opacity: 0.9;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(139, 132, 245, 0.3);
+    }
+
+    .btn-primary:disabled {
+      background-color: #cbd5e1;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .btn-secondary {
+      background: white;
+      color: var(--primary);
+      border: 2px solid var(--primary);
+      transition: all 0.3s ease;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      border-radius: 12px;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+      background: #f5f4ff;
+      transform: translateY(-1px);
+    }
+
+    .toolbar {
+      max-width: 900px;
+      margin: 0 auto 20px auto;
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* Document Internal Styles */
+    h2.section-title {
+      font-size: 1.4em;
+      font-weight: 600;
+      margin-top: 35px;
+      margin-bottom: 16px;
+      border-bottom: 2px solid var(--bg-color);
+      padding-bottom: 8px;
+    }
+    
+    h3.sub-section-title {
+      font-size: 1.15em;
+      font-weight: 600;
+      margin-top: 25px;
+      margin-bottom: 12px;
+      color: var(--secondary);
+    }
+
+    /* List Display Handling (Hidden on screen, shown in PDF) */
+    .smart-list {
+      list-style-type: none;
+      padding-left: 0;
+      margin-bottom: 20px;
+    }
+    .smart-list li {
+      margin-bottom: 16px;
+    }
+    /* Class toggled by JS right before PDF generation */
+    .pdf-mode-active {
+      list-style-type: disc !important;
+      padding-left: 20px !important;
+    }
+
+    /* Inputs - Inline (For text flow) */
+    input[type="text"].interactive-input.inline-input {
+      border: none;
+      border-bottom: 2px solid #cbd5e1;
+      padding: 2px 4px;
+      font-family: 'Poppins', sans-serif;
+      font-size: inherit;
+      color: var(--title-color);
+      font-weight: 600;
+      background-color: transparent;
+      outline: none;
+      transition: border-color 0.3s;
+      min-width: 250px;
+      text-align: center;
+    }
+
+    input[type="text"].interactive-input.inline-input:focus {
+      border-bottom-color: var(--primary);
+    }
+
+    input[type="text"].interactive-input.inline-input[readonly] {
+      border-bottom-color: #cbd5e1;
+      border-bottom-style: dashed;
+    }
+
+    /* Inputs - Block (For bottom form) */
+    .signature-section input[type="text"], 
+    .signature-section input[type="date"] {
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 14px 20px;
+      width: 100%;
+      outline: none;
+      transition: all 0.2s ease-in-out;
+      font-family: 'Inter', sans-serif;
+      color: #333;
+      background-color: #fff;
+    }
+
+    .signature-section input:focus:not([readonly]) {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(139, 132, 245, 0.15);
+      transform: translateY(-1px);
+    }
+
+    .signature-section label {
+      font-weight: 600;
+      color: var(--title-color);
+      margin-bottom: 6px;
+      display: block;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .checkbox-card {
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      background: #fff;
+    }
+
+    .checkbox-card:hover {
+      background: #f9f8ff;
+      border-color: var(--primary);
+    }
+
+    .checkbox-card input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      accent-color: var(--primary);
+      margin-top: 2px;
+      cursor: pointer;
+    }
+
+    /* Content Editable Goals */
+    .content-editable-placeholder {
+      display: block; 
+      width: 100%;
+      min-height: 28px;
+      border: 1px dashed #cbd5e1;
+      border-radius: 8px;
+      padding: 8px 12px;
+      margin-top: 4px;
+      color: var(--text-color);
+      background-color: #f8fafc;
+      transition: all 0.2s ease;
+      outline: none;
+    }
+
+    .content-editable-placeholder:focus {
+      border: 1px solid var(--primary);
+      background-color: white;
+      box-shadow: 0 0 0 3px rgba(139, 132, 245, 0.1);
+      color: #333;
+    }
+
+    #bottomActionsContainer {
+      text-align: center;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid #f1f5f9;
+    }
+
+    /* Toast Messages */
+    #userMessages {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1000;
+      width: 90%;
+      max-width: 500px;
+      pointer-events: none;
+    }
+
+    .toast-message {
+      padding: 16px 24px;
+      border-radius: 16px;
+      font-weight: 500;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      margin-bottom: 10px;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Print Styles */
+    @media print {
+      body { background-color: white !important; color: black !important; margin: 0; padding: 0; }
+      .toolbar, #userMessages, #bottomActionsContainer, #back-to-top, .checkbox-card { display: none !important; }
+      .form-card { 
+        max-width: 100% !important; margin: 0 !important; padding: 10mm !important; 
+        box-shadow: none !important; border-radius: 0 !important; border: none !important; 
+      }
+      .brand-logo-container { display: none !important; }
+      .gradient-text {
+        background: none !important;
+        -webkit-text-fill-color: #4b4998 !important;
+        color: #4b4998 !important;
+        font-size: 24pt !important;
+      }
+      input[type="text"].interactive-input, input[type="date"] {
+        border: none !important; border-bottom: 1px solid #000 !important; border-radius: 0 !important;
+        color: #000 !important; padding: 0 !important; height: auto !important; box-shadow: none !important;
+      }
+      .content-editable-placeholder { border: none !important; padding: 0 !important; color: #000 !important; background: transparent !important; }
+      h2.section-title { font-size: 14pt; border-bottom: 1px solid #000; }
+      h3.sub-section-title { font-size: 12pt; color: #000; }
+      .smart-list { list-style-type: disc !important; padding-left: 20px !important; }
+    }
+  </style>
+</head>
+<body class="p-4 md:p-8">
+
+  <!-- Top Toolbar (Hidden until initial save) -->
+  <div class="toolbar" id="topToolbar" style="display: none;">
+    <button class="btn-secondary" id="downloadPdfBtn">
+      <svg class="w-4 h-4 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+      Descargar PDF
+    </button>
+    <button class="btn-secondary" id="saveToSheetsBtn">Actualizar Metas</button>
+    <button class="btn-secondary" id="addToCalendarBtn">Añadir a Calendar</button>
+    <!-- Botón de Email removido, se envía automáticamente al firmar -->
+  </div>
+
+  <!-- Toasts Container -->
+  <div id="userMessages"></div>
+
+  <!-- Document Card -->
+  <div id="documentEditor" class="form-card">
+    
+    <!-- Header Area -->
+    <div class="brand-logo-container print:hidden">
+      <img src="https://bucket.mlcdn.com/a/3336/3336910/images/e73990188039c693c8455afb76607f33a56489a0.png" alt="Bebell Digital Solutions Logo" class="brand-logo">
+    </div>
+    
+    <div class="mb-8">
+      <h1 class="gradient-text">Compromiso del Fundador</h1>
+      <p class="subtitle-text print:hidden">
+        Establece tus objetivos y personaliza tu hoja de ruta hacia el éxito en El Negocio Digital.
+      </p>
+    </div>
+
+    <!-- Content -->
+    <p class="text-lg mb-6">
+      Yo, <input type="text" id="fullName" class="interactive-input inline-input cursor-not-allowed opacity-80" placeholder="Sincronizando datos..." readonly>, me comprometo a trabajar con enfoque, disciplina y constancia en el desarrollo de mi negocio digital, utilizando las herramientas, recursos y formación del ecosistema de Bebell Digital Solutions.
+    </p>
+
+    <p class="font-medium">Me comprometo a:</p>
+    <ol class="list-decimal list-inside ml-2">
+      <li>Dedicar tiempo y energía de manera consistente para avanzar en cada una de las fases del programa.</li>
+      <li>Cumplir metas claras, tanto a corto como a largo plazo, incluyendo pero no limitándome a:</li>
+    </ol>
+
+    <h2 class="section-title">📌 Metas a Corto Plazo</h2>
+    <ul class="smart-list ml-2">
+      <li><div id="shortTermGoal1" contenteditable="true" class="content-editable-placeholder">Establecer mis objetivos personales y profesionales.</div></li>
+      <li><div id="shortTermGoal2" contenteditable="true" class="content-editable-placeholder">Tomar los cursos del programa y aplicar los conocimientos adquiridos paso a paso.</div></li>
+      <li><div id="shortTermGoal3" contenteditable="true" class="content-editable-placeholder">Organizar mi agenda semanal para dedicar tiempo exclusivo a mi proyecto digital.</div></li>
+      <li><div id="shortTermGoal4" contenteditable="true" class="content-editable-placeholder">Crear un espacio de trabajo funcional y mantener disciplina y foco.</div></li>
+      <li><div id="shortTermGoal5" contenteditable="true" class="content-editable-placeholder">Participar activamente en las sesiones, grupos o comunidades del programa.</div></li>
+    </ul>
+
+    <h2 class="section-title">🚀 Metas por Fase del Programa</h2>
+
+    <h3 class="sub-section-title">1. Preparación / Investigación</h3>
+    <ul class="smart-list ml-2">
+      <li><div id="phase1Goal1" contenteditable="true" class="content-editable-placeholder">Identificar mis talentos, intereses y el problema que quiero resolver.</div></li>
+      <li><div id="phase1Goal2" contenteditable="true" class="content-editable-placeholder">Investigar mi nicho de mercado, tendencias y competidores.</div></li>
+      <li><div id="phase1Goal3" contenteditable="true" class="content-editable-placeholder">Definir mi cliente ideal y su recorrido de compra.</div></li>
+    </ul>
+
+    <h3 class="sub-section-title">2. Creación</h3>
+    <ul class="smart-list ml-2">
+      <li><div id="phase2Goal1" contenteditable="true" class="content-editable-placeholder">Construir mi propuesta de valor y mi primer producto o servicio.</div></li>
+      <li><div id="phase2Goal2" contenteditable="true" class="content-editable-placeholder">Desarrollar los elementos esenciales de mi presencia digital: marca, nombre, logo, canales, etc.</div></li>
+      <li><div id="phase2Goal3" contenteditable="true" class="content-editable-placeholder">Crear mis perfiles de redes y herramientas básicas de contacto.</div></li>
+    </ul>
+
+    <h3 class="sub-section-title">3. Lanzamiento</h3>
+    <ul class="smart-list ml-2">
+      <li><div id="phase3Goal1" contenteditable="true" class="content-editable-placeholder">Planificar y ejecutar el lanzamiento mínimo viable de mi negocio digital.</div></li>
+      <li><div id="phase3Goal2" contenteditable="true" class="content-editable-placeholder">Compartir mi proyecto con mi red cercana y primeros seguidores.</div></li>
+      <li><div id="phase3Goal3" contenteditable="true" class="content-editable-placeholder">Obtener retroalimentación inicial del mercado real.</div></li>
+    </ul>
+
+    <h3 class="sub-section-title">4. Adaptación</h3>
+    <ul class="smart-list ml-2">
+      <li><div id="phase4Goal1" contenteditable="true" class="content-editable-placeholder">Evaluar resultados y ajustar mi mensaje, propuesta y procesos según la realidad del mercado.</div></li>
+      <li><div id="phase4Goal2" contenteditable="true" class="content-editable-placeholder">Crear contenido que eduque, conecte y posicione.</div></li>
+      <li><div id="phase4Goal3" contenteditable="true" class="content-editable-placeholder">Integrar reservas, pagos, y formularios funcionales en mi sitio web.</div></li>
+    </ul>
+
+    <h3 class="sub-section-title">5. Automatización</h3>
+    <ul class="smart-list ml-2">
+      <li><div id="phase5Goal1" contenteditable="true" class="content-editable-placeholder">Configurar sistemas de email marketing, embudos de venta, agendamiento automático y CRM.</div></li>
+      <li><div id="phase5Goal2" contenteditable="true" class="content-editable-placeholder">Reducir tareas manuales para enfocarme en lo estratégico.</div></li>
+      <li><div id="phase5Goal3" contenteditable="true" class="content-editable-placeholder">Conectar herramientas para mejorar productividad y atención al cliente.</div></li>
+    </ul>
+
+    <h3 class="sub-section-title">6. Optimización</h3>
+    <ul class="smart-list ml-2">
+      <li><div id="phase6Goal1" contenteditable="true" class="content-editable-placeholder">Analizar métricas clave y mejorar continuamente la experiencia del usuario.</div></li>
+      <li><div id="phase6Goal2" contenteditable="true" class="content-editable-placeholder">A/B testing de mensajes, diseños y canales de venta.</div></li>
+      <li><div id="phase6Goal3" contenteditable="true" class="content-editable-placeholder">Optimizar tiempo, procesos y retorno de inversión.</div></li>
+    </ul>
+
+    <h3 class="sub-section-title">7. Expansión</h3>
+    <ul class="smart-list ml-2">
+      <li><div id="phase7Goal1" contenteditable="true" class="content-editable-placeholder">Delegar tareas operativas y formar un pequeño equipo.</div></li>
+      <li><div id="phase7Goal2" contenteditable="true" class="content-editable-placeholder">Escalar campañas de marketing y llegar a nuevos segmentos.</div></li>
+      <li><div id="phase7Goal3" contenteditable="true" class="content-editable-placeholder">Multiplicar mi impacto mediante alianzas o nuevos canales digitales.</div></li>
+    </ul>
+
+    <h3 class="sub-section-title">8. Formalización</h3>
+    <ul class="smart-list ml-2">
+      <li><div id="phase8Goal1" contenteditable="true" class="content-editable-placeholder">Establecer estructura legal, financiera y administrativa para operar profesionalmente.</div></li>
+      <li><div id="phase8Goal2" contenteditable="true" class="content-editable-placeholder">Abrir cuenta bancaria empresarial, emitir facturas y manejar impuestos.</div></li>
+      <li><div id="phase8Goal3" contenteditable="true" class="content-editable-placeholder">Tener contratos, políticas claras y una imagen sólida ante clientes y proveedores.</div></li>
+    </ul>
+
+    <h2 class="section-title">✍️ Responsabilidad Personal</h2>
+    <p class="mb-4">
+      Yo, <input type="text" id="validationName" class="interactive-input inline-input font-bold text-[#4b4998] bg-purple-50 px-2 py-1 rounded text-center w-64" placeholder="Escribe tu nombre aquí" required>, asumo la responsabilidad total de mis resultados. Reconozco que cada negocio es único y que mi éxito dependerá de:
+    </p>
+    <ol class="list-decimal list-inside ml-2 mb-6">
+      <li>Mi nivel de compromiso diario y mi ética de trabajo.</li>
+      <li>Mi disposición a aprender, aplicar, adaptarme y perseverar.</li>
+      <li>Mi capacidad para enfrentar dificultades sin rendirme.</li>
+      <li>El desarrollo constante de habilidades clave como liderazgo, organización, comunicación y herramientas digitales.</li>
+    </ol>
+    <p class="italic text-sm text-gray-500 border-l-4 border-[#e07dd1] pl-4 py-2 bg-gray-50 rounded-r-lg">
+      Este compromiso lo hago conmigo mismo/a, como recordatorio de que el éxito no es casualidad, sino el resultado de decisiones conscientes y acciones consistentes.
+    </p>
+
+    <!-- Bottom Forms -->
+    <div class="signature-section mt-10 p-6 bg-[#f2f1fb] rounded-2xl print:bg-transparent print:p-0">
+      
+      <div class="mb-6">
+        <label for="signature" class="flex items-center gap-2">Firma Digital (Sincronizada Automáticamente) <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg></label>
+        <input type="text" id="signature" placeholder="Tu firma aparecerá aquí..." class="bg-gray-100 cursor-not-allowed text-gray-600" readonly>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label for="commitmentDate">Fecha de Inicio</label>
+          <input type="date" id="commitmentDate" value="">
+        </div>
+        
+        <div>
+          <label for="reviewDate">Próxima revisión de metas</label>
+          <input type="date" id="reviewDate" value="">
+          <div class="mt-2 flex gap-3 text-sm font-medium print:hidden">
+            <button type="button" class="text-[#e07dd1] hover:text-[#8b84f5] transition-colors" onclick="setReviewDateOffset(90)">+90 días</button>
+            <span class="text-gray-300">|</span>
+            <button type="button" class="text-[#e07dd1] hover:text-[#8b84f5] transition-colors" onclick="setReviewDateOffset(365)">+1 año</button>
+            <span class="text-gray-300">|</span>
+            <button type="button" class="text-[#e07dd1] hover:text-[#8b84f5] transition-colors" onclick="setReviewDateOffset(1825)">+5 años</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Terms and Privacy Acceptance -->
+    <div class="checkbox-card mt-8 print:hidden">
+      <input type="checkbox" id="acceptTerms" required>
+      <label for="acceptTerms" class="text-sm text-gray-700 m-0 leading-relaxed font-normal">
+        He leído y acepto los <a href="#" class="text-[var(--primary)] font-semibold hover:underline">Términos de Servicio</a> y la <a href="#" class="text-[var(--primary)] font-semibold hover:underline">Política de Privacidad</a> de Bebell Digital Solutions. Entiendo que este compromiso actualiza mi estatus en la plataforma.
+      </label>
+    </div>
+
+    <!-- Main Action Button -->
+    <div id="bottomActionsContainer" class="print:hidden">
+      <button id="saveCommitmentBtnBottom" class="btn-primary text-lg w-full md:w-auto px-10 py-4">
+        Afirmar Mi Compromiso
+        <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+      </button>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <footer class="mt-8 text-center text-[10px] text-gray-500 print:hidden">
+    <p>Copyright © 2023  • Todos los derechos reservados.</p>
+    <p class="mt-1">Desarrollado con 💖 por Bebell Digital Solutions.</p>
+  </footer>
+  
+  <!-- BACK TO TOP ICON-->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const backToTop = document.createElement("div");
+      backToTop.id = "back-to-top";
+      backToTop.style.position = "fixed";
+      backToTop.style.bottom = "20px";
+      backToTop.style.right = "20px";
+      backToTop.style.display = "none";
+      backToTop.style.cursor = "pointer";
+      backToTop.style.zIndex = "9999";
+      backToTop.style.transition = "transform 0.3s";
+      
+      const backToTopImg = document.createElement("img");
+      backToTopImg.src = "https://bucket.mlcdn.com/a/3336/3336910/images/29840e122b950f88fdca23072015101b427a9112.png";
+      backToTopImg.alt = "Volver arriba";
+      backToTopImg.style.width = "45px";
+      backToTopImg.style.height = "45px";
+      
+      backToTop.appendChild(backToTopImg);
+      document.body.appendChild(backToTop);
+      
+      backToTop.addEventListener("mouseenter", () => backToTop.style.transform = "translateY(-3px)");
+      backToTop.addEventListener("mouseleave", () => backToTop.style.transform = "translateY(0)");
+
+      window.addEventListener("scroll", function () {
+        if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+          backToTop.style.display = "block";
+        } else {
+          backToTop.style.display = "none";
+        }
+      });
+
+      backToTop.addEventListener("click", function () {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+    });
+  </script>
+
+  <script>
+    // Configuración Arquitectura Bebell
+    // Cambiar por el ID de despliegue real de Google Apps Script (Master Vault)
+    const VAULT_URL = 'TU_MASTER_VAULT_URL_AQUI'; 
+
+    // Referencias del DOM
+    const fullNameInput = document.getElementById('fullName');
+    const signatureInput = document.getElementById('signature');
+    const validationNameInput = document.getElementById('validationName');
+    const userMessages = document.getElementById('userMessages');
+    const topToolbar = document.getElementById('topToolbar');
+    const saveCommitmentBtnBottom = document.getElementById('saveCommitmentBtnBottom');
+    const saveToSheetsBtnTop = document.getElementById('saveToSheetsBtn');
+
+    // Inicializar Fechas
+    document.addEventListener("DOMContentLoaded", () => {
+        document.getElementById('commitmentDate').value = new Date().toISOString().split('T')[0];
+        const initialReviewDate = new Date();
+        initialReviewDate.setDate(initialReviewDate.getDate() + 90);
+        document.getElementById('reviewDate').value = initialReviewDate.toISOString().split('T')[0];
+        
+        // Simular autocompletado desde Vault
+        loadUserDataFromVault();
+    });
+
+    // Cargar datos automáticamente desde la base de datos (Spreadsheet/Vault)
+    async function loadUserDataFromVault() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const userEmailOrId = urlParams.get('userId') || urlParams.get('email'); // Ejemplo de identificación
+        
+        if(!userEmailOrId) {
+            console.log("Modo Anónimo: Sin ID de usuario para autocompletar.");
+            fullNameInput.placeholder = "[Falta ID para sincronizar]";
+            signatureInput.placeholder = "[Falta ID para sincronizar]";
+            return;
+        }
+
+        try {
+            // Se asume que el Vault tiene una acción 'getUserData'
+            const response = await fetch(VAULT_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify({
+                    action: 'getUserData',
+                    project: 'tiendas-digitales',
+                    params: { identifier: userEmailOrId }
+                })
+            });
+            const result = await response.json();
+
+            if (result.success && result.data) {
+                // Autocompletar variables si existen
+                if(result.data.name) {
+                    fullNameInput.value = result.data.name;
+                    signatureInput.value = result.data.name;
+                }
+                showMessage('Tus datos han sido sincronizados exitosamente.', 'success');
+            }
+        } catch (error) {
+            console.warn("No se pudo autocompletar los datos:", error);
+        }
+    }
+
+    function setReviewDateOffset(days) {
+        const reviewDateInput = document.getElementById('reviewDate');
+        const newDate = new Date(); 
+        const commitmentDateVal = document.getElementById('commitmentDate').value;
+        if (commitmentDateVal) {
+            const parts = commitmentDateVal.split('-');
+            if (parts.length === 3) {
+                newDate.setFullYear(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+            }
+        }
+        newDate.setDate(newDate.getDate() + days);
+        reviewDateInput.value = newDate.toISOString().split('T')[0];
+    }
+
+    function getElementText(id) {
+        const el = document.getElementById(id);
+        return el ? (el.tagName === 'INPUT' ? el.value : el.innerText) : '';
+    }
+    
+    function collectData() {
+      const data = {
+        fullName: getElementText('fullName'),
+        commitmentDate: getElementText('commitmentDate'),
+        reviewDate: getElementText('reviewDate'),
+        signature: getElementText('signature') || getElementText('fullName'),
+        shortTermGoal1: getElementText('shortTermGoal1'),
+        shortTermGoal2: getElementText('shortTermGoal2'),
+        shortTermGoal3: getElementText('shortTermGoal3'),
+        shortTermGoal4: getElementText('shortTermGoal4'),
+        shortTermGoal5: getElementText('shortTermGoal5'),
+      };
+      for (let i = 1; i <= 8; i++) { 
+        for (let j = 1; j <= 3; j++) { 
+            data[`phase${i}Goal${j}`] = getElementText(`phase${i}Goal${j}`);
+        }
+      }
+      return data;
+    }
+
+    // Bebell UI Toast Messages
+    function showMessage(message, type = 'info') {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `toast-message translate-y-[-20px] opacity-0`;
+        
+        let icon = '';
+        if (type === 'success') {
+            messageDiv.classList.add('bg-[#dcfce7]', 'text-[#16a34a]', 'border', 'border-[#bbf7d0]');
+            icon = `<svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`;
+        } else if (type === 'error') {
+            messageDiv.classList.add('bg-[#fee2e2]', 'text-[#ef4444]', 'border', 'border-[#fecaca]');
+            icon = `<svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`;
+        } else {
+            messageDiv.classList.add('bg-[#eff6ff]', 'text-[#1e40af]', 'border', 'border-[#bfdbfe]');
+            icon = `<svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`;
+        }
+        
+        messageDiv.innerHTML = `${icon} <span>${message}</span>`;
+        userMessages.appendChild(messageDiv);
+        
+        // Trigger animation in
+        setTimeout(() => {
+            messageDiv.classList.remove('translate-y-[-20px]', 'opacity-0');
+            messageDiv.classList.add('translate-y-0', 'opacity-100');
+        }, 10);
+
+        // Remove after 4 seconds
+        setTimeout(() => { 
+            messageDiv.classList.remove('translate-y-0', 'opacity-100');
+            messageDiv.classList.add('translate-y-[-20px]', 'opacity-0');
+            setTimeout(() => { messageDiv.remove(); }, 400);
+        }, 4000);
+    }
+
+    // Trigger Confetti Effect on Success
+    function triggerConfetti() {
+        if (typeof confetti !== 'undefined') {
+            confetti({
+                particleCount: 120,
+                spread: 80,
+                origin: { y: 0.6 },
+                colors: ['#8b84f5', '#e07dd1', '#4b4998']
+            });
+        }
+    }
+
+    async function handleSaveToVault(buttonElement, isInitialSave = false) {
+      // 1. Validar Términos
+      const termsCheckbox = document.getElementById('acceptTerms');
+      if (isInitialSave && !termsCheckbox.checked) {
+          showMessage('Debes aceptar los Términos de Servicio y la Política de Privacidad.', 'error');
+          // Scrollear hacia el checkbox
+          termsCheckbox.parentElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          termsCheckbox.parentElement.classList.add('ring-2', 'ring-red-400', 'ring-offset-2');
+          setTimeout(() => termsCheckbox.parentElement.classList.remove('ring-2', 'ring-red-400', 'ring-offset-2'), 2000);
+          return false;
+      }
+
+      // 2. Validar Nombre Manual (Responsabilidad Personal)
+      const validationName = validationNameInput.value.trim();
+      const syncedName = fullNameInput.value.trim();
+      
+      if (!validationName) {
+          showMessage('Por favor, escribe tu nombre en la sección de Responsabilidad Personal como validación.', 'error');
+          validationNameInput.focus();
+          validationNameInput.classList.add('ring-2', 'ring-red-400', 'ring-offset-2');
+          setTimeout(() => validationNameInput.classList.remove('ring-2', 'ring-red-400', 'ring-offset-2'), 2000);
+          return false;
+      }
+
+      if (syncedName && syncedName !== "Sincronizando datos..." && validationName.toLowerCase() !== syncedName.toLowerCase()) {
+          showMessage('El nombre de validación no coincide con tu usuario registrado. Por favor, escríbelo tal cual aparece arriba.', 'error');
+          validationNameInput.focus();
+          return false;
+      }
+
+      const data = collectData();
+      
+      if (!data.fullName || !data.commitmentDate || !data.signature) {
+        showMessage('Requerido: Nombre, Fecha de Inicio y Firma Digital.', 'error');
+        return false; 
+      }
+      
+      if (VAULT_URL === 'TU_MASTER_VAULT_URL_AQUI' || !VAULT_URL) {
+        showMessage('Falta configurar VAULT_URL. Simulando guardado exitoso...', 'info');
+        // Simulated success for visual testing when not configured:
+        setTimeout(() => { 
+            triggerConfetti();
+            topToolbar.style.display = 'flex';
+            saveCommitmentBtnBottom.style.display = 'none';
+        }, 1500);
+        return false; 
+      }
+
+      const originalButtonText = buttonElement.innerHTML;
+      buttonElement.disabled = true;
+      buttonElement.innerHTML = `<div class="loader inline-block border-2 border-white border-t-transparent w-5 h-5 rounded-full animate-spin mr-2"></div> Procesando...`;
+
+      try {
+        // Enviar Payload Master Vault
+        // La acción 'signContract' debería estar configurada en el Vault para:
+        // 1. Actualizar estatus (Notificación admin)
+        // 2. Disparar webhook de Email (Albato / Emailit)
+        const response = await fetch(VAULT_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({
+              action: 'signContract', // Acción que engloba Status Update + Email Trigger (Webhook/Albato)
+              project: 'tiendas-digitales',
+              params: {
+                  ...data,
+                  statusToUpdate: 'Contract Signed', 
+                  triggerAutomationEmail: true,
+                  acceptedTerms: termsCheckbox.checked
+              }
+          })
+        });
+        
+        const result = await response.json(); 
+
+        if (result.success || result.result === 'success') {
+          triggerConfetti();
+          showMessage(result.message || 'Compromiso firmado y administrador notificado.', 'success');
+          
+          if (isInitialSave) {
+            topToolbar.style.display = 'flex';
+            saveCommitmentBtnBottom.style.display = 'none';
+            // Ocultar checkbox una vez firmado
+            document.querySelector('.checkbox-card').style.display = 'none';
+          }
+          return true;
+        } else {
+          throw new Error(result.error || result.message || 'Error de comunicación con el Vault.');
+        }
+      } catch (error) {
+        showMessage('Error: ' + error.message, 'error');
+        console.error('Vault error:', error);
+        return false;
+      } finally {
+        buttonElement.disabled = false;
+        buttonElement.innerHTML = originalButtonText;
+      }
+    }
+
+    saveCommitmentBtnBottom.addEventListener('click', async () => {
+        await handleSaveToVault(saveCommitmentBtnBottom, true);
+    });
+
+    saveToSheetsBtnTop.addEventListener('click', async () => {
+        await handleSaveToVault(saveToSheetsBtnTop, false); 
+    });
+    
+    document.getElementById('downloadPdfBtn').addEventListener('click', () => {
+      const element = document.getElementById('documentEditor');
+      const name = getElementText('fullName').replace(/\s+/g, '_') || 'Fundador';
+      
+      const opt = {
+        margin:       [12, 12, 12, 12], 
+        filename:     `Compromiso_Bebell_${name}.pdf`,
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, useCORS: true, logging: false, letterRendering: true },
+        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      };
+      
+      // Preparación DOM para PDF
+      const placeholders = element.querySelectorAll('.content-editable-placeholder');
+      const inputs = element.querySelectorAll('input.interactive-input, input[type="text"], input[type="date"]');
+      const smartLists = element.querySelectorAll('.smart-list');
+      
+      // Adaptación visual limpia para PDF y reactivar viñetas
+      placeholders.forEach(p => { p.style.border = 'none'; p.style.backgroundColor = 'transparent'; p.style.padding = '0'; }); 
+      inputs.forEach(i => { i.style.border = 'none'; i.style.backgroundColor = 'transparent'; i.style.color = '#4b4998'; });
+      smartLists.forEach(l => l.classList.add('pdf-mode-active'));
+
+      showMessage('Generando documento PDF...', 'info');
+
+      html2pdf().from(element).set(opt).save().then(() => {
+        // Restaurar estilos
+        placeholders.forEach(p => { p.style.border = ''; p.style.backgroundColor = ''; p.style.padding = ''; }); 
+        inputs.forEach(i => { i.style.border = ''; i.style.backgroundColor = ''; });
+        smartLists.forEach(l => l.classList.remove('pdf-mode-active'));
+        showMessage('PDF descargado correctamente.', 'success');
+      }).catch(err => {
+        // Restaurar estilos si falla
+        placeholders.forEach(p => { p.style.border = ''; p.style.backgroundColor = ''; p.style.padding = ''; }); 
+        inputs.forEach(i => { i.style.border = ''; i.style.backgroundColor = ''; });
+        smartLists.forEach(l => l.classList.remove('pdf-mode-active'));
+        showMessage('Error al generar el PDF.', 'error');
+        console.error("PDF error:", err);
+      });
+    });
+
+    document.getElementById('addToCalendarBtn').addEventListener('click', () => {
+      updateDynamicContent();
+      const data = collectData();
+      if (!data.reviewDate) {
+        showMessage('Selecciona una Fecha de Revisión.', 'error');
+        return;
+      }
+
+      const title = encodeURIComponent('Revisión Compromiso Digital: ' + data.fullName);
+      const reviewDateObj = new Date(data.reviewDate + 'T00:00:00');
+      const startDate = reviewDateObj.toISOString().split('T')[0].replace(/-/g, '');
+      const endDateObj = new Date(reviewDateObj);
+      endDateObj.setDate(reviewDateObj.getDate() + 1);
+      const endDate = endDateObj.toISOString().split('T')[0].replace(/-/g, '');
+
+      let description = `Recordatorio para revisar el compromiso de ${data.fullName} en Bebell Digital Solutions.\n\n`;
+      description += `Fecha del Compromiso Original: ${new Date(data.commitmentDate + 'T00:00:00').toLocaleDateString('es-ES')}\n\n`;
+      description += `Principales Metas a Corto Plazo:\n`;
+      description += `- ${data.shortTermGoal1.substring(0,80)}...\n`;
+      description += `- ${data.shortTermGoal2.substring(0,80)}...\n\n`;
+      
+      const calendarUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startDate}/${endDate}&details=${encodeURIComponent(description)}&sf=true&output=xml`;
+      
+      window.open(calendarUrl, '_blank');
+      showMessage('Redirigiendo a Google Calendar...', 'info');
+    });
+
+  </script>
+</body>
+</html>
