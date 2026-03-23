@@ -1,0 +1,290 @@
+
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Centro de Control - Tienda Digital</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: { sans: ['Poppins', 'sans-serif'] },
+      colors: {
+        sys: {
+          bg: '#f2f1fb',
+          primary: '#8b84f5',
+          secondary: '#e07dd1',
+          title: '#4b4998',
+          text: '#707070',
+          card: '#ffffff'
+        }
+      },
+      boxShadow: {
+        'soft': '0 10px 40px -10px rgba(139, 132, 245, 0.1)'
+      }
+    }
+  }
+}
+</script>
+
+<style>
+body { background:#f2f1fb; font-family:Poppins; }
+
+.gradient-text {
+  background: linear-gradient(135deg, #4b4998, #8b84f5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-bg {
+  background: linear-gradient(135deg, #8b84f5, #e07dd1);
+}
+
+.custom-list li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+.custom-list li::before {
+  content: '•';
+  color: #e07dd1;
+  font-weight: bold;
+  font-size: 1.2rem;
+  position: absolute;
+  left: 0;
+  top: -2px;
+}
+
+/* Flip Card Styles */
+.flip-card {
+  perspective: 1000px;
+  height: 420px;
+}
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: left;
+  transition: transform 0.8s cubic-bezier(0.4, 0.2, 0.2, 1);
+  transform-style: preserve-3d;
+}
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+.flip-card-front, .flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 1.5rem; /* Equivalente a rounded-3xl de Tailwind */
+}
+.flip-card-back {
+  transform: rotateY(180deg);
+}
+</style>
+</head>
+
+<body>
+
+<main class="max-w-7xl mx-auto px-6 md:px-10 py-10">
+
+  <!-- HERO SECTION -->
+  <section class="mb-10">
+    <div class="grid md:grid-cols-2 gap-8 items-center">
+
+      <!-- LEFT -->
+      <div>
+        <h1 class="text-4xl font-bold text-sys-title mb-3">
+          Bienvenido a tu Centro de Control
+        </h1>
+
+        <p class="text-xl text-sys-primary font-medium mb-4">
+          Aquí comienza la construcción de tu tienda digital
+        </p>
+
+        <p class="text-base text-sys-text leading-relaxed max-w-lg">
+          Este dashboard ha sido diseñado para darte visibilidad, control y orientación en cada etapa de tu negocio. Aquí podrás seguir el progreso de tu proyecto, acceder a herramientas clave y aprender cómo hacer crecer tu tienda de forma estratégica.
+        </p>
+      </div>
+
+      <!-- RIGHT (VIDEO) -->
+      <div class="bg-sys-card rounded-3xl shadow-soft border border-white overflow-hidden">
+        <div class="aspect-video w-full bg-gray-100 flex items-center justify-center">
+          <!-- Reemplaza el src con tu enlace de video real -->
+          <iframe 
+            class="w-full h-full"
+            src="https://www.youtube.com/embed/VIDEO_ID"
+            frameborder="0"
+            allowfullscreen>
+          </iframe>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  
+   <!-- SOBRE NUESTRO PROGRAMA (6 ETAPAS) -->
+  <section class="mb-12">
+    <div class="text-center max-w-2xl mx-auto mb-10">
+      <h2 class="text-2xl font-bold text-sys-title mb-4">Sobre Nuestro Programa</h2>
+      <p class="text-sys-text">
+        Dentro de este dashboard también encontrarás contenido educativo que te ayudará a entender y desarrollar tu negocio, organizado en 6 etapas clave.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+      
+      <!-- Stage 1 -->
+      <div class="bg-sys-card p-6 rounded-3xl shadow-soft border border-white">
+        <span class="text-xs font-bold uppercase tracking-wider text-sys-secondary mb-2 block">Etapa 1</span>
+        <h3 class="font-bold text-lg text-sys-title mb-2">Preparación</h3>
+        <p class="text-sm text-sys-text">Aprendes a entender el mercado, identificar oportunidades y tomar decisiones con base.</p>
+      </div>
+
+      <!-- Stage 2 -->
+      <div class="bg-sys-card p-6 rounded-3xl shadow-soft border border-white">
+        <span class="text-xs font-bold uppercase tracking-wider text-sys-secondary mb-2 block">Etapa 2</span>
+        <h3 class="font-bold text-lg text-sys-title mb-2">Creación</h3>
+        <p class="text-sm text-sys-text">Defines tu marca, contenido y estructura digital para tener una base sólida.</p>
+      </div>
+
+      <!-- Stage 3 -->
+      <div class="bg-sys-card p-6 rounded-3xl shadow-soft border border-white">
+        <span class="text-xs font-bold uppercase tracking-wider text-sys-secondary mb-2 block">Etapa 3</span>
+        <h3 class="font-bold text-lg text-sys-title mb-2">Lanzamiento</h3>
+        <p class="text-sm text-sys-text">Aprendes cómo salir al mercado de forma efectiva y atraer tus primeros clientes.</p>
+      </div>
+
+      <!-- Stage 4 -->
+      <div class="bg-sys-card p-6 rounded-3xl shadow-soft border border-white">
+        <span class="text-xs font-bold uppercase tracking-wider text-sys-secondary mb-2 block">Etapa 4</span>
+        <h3 class="font-bold text-lg text-sys-title mb-2">Adaptación</h3>
+        <p class="text-sm text-sys-text">Interpretas datos, entiendes el comportamiento del cliente y haces ajustes necesarios.</p>
+      </div>
+
+      <!-- Stage 5 -->
+      <div class="bg-sys-card p-6 rounded-3xl shadow-soft border border-white">
+        <span class="text-xs font-bold uppercase tracking-wider text-sys-secondary mb-2 block">Etapa 5</span>
+        <h3 class="font-bold text-lg text-sys-title mb-2">Automatización</h3>
+        <p class="text-sm text-sys-text">Implementas sistemas para ahorrar tiempo, delegar y mantener consistencia operativa.</p>
+      </div>
+
+      <!-- Stage 6 -->
+      <div class="bg-sys-card p-6 rounded-3xl shadow-soft border border-white">
+        <span class="text-xs font-bold uppercase tracking-wider text-sys-secondary mb-2 block">Etapa 6</span>
+        <h3 class="font-bold text-lg text-sys-title mb-2">Optimización</h3>
+        <p class="text-sm text-sys-text">Mejoras lo que ya funciona para escalar tu negocio y crecer de forma sostenida.</p>
+      </div>
+
+    </div>
+
+    <div class="text-center my-10">
+      <p class="inline-block bg-sys-title text-white px-6 py-2 rounded-full text-sm font-medium shadow-md">
+        💡 Este contenido no sustituye nuestro servicio. Lo complementa y te da claridad.
+      </p>
+    </div>
+  </section>
+
+
+
+
+
+
+  <!-- AFILIADOS & SERVICIOS ADICIONALES (SPLIT GRID) -->
+  <section class="mb-12 grid md:grid-cols-2 gap-6">
+    
+    <!-- Afiliados Flip Card -->
+    <div class="flip-card group cursor-pointer">
+      <div class="flip-card-inner shadow-soft border border-white rounded-3xl">
+        
+        <!-- Front -->
+        <div class="flip-card-front overflow-hidden bg-sys-card">
+          <!-- REEMPLAZA ESTA URL CON TU IMAGEN -->
+          <img src="https://bucket.mlcdn.com/a/3336/3336910/images/16eb4329b04344ae395f1daf716228af13897c64.png" class="absolute inset-0 w-full h-full object-cover" />
+          <div class="absolute inset-0 bg-gradient-to-t from-[#4b4998]/90 via-[#4b4998]/40 to-transparent flex flex-col justify-end p-8">
+            <h3 class="text-3xl font-bold text-white mb-2 drop-shadow-md">Programa de Afiliados</h3>
+            <p class="text-white/90 text-sm flex items-center gap-2 font-medium">Gira para ver más <span class="group-hover:translate-x-1 transition-transform">→</span></p>
+          </div>
+        </div>
+
+        <!-- Back -->
+        <div class="flip-card-back bg-sys-card p-8 flex flex-col h-full border border-white">
+          <h3 class="text-xl font-bold text-sys-title mb-3">Programa de Afiliados</h3>
+          <p class="text-sys-text mb-4 flex-grow">
+            Gana dinero recomendando nuestros servicios. Puedes compartir tu enlace de afiliado y recibir comisiones por cada cliente que llegue a través de ti.
+          </p>
+          <ul class="custom-list text-sm text-sys-text mb-6">
+            <li>Sin experiencia previa</li>
+            <li>Sin inversión adicional</li>
+            <li>Acceso directo desde tu dashboard</li>
+          </ul>
+          <a href="#" class="inline-block text-center gradient-bg text-white font-medium py-3 px-6 rounded-xl hover:opacity-90 transition shadow-md w-full">
+            Explorar programa de afiliados
+          </a>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Servicios Adicionales Flip Card -->
+    <div class="flip-card group cursor-pointer">
+      <div class="flip-card-inner shadow-soft border border-white rounded-3xl">
+        
+        <!-- Front -->
+        <div class="flip-card-front overflow-hidden bg-sys-card">
+          <!-- REEMPLAZA ESTA URL CON TU IMAGEN -->
+          <img src="https://bucket.mlcdn.com/a/3336/3336910/images/b219f6839f0f20c7169c72ef059224e9b4ae92d8.png" class="absolute inset-0 w-full h-full object-cover" />
+          <div class="absolute inset-0 bg-gradient-to-t from-[#8b84f5]/90 via-[#8b84f5]/40 to-transparent flex flex-col justify-end p-8">
+            <h3 class="text-3xl font-bold text-white mb-2 drop-shadow-md">Servicios Adicionales</h3>
+            <p class="text-white/90 text-sm flex items-center gap-2 font-medium">Gira para ver más <span class="group-hover:translate-x-1 transition-transform">→</span></p>
+          </div>
+        </div>
+
+        <!-- Back -->
+        <div class="flip-card-back bg-sys-card p-8 flex flex-col h-full border border-white">
+          <h3 class="text-xl font-bold text-sys-title mb-3">Servicios Adicionales</h3>
+          <p class="text-sys-text mb-4 flex-grow">
+            Si quieres ir más rápido o necesitas ayuda extra especializada, puedes acceder a otros servicios a la medida de tus necesidades:
+          </p>
+          <ul class="custom-list text-sm text-sys-text mb-6">
+            <li>Consultorías personalizadas</li>
+            <li>Optimización avanzada de tiendas</li>
+            <li>Estrategias de ventas a medida</li>
+            <li>Automatizaciones complejas</li>
+          </ul>
+          <a href="#" class="inline-block text-center gradient-bg text-white font-medium py-3 px-6 rounded-xl hover:opacity-90 transition shadow-md w-full">
+            Ir a tienda de servicios
+          </a>
+        </div>
+
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ENLACES LEGALES / FOOTER -->
+  <section class="mb-10">
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+      <a href="#" class="w-full sm:w-auto bg-sys-secondary shadow-soft text-white font-medium py-3 px-8 rounded-xl hover:-translate-y-1 hover:shadow-md transition duration-300 text-center">
+        Términos
+      </a>
+      <a href="#" class="w-full sm:w-auto bg-sys-secondary shadow-soft text-white font-medium py-3 px-8 rounded-xl hover:-translate-y-1 hover:shadow-md transition duration-300 text-center">
+        Privacidad
+      </a>
+      <a href="#" class="w-full sm:w-auto bg-sys-secondary shadow-soft text-white font-medium py-3 px-8 rounded-xl hover:-translate-y-1 hover:shadow-md transition duration-300 text-center">
+        Disclaimer
+      </a>
+    </div>
+  </section>
+
+</main>
+
+</body>
+</html>
