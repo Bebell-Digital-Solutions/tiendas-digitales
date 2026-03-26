@@ -1,1 +1,487 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Branding Book | Sistema de Módulos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Poppins', 'sans-serif'] },
+                    colors: {
+                        sys: {
+                            bg: '#f2f1fb',
+                            primary: '#8b84f5',
+                            secondary: '#e07dd1',
+                            title: '#4b4998',
+                            text: '#707070',
+                            card: '#ffffff'
+                        }
+                    },
+                    boxShadow: {
+                        'soft': '0 10px 40px -10px rgba(139, 132, 245, 0.3)',
+                        'card': '0 20px 35px -12px rgba(0,0,0,0.08)',
+                    }
+                }
+            }
+        }
+    </script>
 
+    <style>
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #4b4998, #8b84f5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, #8b84f5, #e07dd1);
+        }
+
+        .custom-list li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .custom-list li::before {
+            content: '•';
+            color: #e07dd1;
+            font-weight: bold;
+            font-size: 1.2rem;
+            position: absolute;
+            left: 0;
+            top: -2px;
+        }
+
+        /* Flip Card Styles */
+        .flip-card {
+            perspective: 1000px;
+            height: 420px;
+        }
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: left;
+            transition: transform 0.8s cubic-bezier(0.4, 0.2, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+        .flip-card:hover .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            border-radius: 1.5rem;
+        }
+        .flip-card-back {
+            transform: rotateY(180deg);
+        }
+
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        /* estilos para el contenido interno */
+        .branding-module {
+            max-height: 100%;
+            overflow-y: auto;
+            padding: 1.5rem 2rem;
+        }
+        .branding-module::-webkit-scrollbar {
+            width: 6px;
+        }
+        .branding-module::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        .branding-module::-webkit-scrollbar-thumb {
+            background: #c7c2fa;
+            border-radius: 10px;
+        }
+        .checklist-item {
+            transition: all 0.2s ease;
+        }
+        .progress-bar-fill {
+            transition: width 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+    </style>
+</head>
+<body class="h-screen flex flex-col text-sys-text bg-sys-bg">
+
+    <!-- Fila Superior: Carrusel de Banners (módulos del Branding Book) -->
+    <div class="flex-none w-full bg-gradient-to-b from-sys-bg to-sys-card">
+        <div id="banner-container" class="flex gap-4 md:gap-6 overflow-x-auto hide-scrollbar snap-x snap-mandatory px-4 md:px-8 py-4 md:py-6 items-center">
+            <!-- Banners generados dinámicamente -->
+        </div>
+    </div>
+
+    <!-- Fila Inferior: Visor iframe con el contenido completo del Branding Book -->
+    <div class="flex-grow w-full bg-sys-card shadow-[0_-10px_40px_-10px_rgba(139,132,245,0.15)] overflow-hidden relative z-10">
+        <div class="absolute top-0 inset-x-8 h-2 gradient-bg rounded-full"></div>
+        <iframe 
+            id="mainViewer" 
+            class="w-full h-full border-0 pt-2"
+            src="about:blank"
+            title="Branding Book - Módulos interactivos">
+        </iframe>
+    </div>
+
+    <script>
+        // ============================================================
+        // 1. DEFINICIÓN DE MÓDULOS / BANNERS (siguiendo la estructura del capitulo)
+        // ============================================================
+        const banners = [
+            {
+                id: 'intro-branding',
+                titulo: 'Introducción + ¿Qué es?',
+                subtitulo: 'Antes de crecer, necesitas claridad. Conceptos clave y el propósito del Branding Book.',
+                imagen: 'https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+                gradienteClases: 'from-sys-title/90 via-sys-primary/60',
+                // Contenido embebido en base64 / html inline mediante dataURI para mostrar cada módulo sin depender de URLs externas.
+                // Usaremos una función que genere el HTML de cada sección.
+                moduloContenido: 'intro'
+            },
+            {
+                id: 'elementos-branding',
+                titulo: 'Elementos del Branding Book',
+                subtitulo: 'Logo, colores, tipografía, estilo visual, activos gráficos, aplicaciones y tono de comunicación.',
+                imagen: 'https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+                gradienteClases: 'from-sys-primary/90 via-sys-secondary/70',
+                moduloContenido: 'elementos'
+            },
+            {
+                id: 'checklist-progreso',
+                titulo: 'Checklist + Progreso',
+                subtitulo: 'Sigue cada paso, documenta tu avance y completa tu Branding Book con seguimiento real.',
+                imagen: 'https://images.unsplash.com/photo-1507925921958-8a62f3d1a50d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+                gradienteClases: 'from-sys-secondary/90 via-sys-primary/70',
+                moduloContenido: 'checklist'
+            },
+            {
+                id: 'como-crearlo',
+                titulo: 'Cómo crearlo + Herramientas',
+                subtitulo: 'Canva, Google Slides, fuentes, IA generativa. Empieza simple pero organizado.',
+                imagen: 'https://images.unsplash.com/photo-1562577309-2592ab84b1bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+                gradienteClases: 'from-sys-title/80 via-sys-primary/50',
+                moduloContenido: 'herramientas'
+            },
+            {
+                id: 'errores-mejora',
+                titulo: 'Errores comunes + Mejora clave',
+                subtitulo: 'Evita cambiar colores constantemente, múltiples fuentes y documenta cada activo. Conecta con sistema real.',
+                imagen: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+                gradienteClases: 'from-sys-primary/90 via-sys-title/70',
+                moduloContenido: 'mejora'
+            }
+        ];
+
+        // ============================================================
+        // 2. GENERAR HTML DE CADA MÓDULO (contenido completo según el capítulo)
+        // ============================================================
+        function generarHtmlModulo(tipo) {
+            if (tipo === 'intro') {
+                return `
+                    <div class="branding-module">
+                        <div class="max-w-4xl mx-auto">
+                            <div class="flex items-center gap-3 mb-6">
+                                <i class="fas fa-book-open text-3xl text-sys-primary"></i>
+                                <h1 class="text-3xl md:text-4xl font-bold gradient-text">Branding Book</h1>
+                            </div>
+                            <div class="bg-sys-bg p-6 rounded-2xl shadow-card mb-8">
+                                <h2 class="text-2xl font-semibold text-sys-title mb-4">📌 INTRODUCCIÓN</h2>
+                                <p class="mb-3"><strong>Antes de crecer, necesitas claridad.</strong> Una marca bien definida no solo se ve mejor, también facilita decisiones, mejora la comunicación y aumenta la confianza.</p>
+                                <p>En esta sección vas a crear tu <strong class="text-sys-primary">Branding Book</strong>, un documento donde organizas todos los elementos visuales de tu marca. No tiene que ser perfecto. Tiene que ser claro y usable.</p>
+                            </div>
+                            <div class="bg-sys-card border border-sys-primary/20 p-6 rounded-2xl shadow-card">
+                                <h2 class="text-2xl font-semibold text-sys-title mb-4 flex items-center gap-2"><i class="fas fa-question-circle text-sys-secondary"></i> ¿QUÉ ES UN BRANDING BOOK?</h2>
+                                <p>Es una guía donde defines cómo debe verse tu marca en cualquier contexto. Te permite:</p>
+                                <ul class="custom-list mt-3 space-y-1">
+                                    <li>Mantener consistencia</li>
+                                    <li>Diseñar más rápido</li>
+                                    <li>Delegar sin perder control</li>
+                                    <li>Evitar errores visuales</li>
+                                </ul>
+                            </div>
+                            <div class="mt-6 text-center text-sm text-sys-text/60">
+                                <i class="fas fa-arrow-left mr-1"></i> Explora los otros módulos desde los banners superiores
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } 
+            else if (tipo === 'elementos') {
+                return `
+                    <div class="branding-module">
+                        <div class="max-w-5xl mx-auto">
+                            <h2 class="text-3xl font-bold text-sys-title mb-6 flex items-center gap-2"><i class="fas fa-palette"></i> Elementos del Branding Book</h2>
+                            <div class="grid md:grid-cols-2 gap-6">
+                                ${crearTarjetaElemento('1. Logo', 'Define todas las versiones necesarias: Logo principal, secundario, horizontal, vertical, versiones fondo claro/oscuro, blanco/negro. Formatos: PNG, JPG, SVG.')}
+                                ${crearTarjetaElemento('2. Colores de Marca', 'Paleta clara: color primario, secundarios, apoyo. Incluye códigos HEX y RGB. Recomendación: No más de 3 a 5 colores.')}
+                                ${crearTarjetaElemento('3. Tipografía', 'Máximo 2 o 3 fuentes: tipografía principal (títulos), secundaria (texto) y opcional de acento. Evita mezclar muchas.')}
+                                ${crearTarjetaElemento('4. Estilo Visual', 'Define cómo se ve tu marca: tipo de imágenes, estilo (limpio, moderno, elegante), uso de colores, espacios. Puedes usar referencias.')}
+                                ${crearTarjetaElemento('5. Activos Gráficos', 'Elementos reutilizables: íconos, formas, patrones, elementos visuales que refuercen la identidad.')}
+                                ${crearTarjetaElemento('6. Aplicaciones (Mockups)', 'Visualiza tu marca en uso: redes sociales, página web, productos, publicidad. Valida si funciona en práctica.')}
+                                ${crearTarjetaElemento('7. Tono de Comunicación', 'Define cómo habla tu marca: formal o cercano, directo o explicativo, estilo de mensajes. Coherencia en ventas y contenido.')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            else if (tipo === 'checklist') {
+                // checklist interactivo con progreso simulado (estilo seguimiento)
+                const itemsChecklist = [
+                    "Definir nombre de marca", "Crear logo principal", "Crear logo secundario", "Crear versiones horizontal y vertical",
+                    "Exportar logos en PNG y JPG", "Definir versión en fondo claro y oscuro", "Definir versión en blanco y negro",
+                    "Seleccionar color primario", "Seleccionar colores secundarios", "Guardar códigos HEX", "Guardar códigos RGB",
+                    "Seleccionar tipografía principal", "Seleccionar tipografía secundaria", "Definir estilo visual de la marca",
+                    "Seleccionar tipo de imágenes", "Crear o seleccionar íconos o elementos gráficos", "Crear mockups básicos (redes o web)",
+                    "Definir tono de comunicación"
+                ];
+                let checkboxesHtml = '';
+                itemsChecklist.forEach((item, idx) => {
+                    checkboxesHtml += `
+                        <div class="flex items-start gap-3 p-2 border-b border-sys-bg/60 checklist-item">
+                            <input type="checkbox" id="chk_${idx}" class="w-5 h-5 mt-1 accent-sys-secondary" onchange="actualizarProgresoChecklist()">
+                            <label for="chk_${idx}" class="text-sys-text text-sm md:text-base cursor-pointer">${item}</label>
+                        </div>
+                    `;
+                });
+                return `
+                    <div class="branding-module">
+                        <div class="max-w-4xl mx-auto">
+                            <div class="flex justify-between items-center mb-6 flex-wrap">
+                                <h2 class="text-3xl font-bold text-sys-title flex items-center gap-2"><i class="fas fa-check-double"></i> Checklist – Branding Book</h2>
+                                <div class="bg-sys-bg rounded-xl p-3 mt-2">
+                                    <span class="text-sm font-medium">Progreso: </span>
+                                    <span id="progresoPorcentaje" class="font-bold text-sys-primary">0%</span>
+                                    <div class="w-40 h-2 bg-gray-200 rounded-full mt-1 overflow-hidden">
+                                        <div id="barraProgreso" class="progress-bar-fill h-full gradient-bg rounded-full" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-white rounded-2xl shadow-card p-5">
+                                <p class="text-sys-text mb-4"><i class="fas fa-info-circle text-sys-secondary"></i> Completa cada elemento para avanzar y documentar tu marca.</p>
+                                <div id="checklistContainer" class="grid grid-cols-1 md:grid-cols-2 gap-2 max-h-[55vh] overflow-y-auto pr-2">
+                                    ${checkboxesHtml}
+                                </div>
+                                <div class="mt-6 p-4 bg-sys-bg rounded-xl flex justify-between items-center">
+                                    <span><i class="fas fa-chart-line"></i> Estado: <strong id="estadoTexto">Pendiente</strong></span>
+                                    <button onclick="reiniciarChecklist()" class="text-xs bg-white px-3 py-1 rounded-full shadow-sm hover:shadow transition">Reiniciar</button>
+                                </div>
+                            </div>
+                            <div class="mt-5 text-center text-sm text-sys-text/70 italic">
+                                ✅ Cada checkbox → se actualiza el progreso automáticamente. Simula sistema de seguimiento real.
+                            </div>
+                        </div>
+                    </div>
+                    <script>
+                        function actualizarProgresoChecklist() {
+                            const total = document.querySelectorAll('#checklistContainer input[type="checkbox"]').length;
+                            const marcados = document.querySelectorAll('#checklistContainer input[type="checkbox"]:checked').length;
+                            const porcentaje = Math.round((marcados / total) * 100);
+                            document.getElementById('progresoPorcentaje').innerText = porcentaje + '%';
+                            document.getElementById('barraProgreso').style.width = porcentaje + '%';
+                            const estadoTexto = document.getElementById('estadoTexto');
+                            if(porcentaje === 0) estadoTexto.innerText = 'Pendiente';
+                            else if(porcentaje < 100) estadoTexto.innerText = 'En progreso';
+                            else estadoTexto.innerText = 'Completado';
+                        }
+                        function reiniciarChecklist() {
+                            document.querySelectorAll('#checklistContainer input[type="checkbox"]').forEach(cb => cb.checked = false);
+                            actualizarProgresoChecklist();
+                        }
+                        window.actualizarProgresoChecklist = actualizarProgresoChecklist;
+                        window.reiniciarChecklist = reiniciarChecklist;
+                        setTimeout(() => actualizarProgresoChecklist(), 100);
+                    </script>
+                `;
+            }
+            else if (tipo === 'herramientas') {
+                return `
+                    <div class="branding-module">
+                        <div class="max-w-4xl mx-auto">
+                            <h2 class="text-3xl font-bold text-sys-title mb-3">🛠️ CÓMO CREARLO + HERRAMIENTAS</h2>
+                            <div class="bg-gradient-to-r from-sys-bg to-white p-6 rounded-2xl shadow-card mb-6">
+                                <p class="mb-2">Puedes hacerlo con:</p>
+                                <div class="flex flex-wrap gap-3 mb-4">
+                                    <span class="bg-white px-4 py-2 rounded-full shadow-sm"><i class="fab fa-canva"></i> Canva</span>
+                                    <span class="bg-white px-4 py-2 rounded-full shadow-sm"><i class="fas fa-chalkboard"></i> Google Slides</span>
+                                    <span class="bg-white px-4 py-2 rounded-full shadow-sm"><i class="fab fa-microsoft"></i> PowerPoint</span>
+                                </div>
+                                <p><strong>Empieza simple.</strong> Una sola página bien organizada es suficiente.</p>
+                            </div>
+                            <div class="grid md:grid-cols-2 gap-5">
+                                <div class="border border-sys-primary/20 rounded-xl p-5">
+                                    <i class="fas fa-paintbrush text-2xl text-sys-primary"></i>
+                                    <h3 class="font-bold text-lg mt-2">Diseño</h3>
+                                    <p>Canva, Adobe Express</p>
+                                    <h3 class="font-bold text-lg mt-3">Tipografías</h3>
+                                    <p>Google Fonts</p>
+                                </div>
+                                <div class="border border-sys-secondary/20 rounded-xl p-5">
+                                    <i class="fas fa-robot text-2xl text-sys-secondary"></i>
+                                    <h3 class="font-bold text-lg mt-2">IA recomendada</h3>
+                                    <p>Generadores de logos, paletas de colores (Coolors.co) e imágenes con IA.</p>
+                                </div>
+                            </div>
+                            <div class="mt-6 text-center bg-sys-bg p-4 rounded-xl">
+                                <p><i class="fas fa-download"></i> Acción principal: <strong class="text-sys-primary">Crear tu Branding Book</strong> — Acción secundaria: Descargar plantilla (Canva/Google Slides)</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            else if (tipo === 'mejora') {
+                return `
+                    <div class="branding-module">
+                        <div class="max-w-4xl mx-auto">
+                            <h2 class="text-3xl font-bold text-sys-title mb-4 flex items-center gap-2"><i class="fas fa-exclamation-triangle"></i> Errores Comunes</h2>
+                            <ul class="bg-red-50/40 p-5 rounded-2xl space-y-2 mb-8">
+                                <li class="flex gap-2"><i class="fas fa-times-circle text-red-500 mt-1"></i> Cambiar colores constantemente</li>
+                                <li class="flex gap-2"><i class="fas fa-times-circle text-red-500 mt-1"></i> Usar muchas tipografías</li>
+                                <li class="flex gap-2"><i class="fas fa-times-circle text-red-500 mt-1"></i> No tener versiones del logo</li>
+                                <li class="flex gap-2"><i class="fas fa-times-circle text-red-500 mt-1"></i> No documentar nada</li>
+                            </ul>
+                            <div class="bg-gradient-to-r from-sys-primary/10 to-sys-secondary/10 p-6 rounded-2xl shadow-card">
+                                <h3 class="text-2xl font-bold text-sys-title mb-3">✨ MEJORA CLAVE (Te recomiendo fuerte)</h3>
+                                <p>Conecta esto a una plantilla real: Canva editable o Google Slides.</p>
+                                <p class="mt-2">Haz que cada checkbox tenga lógica → Cuando el usuario marca: se guarda en Google Sheets, se actualiza progreso y se refleja en dashboard.</p>
+                                <div class="mt-4 p-3 bg-white rounded-xl text-sm">
+                                    <i class="fas fa-magic text-sys-secondary"></i> Esto convierte esta página en: <strong>Guía + Sistema + Seguimiento real</strong>. No solo contenido.
+                                </div>
+                            </div>
+                            <div class="mt-6 text-center text-sys-text/80 text-sm">
+                                <i class="fas fa-lightbulb"></i> Aplica un sistema de seguimiento para potenciar tu branding.
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            return '<div class="p-8 text-center">Contenido en construcción</div>';
+        }
+
+        // helper para tarjetas de elementos
+        function crearTarjetaElemento(titulo, descripcion) {
+            return `
+                <div class="bg-sys-card border border-sys-primary/10 rounded-xl p-5 shadow-sm hover:shadow-md transition">
+                    <h3 class="text-xl font-semibold text-sys-primary mb-2">${titulo}</h3>
+                    <p class="text-sys-text text-sm">${descripcion}</p>
+                </div>
+            `;
+        }
+
+        // ============================================================
+        // 3. RENDER DE BANNERS Y LÓGICA DE IFRAME (contenido dinámico)
+        // ============================================================
+        function renderBanners() {
+            const container = document.getElementById('banner-container');
+            if (!container) return;
+            container.innerHTML = '';
+            
+            banners.forEach(banner => {
+                const button = document.createElement('button');
+                button.className = 'shrink-0 w-[85vw] md:w-[480px] aspect-[1024/575] relative rounded-3xl overflow-hidden shadow-soft group cursor-pointer snap-center focus:outline-none focus:ring-4 focus:ring-sys-primary/50 transition-all hover:-translate-y-1 text-left';
+                button.onclick = () => {
+                    // cargar contenido en el iframe según el tipo de módulo
+                    const htmlCompleto = generarHtmlModulo(banner.moduloContenido);
+                    const iframe = document.getElementById('mainViewer');
+                    const doc = iframe.contentWindow.document;
+                    doc.open();
+                    doc.write(`
+                        <!DOCTYPE html>
+                        <html>
+                        <head>
+                            <meta charset="UTF-8">
+                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                            <script src="https://cdn.tailwindcss.com"></script>
+                            <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+                            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+                            <style>
+                                body { font-family: 'Poppins', sans-serif; background: #f2f1fb; margin: 0; padding: 0; }
+                                .gradient-text { background: linear-gradient(135deg, #4b4998, #8b84f5); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+                                .gradient-bg { background: linear-gradient(135deg, #8b84f5, #e07dd1); }
+                                .custom-list li::before { content: '•'; color: #e07dd1; font-weight: bold; font-size: 1.2rem; position: absolute; left: 0; top: -2px; }
+                                .custom-list li { position: relative; padding-left: 1.5rem; margin-bottom: 0.5rem; list-style: none; }
+                                .branding-module { max-height: 100%; overflow-y: auto; padding: 2rem; }
+                                ::-webkit-scrollbar { width: 6px; }
+                                ::-webkit-scrollbar-track { background: #e2e8f0; border-radius: 10px; }
+                                ::-webkit-scrollbar-thumb { background: #c7c2fa; border-radius: 10px; }
+                            </style>
+                        </head>
+                        <body class="bg-sys-bg">
+                            ${htmlCompleto}
+                        </body>
+                        </html>
+                    `);
+                    doc.close();
+                };
+                
+                button.innerHTML = `
+                    <img src="${banner.imagen}" alt="${banner.titulo}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-r ${banner.gradienteClases} to-transparent"></div>
+                    <div class="absolute inset-0 p-6 md:p-8 flex flex-col justify-end">
+                        <h2 class="text-2xl md:text-3xl font-bold text-white mb-1 md:mb-2 drop-shadow-lg">${banner.titulo}</h2>
+                        <p class="text-white/80 text-xs md:text-sm font-medium line-clamp-2">${banner.subtitulo}</p>
+                    </div>
+                `;
+                container.appendChild(button);
+            });
+        }
+        
+        // Inicializar la página y cargar primer módulo por defecto (intro)
+        window.onload = () => {
+            renderBanners();
+            if (banners.length > 0) {
+                // Simular click en el primer banner para cargar el módulo de introducción
+                const primerBanner = banners[0];
+                const htmlInicial = generarHtmlModulo(primerBanner.moduloContenido);
+                const iframe = document.getElementById('mainViewer');
+                const doc = iframe.contentWindow.document;
+                doc.open();
+                doc.write(`
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <script src="https://cdn.tailwindcss.com"></script>
+                        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+                        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+                        <style>
+                            body { font-family: 'Poppins', sans-serif; background: #f2f1fb; margin: 0; }
+                            .gradient-text { background: linear-gradient(135deg, #4b4998, #8b84f5); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+                            .custom-list li::before { content: '•'; color: #e07dd1; position: absolute; left: 0; }
+                            .custom-list li { position: relative; padding-left: 1.5rem; margin-bottom: 0.5rem; list-style: none; }
+                            .branding-module { padding: 2rem; overflow-y: auto; max-height: 100vh; }
+                        </style>
+                    </head>
+                    <body class="bg-sys-bg">
+                        ${htmlInicial}
+                    </body>
+                    </html>
+                `);
+                doc.close();
+            }
+        };
+    </script>
+</body>
+</html>
