@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Bebell Digital Solutions</title>
+    
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    },
+                    colors: {
+                        sys: {
+                            bg: '#f2f1fb',
+                            primary: '#8b84f5',
+                            secondary: '#e07dd1',
+                            title: '#4b4998',
+                            text: '#707070',
+                            card: '#ffffff'
+                        }
+                    },
+                    boxShadow: {
+                        'soft': '0 10px 40px -10px rgba(139, 132, 245, 0.1)',
+                    }
+                }
+            }
+        }
+    </script>
+
+
+
+
+    
+    <!-- Favicon -->
+    <link rel="icon" href="https://bucket.mlcdn.com/a/3336/3336910/images/4aaeac9c1efc99109149caec0ad9a42e29f886a4.png">
+
+
+    
+
+    <style>
+        body {
+            background-color: #f2f1fb;
+            color: #707070;
+            overflow: hidden; 
+        }
+        
+        .gradient-text {
+            background-image: linear-gradient(90deg, rgb(0, 178, 255), rgb(214, 97, 240) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        @keyframes wave-animation {
+            0% { transform: rotate(0.0deg) }
+            10% { transform: rotate(14.0deg) }
+            20% { transform: rotate(-8.0deg) }
+            30% { transform: rotate(14.0deg) }
+            40% { transform: rotate(-4.0deg) }
+            50% { transform: rotate(10.0deg) }
+            60% { transform: rotate(0.0deg) }
+            100% { transform: rotate(0.0deg) }
+        }
+
+        .animate-wave {
+            display: inline-block;
+            animation: wave-animation 2.5s infinite;
+            transform-origin: 70% 70%;
+            padding: 0.15em;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, #8b84f5, #e07dd1);
+        }
+
+        /* Smooth section transitions */
+        .page-section {
+            display: none;
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+        .page-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Custom Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #d1d0e5;
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #8b84f5;
+        }
+
+        /* Sidebar State Classes */
+        #sidebar {
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Progress Bar Animation */
+        .progress-fill {
+            transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* COLLAPSED SIDEBAR CSS */
+        .sidebar-collapsed {
+            width: 5rem !important; /* w-20 */
+        }
+        .sidebar-collapsed .nav-text { display: none; }
+        .sidebar-collapsed .nav-btn { justify-content: center; padding-left: 0; padding-right: 0; }
+        .sidebar-collapsed .sidebar-progress { display: none; }
+        .sidebar-collapsed .sidebar-header { justify-content: center; padding-left: 0; padding-right: 0; }
+        .sidebar-collapsed #sidebar-logo { width: 40px; height: 40px; }
+        .sidebar-collapsed .user-details { display: none; }
+        .sidebar-collapsed .logout-text { display: none; }
+        .sidebar-collapsed .bottom-container { padding-left: 0.5rem; padding-right: 0.5rem; }
+        .sidebar-collapsed .user-profile-container { padding: 0.5rem; justify-content: center; background: transparent; border-color: transparent; box-shadow: none; }
+
+        /* Loader */
+        .loader {
+            border: 3px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 3px solid #8b84f5;
+            width: 20px;
+            height: 20px;
+            -webkit-animation: spin 1s linear infinite; /* Safari */
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="h-screen w-screen flex antialiased">
+
+    <!-- ==========================================
+         LOGIN VIEW 
+         ========================================== -->
+    <div id="login-view" class="fixed inset-0 z-[70] bg-sys-bg flex items-center justify-center p-4 transition-opacity duration-500">
+        <div class="max-w-md w-full bg-sys-card rounded-3xl shadow-soft p-8 md:p-10 border border-white">
+            <div class="text-center mb-8">
+                <img src="https://bucket.mlcdn.com/a/3336/3336910/images/e73990188039c693c8455afb76607f33a56489a0.png" alt="Bebell Digital Solutions" class="w-[150px] h-[150px] object-contain mx-auto mb-6 transition-transform duration-300 hover:scale-110">
+                <h2 class="text-2xl font-bold text-sys-title mb-2 text-center">Acceso al Sistema</h2>
+                <p class="text-sm text-sys-text text-center">Ingresa tu correo asociado a tu tienda digital.</p>
+            </div>
+
+            <form id="login-form" class="space-y-6">
+                <div>
+                    <label class="block text-sm font-medium text-sys-title mb-2">Correo Electrónico</label>
+                    <input type="text" id="login-email" required class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-sys-primary focus:ring-2 focus:ring-sys-primary/20 outline-none transition-all text-sys-title placeholder-gray-400" placeholder="tu@correo.com">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-sys-title mb-2">Contraseña</label>
+                    <input type="password" id="login-password" required class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-sys-primary focus:ring-2 focus:ring-sys-primary/20 outline-none transition-all text-sys-title placeholder-gray-400" placeholder="••••••••">
+                </div>
+                
+                <button type="submit" id="login-btn" class="w-full gradient-bg text-white font-semibold py-3.5 rounded-xl shadow-lg shadow-sys-primary/30 hover:shadow-sys-primary/50 transition-all transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
+                    <span id="login-btn-text">Ingresar al Dashboard</span>
+                    <div id="login-spinner" class="loader hidden"></div>
+                </button>
+
+                <div id="login-error" class="hidden text-red-500 text-sm text-center bg-red-50 p-3 rounded-lg"></div>
+            </form>
+
+            <div class="mt-8 text-center border-t border-gray-100 pt-6">
+                <p class="text-xs text-sys-text mb-4">
+                    Al utilizar los servicios en la nube de Bebell Digital Solutions, aceptas nuestros 
+                    <a href="#" class="text-sys-primary font-medium hover:underline">Términos y Política de Privacidad</a>.
+                </p>
+                <p class="text-sm">
+                    ¿No tienes una cuenta? <br>
+                    <a href="/onboarding/index.html" class="text-sys-secondary font-semibold hover:text-sys-primary transition-colors mt-1 inline-block">Regístrate y clasifica tu negocio</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar Overlay (Mobile/Tablet Only) -->
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 hidden transition-opacity duration-300 opacity-0"></div>
+
+    <!-- ==========================================
+         DASHBOARD APP SHELL 
+         ========================================== -->
+    <div id="app-shell" class="hidden w-full h-full flex overflow-hidden">
+        
+        <!-- Sidebar Navigation (Width 72 / 288px) -->
+        <aside id="sidebar" class="fixed inset-y-0 left-0 w-72 bg-white border-r border-gray-100 flex flex-col justify-between z-50 shadow-sm -translate-x-full lg:translate-x-0 overflow-hidden">
+            
+            <!-- Branding & Sidebar Progress Bar -->
+            <div class="w-full flex-shrink-0 border-b border-gray-100 bg-white z-10 relative">
+                
+                <!-- Toggle Header (Inside Sidebar) -->
+                <div class="flex items-center justify-between px-6 pt-5 pb-2 sidebar-header transition-all duration-300">
+                    <button class="desktop-toggle-btn text-sys-title hover:bg-gray-100 p-2 rounded-xl transition-all hidden lg:flex items-center justify-center">
+                        <i data-lucide="menu" id="desktop-menu-icon" class="w-6 h-6"></i>
+                    </button>
+                    <!-- Mobile Close Btn -->
+                    <button class="mobile-close-btn p-2 text-sys-title hover:bg-gray-100 rounded-xl transition-colors lg:hidden ml-auto">
+                        <i data-lucide="x" class="w-6 h-6"></i>
+                    </button>
+                </div>
+
+                <div class="flex items-center justify-center mb-4 transition-all duration-300">
+                    <img src="https://bucket.mlcdn.com/a/3336/3336910/images/e73990188039c693c8455afb76607f33a56489a0.png" alt="Bebell Logo" id="sidebar-logo" class="w-[120px] h-[120px] object-contain transition-all duration-300 hover:scale-105 cursor-pointer">
+                </div>
+                
+                <div class="w-full bg-white px-6 pb-4 sidebar-progress transition-all duration-300">
+                    <div class="flex justify-between items-end mb-1">
+                        <p class="text-[10px] text-sys-text font-bold uppercase tracking-wider">Progreso Global</p>
+                        <span class="text-[10px] font-bold text-sys-primary"><span id="sidebar-counter-progress">0</span>%</span>
+                    </div>
+                    <div class="w-full h-1.5 bg-sys-bg rounded-full overflow-hidden">
+                        <div id="sidebar-progress-fill" class="h-full bg-sys-secondary rounded-full w-0 progress-fill"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="p-4 space-y-1 flex-1 overflow-y-auto custom-scrollbar" id="sidebar-nav">
+                <button data-url="https://bebell-digital-solutions.github.io/tiendas-digitales/dashboard/pages/overview/" class="nav-btn w-full flex items-center justify-start text-left gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all text-sys-text hover:bg-sys-bg hover:text-sys-title whitespace-nowrap">
+                    <i data-lucide="play-circle" class="w-5 h-5 flex-shrink-0"></i> <span class="nav-text transition-all duration-300">Primeros pasos</span>
+                </button>
+                <button data-target="page-overview" class="nav-btn active w-full flex items-center justify-start text-left gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all text-sys-title bg-sys-bg whitespace-nowrap">
+                    <i data-lucide="layout-dashboard" class="w-5 h-5 text-sys-primary flex-shrink-0"></i> <span class="nav-text transition-all duration-300">Resumen</span>
+                </button>
+                <button data-url="https://bebell-digital-solutions.github.io/tiendas-digitales/dashboard/pages/roadmap" class="nav-btn w-full flex items-center justify-start text-left gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all text-sys-text hover:bg-sys-bg hover:text-sys-title whitespace-nowrap">
+                    <i data-lucide="map" class="w-5 h-5 flex-shrink-0"></i> <span class="nav-text transition-all duration-300">Roadmap de Ejecución</span>
+                </button>
+                <button data-url="https://bebell-digital-solutions.github.io/tiendas-digitales/dashboard/pages/research" class="nav-btn w-full flex items-center justify-start text-left gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all text-sys-text hover:bg-sys-bg hover:text-sys-title whitespace-nowrap">
+                    <i data-lucide="search-check" class="w-5 h-5 flex-shrink-0"></i> <span class="nav-text transition-all duration-300">Investigación de mercado</span>
+                </button>
+                <button data-url="https://bebell-digital-solutions.github.io/tiendas-digitales/dashboard/pages/branding" class="nav-btn w-full flex items-center justify-start text-left gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all text-sys-text hover:bg-sys-bg hover:text-sys-title whitespace-nowrap">
+                    <i data-lucide="star" class="w-5 h-5 flex-shrink-0"></i> <span class="nav-text transition-all duration-300">Marca y posicionamiento</span>
+                </button>
+                <button data-url="https://bebell-digital-solutions.github.io/tiendas-digitales/dashboard/pages/product" class="nav-btn w-full flex items-center justify-start text-left gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all text-sys-text hover:bg-sys-bg hover:text-sys-title whitespace-nowrap">
+                    <i data-lucide="package" class="w-5 h-5 flex-shrink-0"></i> <span class="nav-text transition-all duration-300">Desarrollo de producto</span>
+                </button>
+
+
+
+                <button data-url="https://bebell-digital-solutions.github.io/tiendas-digitales/dashboard/pages/exploration" class="nav-btn w-full flex items-center justify-start text-left gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all text-sys-text hover:bg-sys-bg hover:text-sys-title whitespace-nowrap">
+                    <i data-lucide="clapperboard" class="w-5 h-5 flex-shrink-0"></i> <span class="nav-text transition-all duration-300">Explorar Modelos</span>
+                </button>
+
+
+
+
+
+              
+
+                <button data-url="https://bebell-digital-solutions.github.io/tiendas-digitales/dashboard/pages/content-creation" class="nav-btn w-full flex items-center justify-start text-left gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all text-sys-text hover:bg-sys-bg hover:text-sys-title whitespace-nowrap">
+                    <i data-lucide="clapperboard" class="w-5 h-5 flex-shrink-0"></i> <span class="nav-text transition-all duration-300">Creación de contenido</span>
+                </button>
+
+
+                
+                <button data-url="https://bebell-digital-solutions.github.io/tiendas-digitales/dashboard/pages/sales" class="nav-btn w-full flex items-center justify-start text-left gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all text-sys-text hover:bg-sys-bg hover:text-sys-title whitespace-nowrap">
+                    <i data-lucide="shopping-cart" class="w-5 h-5 flex-shrink-0"></i> <span class="nav-text transition-all duration-300">Ventas y canales</span>
+                </button>
+
+
+
+                    <button data-url="https://bebell-digital-solutions.github.io/tiendas-digitales/dashboard/pages/reputation" class="nav-btn w-full flex items-center justify-start text-left gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all text-sys-text hover:bg-sys-bg hover:text-sys-title whitespace-nowrap">
+                    <i data-lucide="badge-check" class="w-5 h-5 flex-shrink-0"></i> <span class="nav-text transition-all duration-300">Reputación y autoridad</span>
+                </button>
+                
+
+
+
+                    <button data-url="https://bebell-digital-solutions.github.io/tiendas-digitales/dashboard/pages/communication" class="nav-btn w-full flex items-center justify-start text-left gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all text-sys-text hover:bg-sys-bg hover:text-sys-title whitespace-nowrap">
+                    <i data-lucide="radio-tower" class="w-5 h-5 flex-shrink-0"></i> <span class="nav-text transition-all duration-300">Comunicación & Soporte</span>
+                </button>
+
+
+
+                
+                <button data-url="https://bebell-digital-solutions.github.io/tiendas-digitales/dashboard/pages/finance" class="nav-btn w-full flex items-center justify-start text-left gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all text-sys-text hover:bg-sys-bg hover:text-sys-title whitespace-nowrap">
+                    <i data-lucide="dollar-sign" class="w-5 h-5 flex-shrink-0"></i> <span class="nav-text transition-all duration-300">Finanzas y operaciones</span>
+                </button>
+
+                
+                
+                <button data-url="https://bebell-digital-solutions.github.io/tiendas-digitales/dashboard/pages/tools" class="nav-btn w-full flex items-center justify-start text-left gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all text-sys-text hover:bg-sys-bg hover:text-sys-title whitespace-nowrap">
+                    <i data-lucide="library" class="w-5 h-5 flex-shrink-0"></i> <span class="nav-text transition-all duration-300">Herramientas y recursos</span>
+                </button>
+                <button data-url="https://bebell-digital-solutions.github.io/tiendas-digitales/dashboard/pages/asistente-ia" class="nav-btn w-full flex items-center justify-start text-left gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all text-sys-text hover:bg-sys-bg hover:text-sys-title whitespace-nowrap">
+                    <i data-lucide="bot" class="w-5 h-5 flex-shrink-0"></i> <span class="nav-text transition-all duration-300">Asistente IA</span>
+                </button>
+                <div class="h-px bg-gray-100 my-2"></div>
+                <button data-url="https://centro-ayuda.bebelldigitalsolutions.com" class="nav-btn w-full flex items-center justify-start text-left gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all text-sys-text hover:bg-sys-bg hover:text-sys-title whitespace-nowrap">
+                    <i data-lucide="help-circle" class="w-5 h-5 flex-shrink-0"></i> <span class="nav-text transition-all duration-300">Centro de Ayuda</span>
+                </button>
+                <button data-target="page-settings" class="nav-btn w-full flex items-center justify-start text-left gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all text-sys-text hover:bg-sys-bg hover:text-sys-title whitespace-nowrap">
+                    <i data-lucide="settings" class="w-5 h-5 flex-shrink-0"></i> <span class="nav-text transition-all duration-300">Configuración</span>
+                </button>
+            </nav>
+
+            <!-- User Info & Logout -->
+            <div class="p-4 border-t border-gray-100 bg-white flex-shrink-0 z-10 relative bottom-container transition-all duration-300">
+                <div class="flex items-center gap-3 p-3 rounded-xl bg-sys-bg border border-white shadow-sm mb-3 user-profile-container transition-all duration-300">
+                    <div id="user-logo-container" class="w-10 h-10 rounded-lg bg-white shadow-sm flex items-center justify-center overflow-hidden border border-gray-100 shrink-0">
+                        <i data-lucide="store" class="w-5 h-5 text-sys-primary"></i>
+                    </div>
+                    <div class="overflow-hidden user-details transition-all duration-300">
+                        <p id="user-business-name" class="text-sm font-bold text-sys-title truncate">Mi Tienda</p>
+                        <div class="flex items-center gap-1">
+                            <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                            <p class="text-[10px] uppercase font-bold text-gray-400" id="user-level-badge">NIVEL</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Updated Logout Button with Power Icon -->
+                <button onclick="logout()" class="w-full flex items-center justify-start gap-3 text-white bg-sys-primary hover:bg-sys-title transition-colors py-3 px-4 rounded-xl font-semibold shadow-sm shadow-sys-primary/20 nav-btn">
+                    <i data-lucide="power" class="w-5 h-5 shrink-0"></i>
+                    <span class="logout-text transition-all duration-300 whitespace-nowrap text-sm">Cerrar Sesión</span>
+                </button>
+            </div>
+        </aside>
+
+
+
+
+
+        
+
+        <!-- Main Content Area -->
+        <main id="main-content" class="flex-1 flex flex-col h-full relative overflow-y-auto overflow-x-hidden bg-sys-bg transition-all duration-300 lg:pl-72">
+            
+            <!-- Top Bar -->
+            <div class="h-20 bg-sys-bg/80 backdrop-blur-md sticky top-0 z-10 flex items-center justify-between px-6 md:px-10 flex-shrink-0">
+                <div class="flex items-center gap-4">
+                    <!-- Mobile only Toggle Button (Desktop is in sidebar now) -->
+                    <button class="mobile-toggle-btn p-2 text-sys-title hover:bg-gray-100 rounded-lg transition-colors lg:hidden">
+                        <i data-lucide="menu" class="w-7 h-7"></i>
+                    </button>
+                    <h1 id="page-title" class="text-xl md:text-2xl font-bold text-sys-title">Resumen</h1>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="relative">
+                        <button id="notification-btn" class="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center text-sys-text hover:text-sys-primary transition-colors relative">
+                            <i data-lucide="bell" class="w-5 h-5"></i>
+                            <span class="absolute top-2 right-2.5 w-2 h-2 bg-red-500 rounded-full"></span>
+                        </button>
+                        
+                        <!-- Notification Dropdown -->
+                        <div id="notification-dropdown" class="absolute right-0 mt-2 w-72 bg-white rounded-2xl shadow-xl border border-gray-100 opacity-0 pointer-events-none transform scale-95 transition-all duration-200 z-50 origin-top-right">
+                            <div class="p-4 border-b border-gray-50 flex items-center justify-between">
+                                <h4 class="font-bold text-sys-title">Notificaciones</h4>
+                                <span class="text-[10px] font-bold bg-sys-primary/10 text-sys-primary px-2 py-0.5 rounded-full">2 Nuevas</span>
+                            </div>
+                            <div class="p-4 space-y-4">
+                                <div>
+                                    <p class="text-xs font-bold text-gray-400 uppercase mb-2">Paso Reciente (Completado)</p>
+                                    <div class="flex items-start gap-3 p-3 bg-gray-50 rounded-xl">
+                                        <i data-lucide="check-circle-2" class="w-5 h-5 text-emerald-500 shrink-0"></i>
+                                        <div>
+                                            <p class="text-sm font-bold text-sys-title">Compromiso Aceptado</p>
+                                            <p class="text-xs text-sys-text mt-0.5">Has completado tu clasificación.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p class="text-xs font-bold text-gray-400 uppercase mb-2">Próximo Paso (Pendiente)</p>
+                                    <div class="flex items-start gap-3 p-3 bg-amber-50/50 rounded-xl border border-amber-100/50">
+                                        <i data-lucide="clock" class="w-5 h-5 text-amber-500 shrink-0"></i>
+                                        <div>
+                                            <p class="text-sm font-bold text-amber-900">Creación de Identidad</p>
+                                            <p class="text-xs text-amber-800/80 mt-0.5">Configura tu dominio y correo.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Area -->
+            <div class="p-6 md:px-10 md:pb-10 max-w-7xl w-full mx-auto flex-1 flex flex-col" id="dynamic-content-area">
+                <iframe id="content-iframe" class="w-full flex-1 hidden bg-white rounded-3xl shadow-soft border border-white min-h-[500px]" src=""></iframe>
+
+                <!-- OVERVIEW SECTION -->
+                <section id="page-overview" class="page-section active flex-1">
+                    <div class="mb-8">
+                        <h2 class="text-3xl md:text-4xl font-extrabold mb-2 text-left text-sys-title leading-normal">
+                            <span class="gradient-text">Hola, <span id="user-first-name">Emprendedor</span></span> 
+                            <span class="animate-wave">👋</span>
+                        </h2>
+                        <p class="text-sys-text text-left">Aquí está el rendimiento de tu ecosistema digital.</p>
+                    </div>
+
+                    <div class="mb-8 bg-amber-50 border border-amber-200 rounded-2xl p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm relative overflow-hidden">
+                        <div class="absolute -right-10 -top-10 w-32 h-32 bg-amber-200/50 rounded-full blur-2xl"></div>
+                        <div class="flex items-start gap-4 relative z-10">
+                            <div class="w-12 h-12 rounded-2xl bg-amber-100 flex items-center justify-center shrink-0 overflow-hidden">
+                                <img src="https://bucket.mlcdn.com/a/3336/3336910/images/5ad792c5346141c7c934087ce3271060e0640609.png" alt="Programa de Logros" class="w-full h-full object-cover">
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-amber-900 text-lg">Programa de Logros y Recompensas</h3>
+                                <p class="text-sm text-amber-800/80 mt-1 max-w-xl">
+                                    Conecta tu tienda para registrar tus ventas reales, competir amigablemente y desbloquear premios exclusivos.
+                                </p>
+                            </div>
+                        </div>
+                        <button onclick="openAchievementModal()" class="shrink-0 relative z-10 bg-amber-500 hover:bg-amber-600 text-white font-semibold py-2.5 px-6 rounded-xl shadow-md transition-all text-sm">
+                            Ver Detalles
+                        </button>
+                    </div>
+
+                    <!-- Stats Row -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                        <div class="bg-sys-card p-6 rounded-3xl shadow-soft border border-white">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="w-12 h-12 rounded-2xl bg-emerald-50 flex items-center justify-center overflow-hidden">
+                                    <img src="https://bucket.mlcdn.com/a/3336/3336910/images/76c2cc623a16bfdacd9cce89bad5045d05105c8f.png" alt="Ventas Totales" class="w-full h-full object-cover">
+                                </div>
+                                <span class="text-xs font-bold text-emerald-500 bg-emerald-50 px-2 py-1 rounded-lg">+12% este mes</span>
+                            </div>
+                            <p class="text-sm text-sys-text font-medium uppercase tracking-wider mb-1">Ventas Totales</p>
+                            <div class="flex items-baseline gap-1">
+                                <span class="text-3xl font-bold text-sys-title" id="currency-symbol">$</span>
+                                <h3 class="text-4xl font-bold text-sys-title tracking-tight" id="counter-sales">0</h3>
+                            </div>
+                        </div>
+
+                        <div class="bg-sys-card p-6 rounded-3xl shadow-soft border border-white">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="w-12 h-12 rounded-2xl bg-sys-primary/10 flex items-center justify-center overflow-hidden">
+                                    <img src="https://bucket.mlcdn.com/a/3336/3336910/images/44c6b130f3277044f7c8f471af91eb54e76da19b.png" alt="Órdenes Cumplidas" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <p class="text-sm text-sys-text font-medium uppercase tracking-wider mb-1">Órdenes Cumplidas</p>
+                            <h3 class="text-4xl font-bold text-sys-title tracking-tight" id="counter-orders">0</h3>
+                        </div>
+
+                        <div class="bg-sys-card p-6 rounded-3xl shadow-soft border border-white">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="w-12 h-12 rounded-2xl bg-purple-50 flex items-center justify-center overflow-hidden">
+                                    <img src="https://bucket.mlcdn.com/a/3336/3336910/images/d9b6a227f0666772f43d4d0c4f616f79b99c38d1.png" alt="Progreso" class="w-full h-full object-cover">
+                                </div>
+                                <span class="text-2xl font-bold text-sys-title"><span id="counter-progress">0</span>%</span>
+                            </div>
+                            <p class="text-sm text-sys-text font-medium uppercase tracking-wider mb-2">Progreso</p>
+                            <div class="w-full h-3 bg-sys-bg rounded-full overflow-hidden mb-3">
+                                <div id="progress-bar-fill" class="h-full bg-sys-secondary rounded-full w-0 progress-fill"></div>
+                            </div>
+                            <p class="text-xs text-sys-text text-right">Fase actual: <strong class="text-sys-title">Configuración Base</strong></p>
+                        </div>
+                    </div>
+
+                    <!-- NEW: Activity Heatmap (GitHub Style) -->
+                    <div class="bg-sys-card rounded-3xl shadow-soft border border-white p-6 md:p-8 mb-8">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
+                            <div>
+                                <h3 class="text-lg font-bold text-sys-title">Mapa de Actividad</h3>
+                                <p class="text-xs text-sys-text mt-1">Contribuciones y acciones registradas en el ecosistema.</p>
+                            </div>
+                            <select class="text-sm bg-sys-bg border-none rounded-xl px-4 py-2 text-sys-title font-medium outline-none focus:ring-2 focus:ring-sys-primary/20">
+                                <option>Último año</option>
+                                <option>2026</option>
+                            </select>
+                        </div>
+                        
+                        <div class="overflow-x-auto custom-scrollbar pb-4">
+                            <!-- Matrix Container -->
+                            <div class="min-w-[750px]">
+                                <!-- Months Headers -->
+                                <div class="flex text-xs text-gray-400 mb-2 ml-8 justify-between pr-2" id="heatmap-months">
+                                    <!-- Populated via JS -->
+                                </div>
+                                
+                                <div class="flex gap-2">
+                                    <!-- Day Labels -->
+                                    <div class="flex flex-col text-[10px] text-gray-400 justify-between py-1 h-[105px]">
+                                        <span>Lun</span>
+                                        <span>Mié</span>
+                                        <span>Vie</span>
+                                    </div>
+                                    <!-- Grid Cells -->
+                                    <div id="activity-heatmap" class="grid grid-rows-7 gap-[3px] grid-flow-col flex-1 h-[105px]">
+                                        <!-- Cells populated via JS -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Legend -->
+                        <div class="flex flex-wrap items-center justify-between mt-4 text-xs text-gray-400 gap-4">
+                            <a href="#" class="hover:text-sys-primary hover:underline">Aprende cómo medimos las acciones</a>
+                            <div class="flex items-center gap-1.5">
+                                <span>Menos</span>
+                                <div class="w-[11px] h-[11px] rounded-[2px] bg-gray-100"></div>
+                                <div class="w-[11px] h-[11px] rounded-[2px] bg-[#dcd9fa]"></div>
+                                <div class="w-[11px] h-[11px] rounded-[2px] bg-[#b1abf5]"></div>
+                                <div class="w-[11px] h-[11px] rounded-[2px] bg-[#8b84f5]"></div>
+                                <div class="w-[11px] h-[11px] rounded-[2px] bg-[#4b4998]"></div>
+                                <span>Más</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity Timeline -->
+                    <div class="bg-sys-card rounded-3xl shadow-soft border border-white p-6 md:p-8">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-lg font-bold text-sys-title">Actividad Reciente</h3>
+                            <button class="text-sm text-sys-primary font-medium hover:underline">Ver todo</button>
+                        </div>
+                        
+                        <div class="space-y-6 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-gray-200 before:to-transparent">
+                            
+                            <!-- Timeline Item 1 -->
+                            <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                                <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-sys-primary/10 text-sys-primary shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+                                    <i data-lucide="check" class="w-5 h-5"></i>
+                                </div>
+                                <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-sys-bg p-4 rounded-2xl border border-white shadow-sm opacity-100">
+                                    <div class="flex items-center justify-between mb-1">
+                                        <h4 class="font-bold text-sys-title text-sm">Compromiso Aceptado</h4>
+                                        <time class="text-[10px] text-gray-400 font-medium uppercase">Completado</time>
+                                    </div>
+                                    <p class="text-xs text-sys-text">Has completado tu clasificación y aceptado el compromiso.🤝</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Timeline Item 2 -->
+                            <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                                <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-white text-gray-400 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+                                    <i data-lucide="globe" class="w-5 h-5"></i>
+                                </div>
+                                <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-white p-4 rounded-2xl border border-gray-100 shadow-sm opacity-80">
+                                    <div class="flex items-center justify-between mb-1">
+                                        <h4 class="font-bold text-sys-title text-sm">Creación de Identidad Comercial</h4>
+                                        <time class="text-[10px] text-gray-400 font-medium uppercase">En progreso</time>
+                                    </div>
+                                    <p class="text-xs text-sys-text">Compra de dominio y configuración de correos.</p>
+                                </div>
+                            </div>
+
+                            <!-- Timeline Item 3 -->
+                            <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                                <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-white text-gray-400 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+                                    <i data-lucide="settings" class="w-5 h-5"></i>
+                                </div>
+                                <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-white p-4 rounded-2xl border border-gray-100 shadow-sm opacity-60">
+                                    <div class="flex items-center justify-between mb-1">
+                                        <h4 class="font-bold text-sys-title text-sm">Configuración básica de e-commerce</h4>
+                                        <time class="text-[10px] text-gray-400 font-medium uppercase">Pendiente</time>
+                                    </div>
+                                    <p class="text-xs text-sys-text">Ajustes iniciales de tu tienda y plataforma.</p>
+                                </div>
+                            </div>
+
+                            <!-- Item 4 -->
+                            <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                                <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-white text-gray-400 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+                                    <i data-lucide="layout" class="w-5 h-5"></i>
+                                </div>
+                                <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-white p-4 rounded-2xl border border-gray-100 shadow-sm opacity-60">
+                                    <div class="flex items-center justify-between mb-1">
+                                        <h4 class="font-bold text-sys-title text-sm">Arquitectura del Desarrollo Web</h4>
+                                        <time class="text-[10px] text-gray-400 font-medium uppercase">Pendiente</time>
+                                    </div>
+                                    <p class="text-xs text-sys-text">Estructuración de páginas y navegación.</p>
+                                </div>
+                            </div>
+
+                            <!-- Item 5 -->
+                            <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                                <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-white text-gray-400 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+                                    <i data-lucide="file-text" class="w-5 h-5"></i>
+                                </div>
+                                <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-white p-4 rounded-2xl border border-gray-100 shadow-sm opacity-60">
+                                    <div class="flex items-center justify-between mb-1">
+                                        <h4 class="font-bold text-sys-title text-sm">Redacción / Copywriting</h4>
+                                        <time class="text-[10px] text-gray-400 font-medium uppercase">Pendiente</time>
+                                    </div>
+                                    <p class="text-xs text-sys-text">Creación de textos persuasivos para tu tienda.</p>
+                                </div>
+                            </div>
+
+                            <!-- Item 6 -->
+                            <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                                <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-white text-gray-400 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+                                    <i data-lucide="image" class="w-5 h-5"></i>
+                                </div>
+                                <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-white p-4 rounded-2xl border border-gray-100 shadow-sm opacity-60">
+                                    <div class="flex items-center justify-between mb-1">
+                                        <h4 class="font-bold text-sys-title text-sm">Elaboración de Material Gráfico</h4>
+                                        <time class="text-[10px] text-gray-400 font-medium uppercase">Pendiente</time>
+                                    </div>
+                                    <p class="text-xs text-sys-text">Diseño de banners y elementos visuales.</p>
+                                </div>
+                            </div>
+
+                            <!-- Item 7 -->
+                            <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                                <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-white text-gray-400 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+                                    <i data-lucide="monitor" class="w-5 h-5"></i>
+                                </div>
+                                <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-white p-4 rounded-2xl border border-gray-100 shadow-sm opacity-60">
+                                    <div class="flex items-center justify-between mb-1">
+                                        <h4 class="font-bold text-sys-title text-sm">Diseño & Diagramación Web</h4>
+                                        <time class="text-[10px] text-gray-400 font-medium uppercase">Pendiente</time>
+                                    </div>
+                                    <p class="text-xs text-sys-text">Montaje visual y estética de la tienda.</p>
+                                </div>
+                            </div>
+
+                            <!-- Item 8 -->
+                            <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                                <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-white text-gray-400 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+                                    <i data-lucide="credit-card" class="w-5 h-5"></i>
+                                </div>
+                                <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-white p-4 rounded-2xl border border-gray-100 shadow-sm opacity-60">
+                                    <div class="flex items-center justify-between mb-1">
+                                        <h4 class="font-bold text-sys-title text-sm">Configuraciones de pagos</h4>
+                                        <time class="text-[10px] text-gray-400 font-medium uppercase">Pendiente</time>
+                                    </div>
+                                    <p class="text-xs text-sys-text">Habilita Stripe, PayPal u otros métodos de cobro.</p>
+                                </div>
+                            </div>
+
+                            <!-- Item 9 -->
+                            <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                                <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-white text-gray-400 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+                                    <i data-lucide="package" class="w-5 h-5"></i>
+                                </div>
+                                <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-white p-4 rounded-2xl border border-gray-100 shadow-sm opacity-60">
+                                    <div class="flex items-center justify-between mb-1">
+                                        <h4 class="font-bold text-sys-title text-sm">Carga de productos e inventario</h4>
+                                        <time class="text-[10px] text-gray-400 font-medium uppercase">Pendiente</time>
+                                    </div>
+                                    <p class="text-xs text-sys-text">Organizar y crear tu catálogo de productos.</p>
+                                </div>
+                            </div>
+
+                            <!-- Item 10 -->
+                            <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                                <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-white text-gray-400 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+                                    <i data-lucide="flask-conical" class="w-5 h-5"></i>
+                                </div>
+                                <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-white p-4 rounded-2xl border border-gray-100 shadow-sm opacity-60">
+                                    <div class="flex items-center justify-between mb-1">
+                                        <h4 class="font-bold text-sys-title text-sm">Revisión y Ajustes Finales</h4>
+                                        <time class="text-[10px] text-gray-400 font-medium uppercase">Pendiente</time>
+                                    </div>
+                                    <p class="text-xs text-sys-text">Verificación de procesos, enlaces y experiencia.</p>
+                                </div>
+                            </div>
+
+                            <!-- Item 11 -->
+                            <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                                <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-sys-primary text-white shadow-lg shadow-sys-primary/30 shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+                                    <i data-lucide="rocket" class="w-5 h-5"></i>
+                                </div>
+                                <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-white p-4 rounded-2xl border border-gray-100 shadow-sm opacity-60">
+                                    <div class="flex items-center justify-between mb-1">
+                                        <h4 class="font-bold text-sys-title text-sm">Preparar lanzamiento 🚀</h4>
+                                        <time class="text-[10px] text-gray-400 font-medium uppercase">Objetivo Final</time>
+                                    </div>
+                                    <p class="text-xs text-sys-text">Todo listo para recibir a tus primeros clientes.</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </section>
+
+                <section id="page-settings" class="page-section">
+                     <div class="bg-sys-card rounded-3xl shadow-soft p-8 border border-white max-w-2xl mx-auto">
+                        <div class="flex items-center gap-4 mb-6">
+                            <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center text-gray-500">
+                                <i data-lucide="settings" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h2 class="text-2xl font-bold text-sys-title">Configuración de Cuenta</h2>
+                                <p class="text-sm text-sys-text">Administra tu seguridad y contraseña.</p>
+                            </div>
+                        </div>
+                        <form id="change-password-form" class="space-y-4 border-t border-gray-100 pt-6">
+                            <div>
+                                <label class="block text-sm font-medium text-sys-title mb-2">Contraseña Actual</label>
+                                <input type="password" id="current-password" required class="w-full px-4 py-2 rounded-xl border border-gray-200 focus:border-sys-primary outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-sys-title mb-2">Nueva Contraseña</label>
+                                <input type="password" id="new-password" required class="w-full px-4 py-2 rounded-xl border border-gray-200 focus:border-sys-primary outline-none">
+                            </div>
+                            <button type="submit" class="bg-sys-primary text-white font-semibold py-2.5 px-6 rounded-xl transition-all">Actualizar</button>
+                            <p id="password-msg" class="hidden text-sm mt-2"></p>
+                        </form>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- MODAL -->
+    <div id="achievement-modal" class="fixed inset-0 z-[100] bg-sys-title/40 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300 hidden">
+        <div class="bg-sys-card w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden transform scale-95 transition-transform duration-300" id="achievement-modal-content">
+            <div class="h-32 bg-gradient-to-r from-amber-400 to-orange-500 flex items-center justify-center relative">
+                <i data-lucide="trophy" class="w-16 h-16 text-white drop-shadow-md"></i>
+                <button onclick="closeAchievementModal()" class="absolute top-4 right-4 text-white bg-black/20 p-2 rounded-full">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+            <div class="p-8 md:p-10">
+                <h2 class="text-2xl font-bold text-sys-title mb-2 text-center">Recompensas</h2>
+                <p class="text-sm text-sys-text text-center mb-6">Conecta tu tienda Ecwid para empezar.</p>
+                <div class="bg-gray-900 text-green-400 p-4 rounded-xl text-xs overflow-x-auto relative">
+                    <code>&lt;script src="..." storeId="<span id="modal-store-id"></span>"&gt;&lt;/script&gt;</code>
+                    <button onclick="copyScript()" class="absolute top-2 right-2 bg-white/10 px-2 py-1 rounded">Copiar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+    
+
+    <!-- ==========================================
+         JAVASCRIPT & VAULT INTEGRATION
+         ========================================== -->
+    <script>
+        lucide.createIcons();
+
+        // ----------------------------------------------------
+        // VAULT API CONFIGURATION 
+        // ----------------------------------------------------
+        // El frontend se comunica EXCLUSIVAMENTE a través de este Vault script
+        // No debes enviar data hacia otros servidores. 
+        const VAULT_CONFIG = {
+
+            
+            // Reemplaza con la URL generada al publicar tu código de Google Apps Script como Web App
+            URL: 'TU_SCRIPT_ID_AQUI', 
+            PROJECT_NAME: 'tiendas-digitales'
+        };
+
+        // Tracker de Sesión y Actividad
+        const SessionTracker = {
+            startTime: null,
+            lastActivity: null,
+            currentSection: 'login',
+
+            init() {
+                this.startTime = Date.now();
+                this.lastActivity = Date.now();
+                this.setupListeners();
+            },
+
+            setupListeners() {
+                // Registrar clics generales de interacción
+                document.addEventListener('click', () => this.lastActivity = Date.now());
+                document.addEventListener('keypress', () => this.lastActivity = Date.now());
+            },
+
+            async logNavigation(targetSection) {
+                if (!currentUser) return;
+                
+                const durationMs = Date.now() - this.lastActivity;
+                const durationSecs = Math.round(durationMs / 1000);
+                
+                // Enviar la actividad al Vault
+                try {
+                    await VaultAPI.call('logActivity', {
+                        userId: currentUser.user_id,
+                        activityType: 'page_view',
+                        section: targetSection,
+                        duration: durationSecs,
+                        timestamp: new Date().toISOString()
+                    });
+                } catch(e) {
+                    console.log('Error logging activity (non-critical):', e);
+                }
+
+                this.currentSection = targetSection;
+                this.lastActivity = Date.now();
+            }
+        };
+
+        // Cliente principal del Vault (The Safe Master Key API)
+        const VaultAPI = {
+            async call(action, params) {
+                // FALLBACK MOCK DATA: 
+                // Esto está aquí temporalmente para que tu UI funcione en la vista previa
+                // mientras configuras la URL real del Vault en VAULT_CONFIG.URL.
+                if (VAULT_CONFIG.URL.includes('TU_SCRIPT_ID_AQUI')) {
+                    console.warn("Estás utilizando la URL de prueba. Configura el script de Apps Script.");
+                    return this.mockResponse(action, params);
+                }
+
+                // Llamada real al Vault (Google Sheets Apps Script Backend)
+                try {
+                    const response = await fetch(VAULT_CONFIG.URL, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'text/plain;charset=utf-8',
+                        },
+                        body: JSON.stringify({
+                            project: VAULT_CONFIG.PROJECT_NAME,
+                            action: action,
+                            params: params
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    if (!data.success) {
+                        throw new Error(data.error || "Fallo en la comunicación con el Vault.");
+                    }
+                    return data.data;
+                } catch (error) {
+                    console.error("Error crítico de la API de Vault:", error);
+                    throw error;
+                }
+            },
+
+            // --- SIMULADOR TEMPORAL MIENTRAS CONECTAS EL VAULT ---
+            // Las columnas simuladas aquí coinciden con la BD de 31 columnas de tu script
+            mockResponse(action, params) {
+                return new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        if (action === 'getUserData') {
+                            if ((params.email === 'tienda-digital' && params.password === 'acceso-tienda-digital') || 
+                                (params.email === 'demo@bebell.com' && params.password === 'welcome')) {
+                                resolve({
+                                    user_id: params.email === 'tienda-digital' ? "USR-DEMO" : "USR-8829",
+                                    email: params.email,
+                                    name: params.email === 'tienda-digital' ? "Demo Usuario" : "Laura Gómez",
+                                    business_name: params.email === 'tienda-digital' ? "Tienda de Pruebas" : "Lumina Cosmetics",
+                                    logo_url: "",
+                                    classification_level: params.email === 'tienda-digital' ? "Advanced" : "Intermediate",
+                                    status: "active",
+                                    progress: params.email === 'tienda-digital' ? 10 : 35,
+                                    total_sales: params.email === 'tienda-digital' ? 95400 : 1450000,
+                                    currency: params.email === 'tienda-digital' ? "USD" : "DOP",
+                                    total_orders: params.email === 'tienda-digital' ? 850 : 42,
+                                    // Datos simulados del heatmap (ejemplo histórico)
+                                    heatmap_data: {
+                                        "2026-03-22": 4, "2026-03-23": 15, "2026-03-24": 7
+                                    }
+                                });
+                            } else {
+                                reject(new Error("Credenciales inválidas en el Vault."));
+                            }
+                        } else if (action === 'logActivity') {
+                            resolve({ success: true });
+                        }
+                    }, 800); // Simulando el tiempo de espera del script de google
+                });
+            }
+        };
+
+        // ----------------------------------------------------
+        // UI & DASHBOARD LOGIC
+        // ----------------------------------------------------
+
+        let currentUser = null;
+
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+        const mainContent = document.getElementById('main-content');
+        const desktopToggleBtns = document.querySelectorAll('.desktop-toggle-btn');
+        const mobileToggleBtns = document.querySelectorAll('.mobile-toggle-btn, .mobile-close-btn');
+        const loginBtnText = document.getElementById('login-btn-text');
+        const loginSpinner = document.getElementById('login-spinner');
+        const loginBtn = document.getElementById('login-btn');
+
+        // Sidebar Toggles
+        function toggleDesktopSidebar() {
+            sidebar.classList.toggle('sidebar-collapsed');
+            const isCollapsed = sidebar.classList.contains('sidebar-collapsed');
+            const iconSvg = document.getElementById('desktop-menu-icon');
+            
+            if (isCollapsed) {
+                mainContent.classList.remove('lg:pl-72');
+                mainContent.classList.add('lg:pl-20');
+                iconSvg.setAttribute('data-lucide', 'menu');
+            } else {
+                mainContent.classList.remove('lg:pl-20');
+                mainContent.classList.add('lg:pl-72');
+                iconSvg.setAttribute('data-lucide', 'menu');
+            }
+            lucide.createIcons();
+        }
+
+        function toggleMobileSidebar(forceClose = false) {
+            const isHidden = sidebar.classList.contains('-translate-x-full');
+            if (isHidden && !forceClose) {
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.remove('hidden');
+                setTimeout(() => overlay.classList.add('opacity-100'), 10);
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.remove('opacity-100');
+                setTimeout(() => overlay.classList.add('hidden'), 300);
+            }
+        }
+
+        desktopToggleBtns.forEach(btn => btn.addEventListener('click', toggleDesktopSidebar));
+        mobileToggleBtns.forEach(btn => btn.addEventListener('click', () => toggleMobileSidebar()));
+        overlay.addEventListener('click', () => toggleMobileSidebar(true));
+
+        // Formulario de Acceso a través de Vault
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value.trim();
+            const pass = document.getElementById('login-password').value.trim();
+            const err = document.getElementById('login-error');
+            
+            err.classList.add('hidden');
+            loginBtnText.classList.add('hidden');
+            loginSpinner.classList.remove('hidden');
+            loginBtn.classList.add('opacity-80', 'cursor-not-allowed');
+            loginBtn.disabled = true;
+
+            try {
+                // Comunicación exclusiva mediante The Vault
+                const userData = await VaultAPI.call('getUserData', { email: email, password: pass });
+                
+                if (userData.status !== 'active') {
+                    throw new Error("Cuenta inactiva. Esperando autorización del admin.");
+                }
+
+                currentUser = userData;
+                document.getElementById('login-view').classList.add('hidden');
+                document.getElementById('app-shell').classList.remove('hidden');
+                
+                SessionTracker.init(); // Iniciar tracking
+                initDashboard();
+                initHeatmap();
+
+            } catch (error) {
+                err.textContent = error.message || "Error al conectar con la base de datos.";
+                err.classList.remove('hidden');
+            } finally {
+                loginBtnText.classList.remove('hidden');
+                loginSpinner.classList.add('hidden');
+                loginBtn.classList.remove('opacity-80', 'cursor-not-allowed');
+                loginBtn.disabled = false;
+            }
+        });
+
+        function logout() { location.reload(); }
+
+        function initDashboard() {
+            // Mapeo dinámico de datos del usuario provenientes de The Vault
+            document.getElementById('user-first-name').textContent = currentUser.name ? currentUser.name.split(' ')[0] : 'Emprendedor';
+            document.getElementById('user-business-name').textContent = currentUser.business_name || 'Negocio';
+            document.getElementById('modal-store-id').textContent = currentUser.user_id;
+            document.getElementById('user-level-badge').textContent = currentUser.classification_level || "NIVEL";
+            
+            // Configurar símbolo de moneda
+            const currencySymbol = currentUser.currency === 'DOP' ? 'RD$' : '$';
+            document.getElementById('currency-symbol').textContent = currencySymbol;
+            
+            // Progreso y Estadísticas
+            const progressVal = parseInt(currentUser.progress) || 0;
+            animateValue("counter-sales", 0, parseFloat(currentUser.total_sales) || 0, 1500, true, true);
+            animateValue("counter-orders", 0, parseInt(currentUser.total_orders) || 0, 1500, false);
+            animateValue("counter-progress", 0, progressVal, 1500, false);
+            animateValue("sidebar-counter-progress", 0, progressVal, 1500, false);
+            
+            document.getElementById('progress-bar-fill').style.width = progressVal + '%';
+            document.getElementById('sidebar-progress-fill').style.width = progressVal + '%';
+        }
+
+        // GENERATE GITHUB-STYLE HEATMAP (Leído del Vault)
+        function initHeatmap() {
+            const heatmap = document.getElementById('activity-heatmap');
+            const monthsContainer = document.getElementById('heatmap-months');
+            if (!heatmap) return;
+
+            const colors = ['bg-gray-100', 'bg-[#dcd9fa]', 'bg-[#b1abf5]', 'bg-[#8b84f5]', 'bg-[#4b4998]'];
+            let html = '';
+            
+            const today = new Date();
+            // Leemos del historial que nos entrega The Vault
+            const heatmapHistory = currentUser.heatmap_data || {}; 
+
+            for (let i = 364; i >= 0; i--) {
+                const date = new Date(today);
+                date.setDate(date.getDate() - i);
+                
+                // Formateamos para buscar en el JSON del usuario
+                const lookupDate = date.toISOString().split('T')[0]; 
+                const dateStr = date.toLocaleDateString('es-ES', { month: 'short', day: 'numeric', year: 'numeric' });
+                
+                // Buscar cantidad de contribuciones en esa fecha específica
+                let actionCount = heatmapHistory[lookupDate] || 0;
+                
+                // Simulación para rellenar visualmente el demo si no hay suficientes datos
+                if (!heatmapHistory[lookupDate] && Math.random() > 0.85) {
+                    actionCount = Math.floor(Math.random() * 8) + 1;
+                }
+                
+                let level = 0;
+                if (actionCount > 0) level = 1;
+                if (actionCount >= 4) level = 2;
+                if (actionCount >= 8) level = 3;
+                if (actionCount >= 12) level = 4;
+                
+                const tooltipText = level === 0 ? `Sin actividad el ${dateStr}` : `${actionCount} acciones el ${dateStr}`;
+                
+                html += `<div class="w-[11px] h-[11px] rounded-[2px] ${colors[level]} hover:ring-2 hover:ring-sys-title hover:scale-110 transition-all cursor-pointer" title="${tooltipText}"></div>`;
+            }
+            heatmap.innerHTML = html;
+
+            const monthNames = ['Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic', 'Ene', 'Feb', 'Mar'];
+            let monthsHtml = '';
+            monthNames.forEach(m => {
+                monthsHtml += `<span>${m}</span>`;
+            });
+            if (monthsContainer) monthsContainer.innerHTML = monthsHtml;
+        }
+
+        // Navegación
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            if(btn.classList.contains('mobile-close-btn') || btn.classList.contains('desktop-toggle-btn') || btn.classList.contains('mobile-toggle-btn') || btn.querySelector('.logout-text')) return;
+
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.nav-btn').forEach(b => {
+                     if(!b.querySelector('.logout-text')) {
+                         b.classList.remove('active', 'bg-sys-bg', 'text-sys-title');
+                     }
+                });
+                btn.classList.add('active', 'bg-sys-bg', 'text-sys-title');
+                
+                const textSpan = btn.querySelector('.nav-text');
+                const targetTitle = textSpan ? textSpan.textContent.trim() : 'Dashboard';
+                if(textSpan) document.getElementById('page-title').textContent = targetTitle;
+                
+                const url = btn.getAttribute('data-url');
+                const target = btn.getAttribute('data-target');
+                document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+                
+                if (url) {
+                    document.getElementById('content-iframe').classList.remove('hidden');
+                    document.getElementById('content-iframe').src = url;
+                } else {
+                    document.getElementById('content-iframe').classList.add('hidden');
+                    document.getElementById(target).classList.add('active');
+                }
+                
+                // Registramos esta navegación en el Vault de Google Sheets
+                SessionTracker.logNavigation(targetTitle);
+
+                if (window.innerWidth < 1024) toggleMobileSidebar(true);
+            });
+        });
+
+        function animateValue(id, start, end, duration, isCurrency, isCompact = false) {
+            const obj = document.getElementById(id);
+            if(!obj) return;
+            let startTimestamp = null;
+            
+            const options = {};
+            if (isCompact) {
+                options.notation = "compact";
+                options.compactDisplay = "short";
+                options.maximumFractionDigits = 1;
+            } else if (isCurrency) {
+                options.minimumFractionDigits = 2;
+                options.maximumFractionDigits = 2;
+            }
+            const formatter = new Intl.NumberFormat('en-US', options);
+
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                const currentVal = (progress * (end - start)) + start;
+                
+                obj.innerHTML = isCompact || isCurrency ? formatter.format(currentVal) : Math.floor(currentVal);
+                
+                if (progress < 1) window.requestAnimationFrame(step);
+                else obj.innerHTML = isCompact || isCurrency ? formatter.format(end) : Math.floor(end);
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        function openAchievementModal() { document.getElementById('achievement-modal').classList.remove('hidden'); setTimeout(() => document.getElementById('achievement-modal').classList.remove('opacity-0', 'pointer-events-none'), 10); }
+        function closeAchievementModal() { document.getElementById('achievement-modal').classList.add('opacity-0', 'pointer-events-none'); setTimeout(() => document.getElementById('achievement-modal').classList.add('hidden'), 300); }
+        function copyScript() { alert("Copiado"); }
+
+        // --- NOTIFICATION BELL LOGIC ---
+        const notificationBtn = document.getElementById('notification-btn');
+        const notificationDropdown = document.getElementById('notification-dropdown');
+
+        if (notificationBtn && notificationDropdown) {
+            notificationBtn.addEventListener('click', (e) => {
+                e.stopPropagation(); 
+                const isHidden = notificationDropdown.classList.contains('opacity-0');
+                if (isHidden) {
+                    notificationDropdown.classList.remove('opacity-0', 'pointer-events-none', 'scale-95');
+                    notificationDropdown.classList.add('opacity-100', 'scale-100');
+                } else {
+                    notificationDropdown.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
+                    notificationDropdown.classList.remove('opacity-100', 'scale-100');
+                }
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!notificationDropdown.contains(e.target) && !notificationBtn.contains(e.target)) {
+                    notificationDropdown.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
+                    notificationDropdown.classList.remove('opacity-100', 'scale-100');
+                }
+            });
+        }
+
+    </script>
+
+    <!-- Helpdesk Widget -->
+    <script>(function(d, s, id){
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = 'https://api.helpdesk.icu/widget2/load?id=ec476ec3-569d-3340-92ae-0ec1ba0aa489&r=' + encodeURIComponent(window.location);
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'anw2-sdk-w25H7J1WQDOSrg7BugqkiQ'));</script>
+</body>
+</html>
