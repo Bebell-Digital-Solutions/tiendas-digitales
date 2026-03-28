@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Paso 1: Estructura del Producto</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: { sans: ['Poppins', 'sans-serif'] },
+      colors: {
+        sys: {
+          bg: '#f2f1fb',
+          primary: '#8b84f5',
+          secondary: '#e07dd1',
+          title: '#4b4998',
+          text: '#707070',
+          card: '#ffffff',
+          success: '#10b981', 
+          pending: '#9ca3af'  
+        }
+      },
+      boxShadow: {
+        'soft': '0 10px 40px -10px rgba(139, 132, 245, 0.1)',
+        'glow': '0 0 15px rgba(139, 132, 245, 0.4)'
+      }
+    }
+  }
+}
+</script>
+
+<style>
+body { background:#f2f1fb; font-family:Poppins; }
+
+.gradient-bg {
+  background: linear-gradient(135deg, #8b84f5, #e07dd1);
+}
+
+
+/* Flip Card Styles */
+.flip-card {
+  perspective: 1000px;
+  aspect-ratio: 1180 / 1080;
+}
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: left;
+  transition: transform 0.8s cubic-bezier(0.4, 0.2, 0.2, 1);
+  transform-style: preserve-3d;
+}
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+.flip-card-front, .flip-card-back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 1.5rem; 
+}
+.flip-card-back {
+  transform: rotateY(180deg);
+}
+
+
+</style>
+</head>
+
+<body>
+
+<main id="main-content" class="max-w-7xl mx-auto px-6 md:px-10 py-10">
+
+  
+  
+  
+  
+  
+
+  <!-- ALTERNATIVAS DE NEGOCIO / NIVELES -->
+  <section>
+    <div class="flex items-center justify-between mb-6">
+      <h3 class="text-xl font-bold text-sys-title flex items-center gap-2">
+        <svg class="w-6 h-6 text-sys-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+        Niveles de Implementación
+      </h3>
+    </div>
+    
+    <div class="grid md:grid-cols-3 gap-6">
+      
+      <!-- Beginner -->
+      <div class="flip-card">
+        <div class="flip-card-inner">
+          <!-- Front -->
+          <div class="flip-card-front shadow-soft border border-sys-primary/10 overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1586281380349-632531db7ed4?q=80&w=1000&auto=format&fit=crop" alt="Beginner" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-t from-sys-primary/95 via-sys-secondary/60 to-transparent flex items-end p-6 md:p-8">
+              <h4 class="text-white font-bold text-2xl drop-shadow-md">Beginner</h4>
+            </div>
+          </div>
+          <!-- Back -->
+          <div class="flip-card-back bg-white p-6 md:p-8 shadow-soft border border-sys-primary/10 flex flex-col justify-center">
+            <div class="w-8 h-8 rounded-full bg-green-100 text-green-500 flex items-center justify-center mb-2 shrink-0">
+              <span class="font-bold text-xl">1</span>
+            </div>
+            <h4 class="font-bold text-sys-title text-lg mb-2">Comienza Simple</h4>
+            <p class="text-sm text-sys-text leading-relaxed">Trabaja con 1 a 3 productos inicialmente.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Intermediate -->
+      <div class="flip-card">
+        <div class="flip-card-inner">
+          <!-- Front -->
+          <div class="flip-card-front shadow-soft border border-sys-primary/10 overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000&auto=format&fit=crop" alt="Intermediate" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-t from-sys-primary/95 via-sys-secondary/60 to-transparent flex items-end p-6 md:p-8">
+              <h4 class="text-white font-bold text-2xl drop-shadow-md">Intermediate</h4>
+            </div>
+          </div>
+          <!-- Back -->
+          <div class="flip-card-back bg-white p-6 md:p-8 shadow-soft border border-sys-primary/10 flex flex-col justify-center">
+            <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-500 flex items-center justify-center mb-2 shrink-0">
+              <span class="font-bold text-xl">2</span>
+            </div>
+            <h4 class="font-bold text-sys-title text-lg mb-2">Busca Consistencia</h4>
+            <p class="text-sm text-sys-text leading-relaxed">Trabaja con 5 a 10 productos. </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Advanced -->
+      <div class="flip-card">
+        <div class="flip-card-inner">
+          <!-- Front -->
+          <div class="flip-card-front shadow-soft border border-sys-primary/10 overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1000&auto=format&fit=crop" alt="Advanced" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-t from-sys-primary/95 via-sys-secondary/60 to-transparent flex items-end p-6 md:p-8">
+              <h4 class="text-white font-bold text-2xl drop-shadow-md">Advanced</h4>
+            </div>
+          </div>
+          <!-- Back -->
+          <div class="flip-card-back bg-white p-6 md:p-8 shadow-soft border border-sys-primary/10 flex flex-col justify-center">
+            <div class="w-8 h-8 rounded-full bg-purple-100 text-purple-500 flex items-center justify-center mb-2 shrink-0">
+              <span class="font-bold text-xl">3</span>
+            </div>
+            <h4 class="font-bold text-sys-title text-lg mb-2">Escala tu Catálogo</h4>
+            <p class="text-sm text-sys-text leading-relaxed">Define la estructura completa de tu catálogo.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+</main>
+
+</body>
+</html>
