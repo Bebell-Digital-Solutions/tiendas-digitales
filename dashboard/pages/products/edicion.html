@@ -1,1 +1,408 @@
 
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Paso 3: Edición y Optimización</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: { sans: ['Poppins', 'sans-serif'] },
+      colors: {
+        sys: {
+          bg: '#f2f1fb',
+          primary: '#8b84f5',
+          secondary: '#e07dd1',
+          title: '#4b4998',
+          text: '#707070',
+          card: '#ffffff',
+          success: '#10b981', 
+          pending: '#9ca3af'  
+        }
+      },
+      boxShadow: {
+        'soft': '0 10px 40px -10px rgba(139, 132, 245, 0.1)',
+        'glow': '0 0 15px rgba(139, 132, 245, 0.4)'
+      }
+    }
+  }
+}
+</script>
+
+<style>
+body { background:#f2f1fb; font-family:Poppins; }
+
+.gradient-bg {
+  background: linear-gradient(135deg, #8b84f5, #e07dd1);
+}
+
+.custom-list li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+.custom-list li::before {
+  content: '•';
+  color: #e07dd1;
+  font-weight: bold;
+  font-size: 1.2rem;
+  position: absolute;
+  left: 0;
+  top: -2px;
+}
+
+/* Ocultar barra de scroll para un diseño más limpio */
+.hide-scroll::-webkit-scrollbar {
+  display: none;
+}
+.hide-scroll {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Flip Card Styles */
+.flip-card {
+  perspective: 1000px;
+  aspect-ratio: 1180 / 1080;
+}
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: left;
+  transition: transform 0.8s cubic-bezier(0.4, 0.2, 0.2, 1);
+  transform-style: preserve-3d;
+}
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+.flip-card-front, .flip-card-back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 1.5rem; 
+}
+.flip-card-back {
+  transform: rotateY(180deg);
+}
+</style>
+</head>
+
+<body>
+
+<main id="main-content" class="max-w-7xl mx-auto px-6 md:px-10 py-10">
+
+  <!-- HERO SECTION -->
+  <section class="mb-10">
+    <div class="grid md:grid-cols-2 gap-8 items-center">
+      <!-- LEFT -->
+      <div>
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sys-secondary/10 text-sys-secondary font-bold text-sm mb-4">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
+          PASO 3
+        </div>
+        <h1 class="text-4xl md:text-5xl font-bold text-sys-title mb-4 leading-tight">
+          Edición y Optimización
+        </h1>
+
+        <p class="text-xl text-sys-primary font-medium mb-4">
+          Mejorar la calidad visual de tus imágenes.
+        </p>
+
+        <p class="text-base text-sys-text leading-relaxed max-w-lg mb-8">
+          Aquí tomas tus imágenes y las haces ver profesionales. Un producto con una presentación visual impecable genera mucha más confianza y atrae a los clientes de forma natural.
+        </p>
+
+        <!-- STATS DE DURACIÓN Y DIFICULTAD -->
+        <div class="flex flex-wrap items-center gap-6 pt-6 border-t border-sys-primary/20">
+          <!-- Tiempo -->
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm text-lg">
+              ⏱
+            </div>
+            <div>
+              <p class="text-[10px] font-bold text-sys-text uppercase tracking-wider">Tiempo Estimado</p>
+              <p class="text-sm font-bold text-sys-title">1 a 3 horas</p>
+            </div>
+          </div>
+          
+          <!-- Separador (visible en desktop) -->
+          <div class="hidden sm:block w-px h-8 bg-sys-primary/20"></div>
+
+          <!-- Dificultad -->
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm text-lg">
+              📊
+            </div>
+            <div>
+              <p class="text-[10px] font-bold text-sys-text uppercase tracking-wider">Dificultad</p>
+              <div class="flex items-center gap-1.5 mt-0.5">
+                <p class="text-sm font-bold text-sys-title leading-none">Media</p>
+                <div class="flex gap-0.5">
+                  <span class="w-1.5 h-3 rounded-sm bg-yellow-400"></span>
+                  <span class="w-1.5 h-3 rounded-sm bg-yellow-400"></span>
+                  <span class="w-1.5 h-3 rounded-sm bg-gray-300"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT (YOUTUBE VIDEO) -->
+      <div class="bg-sys-card rounded-3xl shadow-soft border border-white overflow-hidden p-2">
+        <div class="aspect-video w-full bg-gray-100 rounded-2xl overflow-hidden shadow-inner flex items-center justify-center relative">
+          <!-- Reemplaza el src con tu propio video si tienes uno -->
+          <iframe 
+            class="w-full h-full" 
+            src="https://www.youtube.com/embed/jfKfPfyJRdk" 
+            title="Video de Introducción" 
+            frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowfullscreen>
+          </iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INSTRUCCIONES & CHECKLIST -->
+  <section class="mb-14">
+    <div class="bg-sys-card p-8 md:p-10 rounded-3xl shadow-soft border border-white">
+      <div class="grid md:grid-cols-2 gap-10 items-stretch">
+        
+        <!-- Columna Izquierda: Instrucciones -->
+        <div class="space-y-8 flex flex-col justify-center">
+          
+          <div>
+            <h3 class="text-xl font-bold text-sys-title mb-3 flex items-center gap-2">
+              <svg class="w-5 h-5 text-sys-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+              Qué puedes mejorar y adaptar
+            </h3>
+            <ul class="custom-list text-sm text-sys-text mb-4">
+              <li>Mejorar <strong>fondo, iluminación, contraste y nitidez</strong></li>
+              <li><strong>Cambiar fondos</strong> para destacar el producto</li>
+              <li>Crear <strong>versiones para redes sociales</strong> (Post, Reels, Stories)</li>
+              <li>Adaptar <strong>formato para anuncios</strong> publicitarios</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="text-xl font-bold text-sys-title mb-3 flex items-center gap-2">
+              <svg class="w-5 h-5 text-sys-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+              Instrucción General
+            </h3>
+            <p class="text-sm text-sys-text leading-relaxed">
+              Optimiza todas tus imágenes antes de usarlas en el catálogo. Un lote de imágenes bien trabajado garantizará que toda tu tienda tenga coherencia y un aspecto altamente profesional.
+            </p>
+          </div>
+          
+          <div class="bg-sys-bg/80 p-5 rounded-xl border border-sys-primary/10 mt-2">
+            <h3 class="font-bold text-sys-title mb-1 text-sm uppercase tracking-wide">Tip Clave</h3>
+            <p class="text-sm text-sys-text font-medium">Una buena imagen aumenta dramáticamente la probabilidad de compra.</p>
+          </div>
+
+        </div>
+
+        <!-- Columna Derecha: Checklist -->
+        <div class="h-full">
+          <div class="bg-sys-bg p-6 md:p-8 rounded-2xl border border-sys-primary/10 h-full flex flex-col justify-center">
+            <h3 class="font-bold text-sys-title mb-6 text-sm uppercase tracking-wide flex items-center gap-2">
+              <svg class="w-5 h-5 text-sys-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
+              Tu Checklist de Acción
+            </h3>
+            
+            <ul class="space-y-4 mb-8">
+              <!-- Item 1 -->
+              <li class="checklist-item flex items-center gap-4 bg-white p-4 rounded-xl shadow-sm border border-gray-100 group cursor-pointer hover:border-sys-primary/30 transition" onclick="toggleCheck(this)">
+                <div class="check-circle w-8 h-8 rounded-full bg-sys-bg border-2 border-sys-primary/30 text-transparent flex items-center justify-center font-bold text-sm shrink-0 group-hover:bg-sys-primary group-hover:text-white transition-colors">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <span class="check-text text-sm font-semibold text-sys-title transition-all">Mejorar fondo e iluminación de las fotos</span>
+              </li>
+              <!-- Item 2 -->
+              <li class="checklist-item flex items-center gap-4 bg-white p-4 rounded-xl shadow-sm border border-gray-100 group cursor-pointer hover:border-sys-primary/30 transition" onclick="toggleCheck(this)">
+                <div class="check-circle w-8 h-8 rounded-full bg-sys-bg border-2 border-sys-primary/30 text-transparent flex items-center justify-center font-bold text-sm shrink-0 group-hover:bg-sys-primary group-hover:text-white transition-colors">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <span class="check-text text-sm font-semibold text-sys-title transition-all">Ajustar contraste y verificar nitidez</span>
+              </li>
+              <!-- Item 3 -->
+              <li class="checklist-item flex items-center gap-4 bg-white p-4 rounded-xl shadow-sm border border-gray-100 group cursor-pointer hover:border-sys-primary/30 transition" onclick="toggleCheck(this)">
+                <div class="check-circle w-8 h-8 rounded-full bg-sys-bg border-2 border-sys-primary/30 text-transparent flex items-center justify-center font-bold text-sm shrink-0 group-hover:bg-sys-primary group-hover:text-white transition-colors">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <span class="check-text text-sm font-semibold text-sys-title transition-all">Crear versiones en formato para redes sociales</span>
+              </li>
+              <!-- Item 4 -->
+              <li class="checklist-item flex items-center gap-4 bg-white p-4 rounded-xl shadow-sm border border-gray-100 group cursor-pointer hover:border-sys-primary/30 transition" onclick="toggleCheck(this)">
+                <div class="check-circle w-8 h-8 rounded-full bg-sys-bg border-2 border-sys-primary/30 text-transparent flex items-center justify-center font-bold text-sm shrink-0 group-hover:bg-sys-primary group-hover:text-white transition-colors">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <span class="check-text text-sm font-semibold text-sys-title transition-all">Adaptar formatos visuales para anuncios</span>
+              </li>
+            </ul>
+
+            <!-- BOTÓN DE SALTAR PASO -->
+            <div class="mt-auto pt-4 border-t border-sys-primary/10 flex flex-col items-center gap-3">
+              <span class="text-sys-text text-sm font-medium">¿Ya tienes tus imágenes editadas y optimizadas?</span>
+              <button onclick="checkAll()" class="w-full inline-flex items-center justify-center gap-2 bg-white border border-gray-200 px-5 py-3 rounded-xl shadow-sm hover:shadow-md hover:border-sys-primary/30 transition-all group">
+                <span class="text-sys-primary font-bold text-sm underline decoration-sys-secondary underline-offset-2">Saltar este paso</span>
+                <svg class="w-4 h-4 text-sys-primary group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HERRAMIENTAS RECOMENDADAS -->
+  <section class="mb-14">
+    <div class="flex items-center justify-between mb-6">
+      <h3 class="text-xl font-bold text-sys-title flex items-center gap-2">
+        <svg class="w-6 h-6 text-sys-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z"></path></svg>
+        Herramientas Recomendadas para Edición
+      </h3>
+    </div>
+
+    <!-- Grid de Herramientas -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      
+      <!-- Tool 1: Canva -->
+      <a href="https://www.canva.com/" target="_blank" class="flex items-center gap-4 bg-white p-4 rounded-2xl shadow-sm border border-sys-primary/10 hover:shadow-md hover:border-sys-primary/30 transition duration-300 hover:-translate-y-1 group">
+        <div class="w-14 h-14 rounded-xl bg-sys-bg border border-sys-primary/10 flex items-center justify-center shrink-0 overflow-hidden group-hover:scale-105 transition-transform duration-300 p-2">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Canva_icon_2021.svg/512px-Canva_icon_2021.svg.png" alt="Canva Logo" class="w-full h-full object-contain">
+        </div>
+        <div>
+          <h4 class="font-bold text-sys-title text-base leading-tight">Canva</h4>
+          <div class="flex items-center gap-2 mt-1">
+            <span class="text-[10px] font-bold uppercase tracking-wide bg-green-100 text-green-600 px-2 py-0.5 rounded-md">Gratis / Pago</span>
+          </div>
+          <p class="text-xs text-sys-text mt-1 line-clamp-2">Ideal para cambiar fondos con IA y adaptar el tamaño para redes y anuncios.</p>
+        </div>
+      </a>
+
+      <!-- Tool 2: Adobe Photoshop -->
+      <a href="https://www.adobe.com/products/photoshop.html" target="_blank" class="flex items-center gap-4 bg-white p-4 rounded-2xl shadow-sm border border-sys-secondary/10 hover:shadow-md hover:border-sys-secondary/30 transition duration-300 hover:-translate-y-1 group">
+        <div class="w-14 h-14 rounded-xl bg-sys-bg border border-sys-secondary/10 flex items-center justify-center shrink-0 overflow-hidden group-hover:scale-105 transition-transform duration-300 p-2">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Adobe_Photoshop_CC_icon.svg/512px-Adobe_Photoshop_CC_icon.svg.png" alt="Photoshop Logo" class="w-full h-full object-contain">
+        </div>
+        <div>
+          <h4 class="font-bold text-sys-title text-base leading-tight">Adobe Photoshop</h4>
+          <div class="flex items-center gap-2 mt-1">
+            <span class="text-[10px] font-bold uppercase tracking-wide bg-orange-100 text-orange-600 px-2 py-0.5 rounded-md">Pago</span>
+          </div>
+          <p class="text-xs text-sys-text mt-1 line-clamp-2">La herramienta más potente para ajustar iluminación, contraste y nitidez al detalle.</p>
+        </div>
+      </a>
+
+      <!-- Tool 3: Photoroom -->
+      <a href="https://www.photoroom.com/" target="_blank" class="flex items-center gap-4 bg-white p-4 rounded-2xl shadow-sm border border-sys-primary/10 hover:shadow-md hover:border-sys-primary/30 transition duration-300 hover:-translate-y-1 group">
+        <div class="w-14 h-14 rounded-xl bg-sys-bg border border-sys-primary/10 flex items-center justify-center shrink-0 overflow-hidden group-hover:scale-105 transition-transform duration-300 p-2 text-sys-title font-bold text-xs text-center">
+          <!-- Photoroom no tiene un logo en wikimedia común, usamos texto estilizado -->
+          <div class="bg-gradient-to-tr from-purple-500 to-pink-500 text-white w-full h-full rounded-lg flex items-center justify-center text-2xl">
+            PR
+          </div>
+        </div>
+        <div>
+          <h4 class="font-bold text-sys-title text-base leading-tight">Photoroom</h4>
+          <div class="flex items-center gap-2 mt-1">
+            <span class="text-[10px] font-bold uppercase tracking-wide bg-green-100 text-green-600 px-2 py-0.5 rounded-md">Gratis / Pago</span>
+          </div>
+          <p class="text-xs text-sys-text mt-1 line-clamp-2">Excelente aplicación web y móvil para eliminar fondos de productos en segundos.</p>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- UPSELL / DELEGATION BANNER -->
+  <section class="mb-16">
+    <div class="bg-white p-8 md:p-12 rounded-3xl shadow-soft border border-sys-primary/20 relative overflow-hidden min-h-[300px] flex items-center">
+      
+      <!-- Background Image & Gradient Overlay -->
+      <div class="absolute inset-0 z-0">
+        <img src="https://bucket.mlcdn.com/a/3336/3336910/images/7844605ad7ba48c07937592cc48bbff416477b5d.png" alt="Experto de tecnología trabajando en computadora" class="absolute bottom-0 right-0 w-full md:w-3/4 h-full object-cover object-right">
+        <!-- Fade gradient: solid white on the left fading to transparent on the right -->
+        <div class="absolute inset-0 bg-gradient-to-r from-white via-white/95 to-white/20 md:via-white/80 md:to-transparent"></div>
+        <!-- Extra fade for mobile readability -->
+        <div class="absolute inset-0 bg-gradient-to-t from-white via-white/50 to-transparent sm:hidden"></div>
+      </div>
+      
+      <div class="relative z-10 flex flex-col items-start gap-6 w-full md:w-2/3 lg:w-3/5">
+        
+        <!-- Texto Promocional -->
+        <div class="text-left">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sys-primary/10 text-sys-primary font-bold text-xs mb-4 uppercase tracking-wider backdrop-blur-sm bg-white/60">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            Ahorra Tiempo
+          </div>
+          <h2 class="text-2xl md:text-3xl font-bold text-sys-title mb-3">¿No tienes tiempo o prefieres delegarlo?</h2>
+          <p class="text-sys-text text-sm md:text-base leading-relaxed font-medium drop-shadow-sm">
+            Sabemos que tu tiempo vale oro y editar fotos toma horas. Si prefieres que expertos se encarguen de darles un acabado profesional a todas tus imágenes, nuestro equipo puede hacerlo por ti.
+          </p>
+        </div>
+        
+        <!-- Botón de Acción -->
+        <a href="URL_DEL_SERVICIO_AQUI" class="w-full sm:w-auto gradient-bg text-white font-semibold text-center text-lg py-3.5 px-8 rounded-xl hover:shadow-lg hover:-translate-y-1 transition duration-300 flex items-center justify-center gap-2 shadow-md">
+          Contratar Equipo
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  function toggleCheck(element) {
+    const circle = element.querySelector('.check-circle');
+    const text = element.querySelector('.check-text');
+    
+    if(circle.classList.contains('text-transparent')) {
+      // Marcar
+      circle.classList.remove('bg-sys-bg', 'text-transparent', 'border-sys-primary/30', 'group-hover:bg-sys-primary', 'group-hover:text-white');
+      circle.classList.add('bg-sys-primary', 'text-white', 'border-sys-primary');
+      text.classList.add('text-sys-text', 'line-through');
+      text.classList.remove('text-sys-title');
+      element.classList.add('border-sys-primary/30', 'bg-sys-primary/5');
+      element.classList.remove('border-gray-100');
+    } else {
+      // Desmarcar
+      circle.classList.add('bg-sys-bg', 'text-transparent', 'border-sys-primary/30', 'group-hover:bg-sys-primary', 'group-hover:text-white');
+      circle.classList.remove('bg-sys-primary', 'text-white', 'border-sys-primary');
+      text.classList.remove('text-sys-text', 'line-through');
+      text.classList.add('text-sys-title');
+      element.classList.remove('border-sys-primary/30', 'bg-sys-primary/5');
+      element.classList.add('border-gray-100');
+    }
+  }
+
+  function checkAll() {
+    const items = document.querySelectorAll('.checklist-item');
+    items.forEach(item => {
+      const circle = item.querySelector('.check-circle');
+      if(circle.classList.contains('text-transparent')) {
+        toggleCheck(item);
+      }
+    });
+  }
+</script>
+
+</body>
+</html>
