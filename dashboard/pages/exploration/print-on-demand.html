@@ -1,1 +1,376 @@
 
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Print on Demand</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: { sans: ['Poppins', 'sans-serif'] },
+      colors: {
+        sys: {
+          bg: '#f2f1fb',
+          primary: '#8b84f5',
+          secondary: '#e07dd1',
+          title: '#4b4998',
+          text: '#707070',
+          card: '#ffffff',
+          success: '#10b981', 
+          pending: '#9ca3af'  
+        }
+      },
+      boxShadow: {
+        'soft': '0 10px 40px -10px rgba(139, 132, 245, 0.1)',
+        'glow': '0 0 15px rgba(139, 132, 245, 0.4)'
+      }
+    }
+  }
+}
+</script>
+
+<style>
+body { background:#f2f1fb; font-family:Poppins; }
+
+.gradient-bg {
+  background: linear-gradient(135deg, #8b84f5, #e07dd1);
+}
+
+.custom-list li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+.custom-list li::before {
+  content: '•';
+  color: #e07dd1;
+  font-weight: bold;
+  font-size: 1.2rem;
+  position: absolute;
+  left: 0;
+  top: -2px;
+}
+
+/* Ocultar barra de scroll para un diseño más limpio */
+.hide-scroll::-webkit-scrollbar {
+  display: none;
+}
+.hide-scroll {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+</style>
+</head>
+
+<body>
+
+<main id="main-content" class="max-w-7xl mx-auto px-6 md:px-10 py-10">
+
+  <!-- HERO SECTION -->
+  <section class="mb-10">
+    <div class="grid md:grid-cols-2 gap-8 items-center">
+      <!-- LEFT -->
+      <div>
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sys-secondary/10 text-sys-secondary font-bold text-sm mb-4">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+          OPCIÓN 1
+        </div>
+        <h1 class="text-4xl md:text-5xl font-bold text-sys-title mb-4 leading-tight">
+          Print on Demand
+        </h1>
+
+        <p class="text-xl text-sys-primary font-medium mb-4">
+          Es un modelo donde vendes productos personalizados como ropa, tazas o accesorios sin tener inventario.
+        </p>
+
+        <p class="text-base text-sys-text leading-relaxed max-w-lg mb-8">
+          El producto se crea y se envía solo cuando recibes una orden. Una forma inteligente de optimizar recursos y enfocarte únicamente en el diseño y las ventas.
+        </p>
+
+        <!-- STATS DE DURACIÓN Y DIFICULTAD (ADAPTADOS) -->
+        <div class="flex flex-wrap items-center gap-6 pt-6 border-t border-sys-primary/20">
+          <!-- Tiempo / Inversión -->
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm text-lg">
+              💰
+            </div>
+            <div>
+              <p class="text-[10px] font-bold text-sys-text uppercase tracking-wider">Costo Inicial</p>
+              <p class="text-sm font-bold text-sys-title">Muy Bajo</p>
+            </div>
+          </div>
+          
+          <!-- Separador (visible en desktop) -->
+          <div class="hidden sm:block w-px h-8 bg-sys-primary/20"></div>
+
+          <!-- Dificultad / Automatización -->
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm text-lg">
+              ⚙️
+            </div>
+            <div>
+              <p class="text-[10px] font-bold text-sys-text uppercase tracking-wider">Automatización</p>
+              <div class="flex items-center gap-1.5 mt-0.5">
+                <p class="text-sm font-bold text-sys-title leading-none">Alta</p>
+                <div class="flex gap-0.5">
+                  <span class="w-1.5 h-3 rounded-sm bg-sys-success"></span>
+                  <span class="w-1.5 h-3 rounded-sm bg-sys-success"></span>
+                  <span class="w-1.5 h-3 rounded-sm bg-sys-success"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT (YOUTUBE VIDEO - MANTENIDO COMO PLACEHOLDER) -->
+      <div class="bg-sys-card rounded-3xl shadow-soft border border-white overflow-hidden p-2">
+        <div class="aspect-video w-full bg-gray-100 rounded-2xl overflow-hidden shadow-inner">
+          <iframe 
+            class="w-full h-full" 
+            src="https://www.youtube.com/embed/jfKfPfyJRdk" 
+            title="Video de Introducción" 
+            frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowfullscreen>
+          </iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INSTRUCCIONES & CHECKLIST (ADAPTADO) -->
+  <section class="mb-14">
+    <div class="bg-sys-card p-8 md:p-10 rounded-3xl shadow-soft border border-white">
+      <div class="grid md:grid-cols-2 gap-10 items-stretch">
+        
+        <!-- Columna Izquierda: Instrucciones -->
+        <div class="space-y-8 flex flex-col justify-center">
+          
+          <div>
+            <h3 class="text-xl font-bold text-sys-title mb-3 flex items-center gap-2">
+              <svg class="w-5 h-5 text-sys-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+              Cómo funciona
+            </h3>
+            <p class="text-sm text-sys-text font-medium mb-2">El proceso es sencillo y directo:</p>
+            <ul class="custom-list text-sm text-sys-text mb-4">
+              <li>Eliges productos y diseños.</li>
+              <li>Los conectas a tu tienda online.</li>
+              <li>Cuando alguien compra, el proveedor produce y envía directamente al cliente.</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="text-xl font-bold text-sys-title mb-3 flex items-center gap-2">
+              <svg class="w-5 h-5 text-sys-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+              Por qué usarlo
+            </h3>
+            <ul class="custom-list text-sm text-sys-text">
+              <li>No necesitas invertir en inventario.</li>
+              <li>Puedes lanzar productos en minutos.</li>
+              <li>Ideal para probar ideas sin riesgo.</li>
+            </ul>
+          </div>
+          
+          <div class="bg-sys-bg/80 p-5 rounded-xl border border-sys-primary/10 mt-2">
+            <h3 class="font-bold text-sys-title mb-1 text-sm uppercase tracking-wide">Limitaciones a considerar</h3>
+            <p class="text-sm text-sys-text font-medium">Ten en cuenta que tendrás márgenes de ganancia más bajos, dependencia del proveedor y menor control sobre los tiempos de envío.</p>
+          </div>
+
+        </div>
+
+        <!-- Columna Derecha: Checklist -->
+        <div class="h-full">
+          <div class="bg-sys-bg p-6 md:p-8 rounded-2xl border border-sys-primary/10 h-full flex flex-col justify-center">
+            <h3 class="font-bold text-sys-title mb-6 text-sm uppercase tracking-wide flex items-center gap-2">
+              <svg class="w-5 h-5 text-sys-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
+              Ventajas & Cuándo usarlo (Checklist)
+            </h3>
+            
+            <ul class="space-y-4 mb-8">
+              <!-- Item 1 -->
+              <li class="checklist-item flex items-center gap-4 bg-white p-4 rounded-xl shadow-sm border border-gray-100 group cursor-pointer hover:border-sys-primary/30 transition" onclick="toggleCheck(this)">
+                <div class="check-circle w-8 h-8 rounded-full bg-sys-bg border-2 border-sys-primary/30 text-transparent flex items-center justify-center font-bold text-sm shrink-0 group-hover:bg-sys-primary group-hover:text-white transition-colors">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <span class="check-text text-sm font-semibold text-sys-title transition-all">Busco bajo costo inicial y automatización del proceso.</span>
+              </li>
+              <!-- Item 2 -->
+              <li class="checklist-item flex items-center gap-4 bg-white p-4 rounded-xl shadow-sm border border-gray-100 group cursor-pointer hover:border-sys-primary/30 transition" onclick="toggleCheck(this)">
+                <div class="check-circle w-8 h-8 rounded-full bg-sys-bg border-2 border-sys-primary/30 text-transparent flex items-center justify-center font-bold text-sm shrink-0 group-hover:bg-sys-primary group-hover:text-white transition-colors">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <span class="check-text text-sm font-semibold text-sys-title transition-all">Quiero algo fácil de integrar con mi tienda actual.</span>
+              </li>
+              <!-- Item 3 -->
+              <li class="checklist-item flex items-center gap-4 bg-white p-4 rounded-xl shadow-sm border border-gray-100 group cursor-pointer hover:border-sys-primary/30 transition" onclick="toggleCheck(this)">
+                <div class="check-circle w-8 h-8 rounded-full bg-sys-bg border-2 border-sys-primary/30 text-transparent flex items-center justify-center font-bold text-sm shrink-0 group-hover:bg-sys-primary group-hover:text-white transition-colors">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <span class="check-text text-sm font-semibold text-sys-title transition-all">Estoy empezando y quiero validar productos rápido.</span>
+              </li>
+              <!-- Item 4 -->
+              <li class="checklist-item flex items-center gap-4 bg-white p-4 rounded-xl shadow-sm border border-gray-100 group cursor-pointer hover:border-sys-primary/30 transition" onclick="toggleCheck(this)">
+                <div class="check-circle w-8 h-8 rounded-full bg-sys-bg border-2 border-sys-primary/30 text-transparent flex items-center justify-center font-bold text-sm shrink-0 group-hover:bg-sys-primary group-hover:text-white transition-colors">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <span class="check-text text-sm font-semibold text-sys-title transition-all">No tengo capital ni espacio para manejar inventario.</span>
+              </li>
+            </ul>
+
+            <!-- BOTÓN DE SALTAR PASO -->
+            <div class="mt-auto pt-4 border-t border-sys-primary/10 flex flex-col items-center gap-3">
+              <span class="text-sys-text text-sm font-medium">¿Cumples con este perfil?</span>
+              <button onclick="checkAll()" class="w-full inline-flex items-center justify-center gap-2 bg-white border border-gray-200 px-5 py-3 rounded-xl shadow-sm hover:shadow-md hover:border-sys-primary/30 transition-all group">
+                <span class="text-sys-primary font-bold text-sm underline decoration-sys-secondary underline-offset-2">Validar mi perfil</span>
+                <svg class="w-4 h-4 text-sys-primary group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HERRAMIENTAS RECOMENDADAS (ADAPTADAS A PRINT ON DEMAND) -->
+  <section class="mb-14">
+    <div class="flex items-center justify-between mb-6">
+      <h3 class="text-xl font-bold text-sys-title flex items-center gap-2">
+        <svg class="w-6 h-6 text-sys-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z"></path></svg>
+        Herramientas Recomendadas
+      </h3>
+    </div>
+
+    <!-- Grid de Herramientas -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      
+      <!-- Tool 1: Printful -->
+      <a href="https://www.printful.com/" target="_blank" class="flex items-center gap-4 bg-white p-4 rounded-2xl shadow-sm border border-sys-primary/10 hover:shadow-md hover:border-sys-primary/30 transition duration-300 hover:-translate-y-1 group">
+        <div class="w-14 h-14 rounded-xl bg-white flex items-center justify-center shrink-0 overflow-hidden group-hover:scale-105 transition-transform duration-300 shadow-sm border border-gray-100">
+          <img src="https://bucket.mlcdn.com/a/3336/3336910/images/f581e8e69aac048aed7f15a6739b1b0be5abe9a8.png" alt="Printful" class="w-full h-full object-cover">
+        </div>
+        <div>
+          <h4 class="font-bold text-sys-title text-base leading-tight">Printful</h4>
+          <div class="flex items-center gap-2 mt-1">
+            <span class="text-[10px] font-bold uppercase tracking-wide bg-blue-100 text-blue-600 px-2 py-0.5 rounded-md">Freemium</span>
+          </div>
+          <p class="text-xs text-sys-text mt-1 line-clamp-2">Líder en print on demand con integración directa a múltiples plataformas.</p>
+        </div>
+      </a>
+
+      <!-- Tool 2: Printify -->
+      <a href="https://printify.com/" target="_blank" class="flex items-center gap-4 bg-white p-4 rounded-2xl shadow-sm border border-sys-primary/10 hover:shadow-md hover:border-sys-primary/30 transition duration-300 hover:-translate-y-1 group">
+        <div class="w-14 h-14 rounded-xl bg-white flex items-center justify-center shrink-0 overflow-hidden group-hover:scale-105 transition-transform duration-300 shadow-sm border border-gray-100">
+          <img src="https://bucket.mlcdn.com/a/3336/3336910/images/e8f9a6915f60d73fd7ae93592dd034ca55a15b66.png" alt="Printify" class="w-full h-full object-cover">
+        </div>
+        <div>
+          <h4 class="font-bold text-sys-title text-base leading-tight">Printify</h4>
+          <div class="flex items-center gap-2 mt-1">
+            <span class="text-[10px] font-bold uppercase tracking-wide bg-blue-100 text-blue-600 px-2 py-0.5 rounded-md">Freemium</span>
+          </div>
+          <p class="text-xs text-sys-text mt-1 line-clamp-2">Red global de proveedores para conseguir los mejores precios y márgenes.</p>
+        </div>
+      </a>
+
+      <!-- Tool 3: Gelato -->
+      <a href="https://www.gelato.com/" target="_blank" class="flex items-center gap-4 bg-white p-4 rounded-2xl shadow-sm border border-sys-primary/10 hover:shadow-md hover:border-sys-primary/30 transition duration-300 hover:-translate-y-1 group">
+        <div class="w-14 h-14 rounded-xl bg-white flex items-center justify-center shrink-0 overflow-hidden group-hover:scale-105 transition-transform duration-300 shadow-sm border border-gray-100">
+          <img src="https://bucket.mlcdn.com/a/3336/3336910/images/43b546f05dac3d598559d5a49cb2df4228845924.png" alt="Gelato" class="w-full h-full object-cover">
+        </div>
+        <div>
+          <h4 class="font-bold text-sys-title text-base leading-tight">Gelato</h4>
+          <div class="flex items-center gap-2 mt-1">
+            <span class="text-[10px] font-bold uppercase tracking-wide bg-blue-100 text-blue-600 px-2 py-0.5 rounded-md">Freemium</span>
+          </div>
+          <p class="text-xs text-sys-text mt-1 line-clamp-2">Producción local en más de 30 países para envíos más rápidos y ecológicos.</p>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- UPSELL / DELEGATION BANNER (ADAPTADO AL CTA) -->
+  <section class="mb-16">
+    <div class="bg-white p-8 md:p-12 rounded-3xl shadow-soft border border-sys-primary/20 relative overflow-hidden min-h-[300px] flex items-center">
+      
+      <!-- Background Image & Gradient Overlay -->
+      <div class="absolute inset-0 z-0">
+        <img src="https://bucket.mlcdn.com/a/3336/3336910/images/7844605ad7ba48c07937592cc48bbff416477b5d.png" alt="Experto de tecnología trabajando en computadora" class="absolute bottom-0 right-0 w-full md:w-3/4 h-full object-cover object-right">
+        <!-- Fade gradient: solid white on the left fading to transparent on the right -->
+        <div class="absolute inset-0 bg-gradient-to-r from-white via-white/95 to-white/20 md:via-white/80 md:to-transparent"></div>
+        <!-- Extra fade for mobile readability -->
+        <div class="absolute inset-0 bg-gradient-to-t from-white via-white/50 to-transparent sm:hidden"></div>
+      </div>
+      
+      <div class="relative z-10 flex flex-col items-start gap-6 w-full md:w-2/3 lg:w-3/5">
+        
+        <!-- Texto Promocional -->
+        <div class="text-left">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sys-primary/10 text-sys-primary font-bold text-xs mb-4 uppercase tracking-wider backdrop-blur-sm bg-white/60">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+            ESCALA TU NEGOCIO
+          </div>
+          <h2 class="text-2xl md:text-3xl font-bold text-sys-title mb-3">¿Quieres implementar Print on Demand en tu tienda?</h2>
+          <p class="text-sys-text text-sm md:text-base leading-relaxed font-medium drop-shadow-sm">
+            Sabemos que la integración técnica puede llevar tiempo. Si prefieres que expertos se encarguen de conectar, configurar y sincronizar a los proveedores con tu plataforma, nuestro equipo puede hacerlo.
+          </p>
+        </div>
+        
+        <!-- Botón de Acción -->
+        <a href="#solicitar" class="w-full sm:w-auto gradient-bg text-white font-semibold text-center text-lg py-3.5 px-8 rounded-xl hover:shadow-lg hover:-translate-y-1 transition duration-300 flex items-center justify-center gap-2 shadow-md">
+          Solicitar implementación
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  function toggleCheck(element) {
+    const circle = element.querySelector('.check-circle');
+    const text = element.querySelector('.check-text');
+    
+    if(circle.classList.contains('text-transparent')) {
+      // Marcar
+      circle.classList.remove('bg-sys-bg', 'text-transparent', 'border-sys-primary/30', 'group-hover:bg-sys-primary', 'group-hover:text-white');
+      circle.classList.add('bg-sys-primary', 'text-white', 'border-sys-primary');
+      text.classList.add('text-sys-text', 'line-through');
+      text.classList.remove('text-sys-title');
+      element.classList.add('border-sys-primary/30', 'bg-sys-primary/5');
+      element.classList.remove('border-gray-100');
+    } else {
+      // Desmarcar
+      circle.classList.add('bg-sys-bg', 'text-transparent', 'border-sys-primary/30', 'group-hover:bg-sys-primary', 'group-hover:text-white');
+      circle.classList.remove('bg-sys-primary', 'text-white', 'border-sys-primary');
+      text.classList.remove('text-sys-text', 'line-through');
+      text.classList.add('text-sys-title');
+      element.classList.remove('border-sys-primary/30', 'bg-sys-primary/5');
+      element.classList.add('border-gray-100');
+    }
+  }
+
+  function checkAll() {
+    const items = document.querySelectorAll('.checklist-item');
+    items.forEach(item => {
+      const circle = item.querySelector('.check-circle');
+      if(circle.classList.contains('text-transparent')) {
+        toggleCheck(item);
+      }
+    });
+  }
+</script>
+
+</body>
+</html>
