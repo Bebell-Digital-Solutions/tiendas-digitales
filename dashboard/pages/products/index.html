@@ -1,1 +1,243 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desarrollo de Producto | Tiendas Digitales</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Poppins', 'sans-serif'] },
+                    colors: {
+                        sys: {
+                            bg: '#f2f1fb',
+                            primary: '#8b84f5',
+                            secondary: '#e07dd1',
+                            title: '#4b4998',
+                            text: '#707070',
+                            card: '#ffffff'
+                        }
+                    },
+                    boxShadow: {
+                        'soft': '0 10px 40px -10px rgba(139, 132, 245, 0.3)'
+                    }
+                }
+            }
+        }
+    </script>
 
+
+
+
+
+
+    
+    <!-- Favicon -->
+    <link rel="icon" href="https://bucket.mlcdn.com/a/3336/3336910/images/4aaeac9c1efc99109149caec0ad9a42e29f886a4.png">
+
+    
+
+    <style>
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            margin: 0;
+            overflow: hidden; /* Previene scroll general, manejaremos el scroll internamente */
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #4b4998, #8b84f5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, #8b84f5, #e07dd1);
+        }
+
+        .custom-list li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .custom-list li::before {
+            content: '•';
+            color: #e07dd1;
+            font-weight: bold;
+            font-size: 1.2rem;
+            position: absolute;
+            left: 0;
+            top: -2px;
+        }
+
+        /* Flip Card Styles - Mantenidos según su solicitud */
+        .flip-card {
+            perspective: 1000px;
+            height: 420px;
+        }
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: left;
+            transition: transform 0.8s cubic-bezier(0.4, 0.2, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+        .flip-card:hover .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            border-radius: 1.5rem; /* Equivalente a rounded-3xl de Tailwind */
+        }
+        .flip-card-back {
+            transform: rotateY(180deg);
+        }
+
+        /* Utilidad para ocultar la barra de scroll pero mantener funcionalidad */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="h-screen flex flex-col text-sys-text bg-sys-bg">
+
+    <!-- Fila Superior: Carrusel de Banners -->
+    <div class="flex-none w-full bg-gradient-to-b from-sys-bg to-sys-card">
+        <!-- Contenedor scrollable horizontalmente -->
+        <div id="banner-container" class="flex gap-4 md:gap-6 overflow-x-auto hide-scrollbar snap-x snap-mandatory px-4 md:px-8 py-4 md:py-6 items-center">
+            <!-- Los banners se generarán dinámicamente aquí mediante JavaScript -->
+        </div>
+    </div>
+
+    <!-- Fila Inferior: Visor iframe ocupando el resto de la pantalla -->
+    <div class="flex-grow w-full bg-sys-card shadow-[0_-10px_40px_-10px_rgba(139,132,245,0.15)] overflow-hidden relative z-10">
+        <!-- Barra superior del iframe para estética (opcional) -->
+        <div class="absolute top-0 inset-x-8 h-2 gradient-bg rounded-full"></div>
+        
+        <iframe 
+            id="mainViewer" 
+            class="w-full h-full border-0 pt-2"
+            src="about:blank"
+            title="Visor de Contenido">
+        </iframe>
+    </div>
+
+    <script>
+        // --- CONFIGURACIÓN DE BANNERS ---
+        // Agrega, edita o elimina elementos de esta lista para actualizar los banners.
+        const banners = [
+{
+    id: 'introduccion',
+    titulo: 'Introducción',
+    subtitulo: 'Convierte tu idea en un producto listo para vender.',
+    imagen: 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+    gradienteClases: 'from-sys-title/90 via-sys-title/50',
+    url: `https://bebell-digital-solutions.github.io/tiendas-digitales/dashboard/product-dev/index`
+},
+{
+    id: 'estructura',
+    titulo: '1: Estructura del Producto',
+    subtitulo: 'Define nombre, precio, costo y base de cada producto.',
+    imagen: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+    gradienteClases: 'from-sys-primary/90 via-sys-primary/50',
+    url: `https://bebell-digital-solutions.github.io/tiendas-digitales/dashboard/product-dev/estructura`
+},
+{
+    id: 'fotografia',
+    titulo: '2: Fotografía de Producto',
+    subtitulo: 'Crea imágenes claras que generen confianza y ventas.',
+    imagen: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+    gradienteClases: 'from-sys-secondary/90 via-sys-secondary/50',
+    url: `https://bebell-digital-solutions.github.io/tiendas-digitales/dashboard/product-dev/fotografia`
+},
+{
+    id: 'edicion',
+    titulo: '3: Edición y Optimización',
+    subtitulo: 'Mejora tus imágenes para que se vean profesionales.',
+    imagen: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+    gradienteClases: 'from-sys-primary/90 via-sys-primary/50',
+    url: `https://bebell-digital-solutions.github.io/tiendas-digitales/dashboard/product-dev/edicion`
+},
+{
+    id: 'descripcion',
+    titulo: '4: Descripción de Producto',
+    subtitulo: 'Escribe textos claros que expliquen y vendan tu producto.',
+    imagen: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+    gradienteClases: 'from-sys-primary/90 via-sys-primary/50',
+    url: `https://bebell-digital-solutions.github.io/tiendas-digitales/dashboard/product-dev/descripcion`
+},
+{
+    id: 'catalogo',
+    titulo: '5: Creación del Catálogo',
+    subtitulo: 'Organiza tus productos en un catálogo claro y listo para publicar.',
+    imagen: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+    gradienteClases: 'from-sys-primary/90 via-sys-primary/50',
+    url: `https://bebell-digital-solutions.github.io/tiendas-digitales/dashboard/product-dev/catalogo`
+},
+{
+    id: 'sistema',
+    titulo: '6: Sistema de Producto',
+    subtitulo: 'Completa tus productos y mide tu progreso real.',
+    imagen: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+    gradienteClases: 'from-sys-primary/90 via-sys-primary/50',
+    url: `https://bebell-digital-solutions.github.io/tiendas-digitales/dashboard/product-dev/sistema`
+}
+
+          
+        ];
+
+        // Función para cambiar el contenido del iframe
+        function loadContent(url) {
+            const iframe = document.getElementById('mainViewer');
+            iframe.src = url;
+        }
+
+        // Función para renderizar los banners dinámicamente
+        function renderBanners() {
+            const container = document.getElementById('banner-container');
+            container.innerHTML = ''; // Limpiar contenedor
+            
+            banners.forEach(banner => {
+                // Creamos el botón
+                const button = document.createElement('button');
+                // Clases responsivas: w-[85vw] en móviles, md:w-[480px] en pantallas medianas/grandes
+                button.className = 'shrink-0 w-[85vw] md:w-[480px] aspect-[1024/575] relative rounded-3xl overflow-hidden shadow-soft group cursor-pointer snap-center focus:outline-none focus:ring-4 focus:ring-sys-primary/50 transition-all hover:-translate-y-1 text-left';
+                button.onclick = () => loadContent(banner.url);
+                
+                // Contenido interno del botón
+                button.innerHTML = `
+                    <img src="${banner.imagen}" alt="${banner.titulo}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-r ${banner.gradienteClases} to-transparent"></div>
+                    <div class="absolute inset-0 p-6 md:p-8 flex flex-col justify-end">
+                        <h2 class="text-2xl md:text-3xl font-bold text-white mb-1 md:mb-2 drop-shadow-lg">${banner.titulo}</h2>
+                        <p class="text-white/80 text-xs md:text-sm font-medium">${banner.subtitulo}</p>
+                    </div>
+                `;
+                
+                container.appendChild(button);
+            });
+        }
+
+        // Inicializar la página
+        window.onload = () => {
+            renderBanners();
+            // Cargar el primer banner por defecto si existe
+            if(banners.length > 0) {
+                loadContent(banners[0].url);
+            }
+        };
+    </script>
+</body>
+</html>
