@@ -1,1 +1,521 @@
 
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestor de Catálogo</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Poppins', sans-serif; background-color: #f2f1fb; }
+        .text-sys-title { color: #4b4998; }
+        .text-sys-text { color: #707070; }
+        .text-sys-primary { color: #8b84f5; }
+        .bg-sys-primary { background-color: #8b84f5; }
+        .bg-sys-secondary { background-color: #e07dd1; }
+        .border-sys-primary { border-color: #8b84f5; }
+        .shadow-soft { box-shadow: 0 10px 40px -10px rgba(139, 132, 245, 0.1); }
+        .gradient-bg { background: linear-gradient(135deg, #8b84f5, #e07dd1); }
+        
+        .sr-only {
+            position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+            overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0;
+        }
+
+        @keyframes slideInUp {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+        .toast-enter { animation: slideInUp 0.3s ease-out forwards; }
+        .toast-exit { animation: fadeOut 0.3s ease-out forwards; }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f2f1fb; }
+        ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #8b84f5; }
+    </style>
+</head>
+<body class="relative min-h-screen text-gray-800">
+
+    <!-- Hidden File Input for Image Uploads -->
+    <input type="file" id="fileInput" accept="image/png, image/jpeg, image/webp" class="hidden" />
+
+    <!-- TOAST NOTIFICATION CONTAINER -->
+    <div id="toast-container" class="fixed bottom-8 right-8 z-50 flex flex-col gap-2"></div>
+
+    <!-- MAIN DASHBOARD -->
+    <div id="main-dashboard" class="w-full max-w-7xl mx-auto flex flex-col gap-6 p-6 md:p-10 min-h-screen">
+        
+        <!-- TOOLBAR SUPERIOR -->
+        <div class="bg-white rounded-3xl shadow-soft border border-white p-6 md:p-8 flex flex-col lg:flex-row items-center justify-between gap-6">
+            
+            <!-- LADO IZQUIERDO: LOGO + TITULO + PLAN -->
+            <div class="flex items-center gap-5 w-full lg:w-auto">
+                <div class="w-14 h-14 rounded-2xl shadow-sm shrink-0 overflow-hidden flex items-center justify-center bg-white border border-gray-100">
+                    <img src="https://bucket.mlcdn.com/a/3336/3336910/images/c79f591531d936d4d6eaf04c948637e894564d9e.png" alt="Logo" class="w-full h-full object-cover" />
+                </div>
+                <div>
+                    <h1 class="text-2xl font-bold text-sys-title leading-tight mb-1">Gestor de Catálogo</h1>
+                    <div class="flex items-center gap-2">
+                        <span class="text-gray-400 uppercase tracking-widest text-[10px] font-bold">Plan:</span>
+                        <select id="plan-selector" onchange="handlePlanChange(this.value)" class="bg-[#8b84f5]/10 text-sys-primary px-2 py-0.5 rounded-md uppercase tracking-wider font-bold outline-none cursor-pointer hover:bg-[#8b84f5]/20 transition-colors border-none text-[11px]">
+                            <option value="10">Start-up</option>
+                            <option value="100">Básico</option>
+                            <option value="2500">Avanzado</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LADO DERECHO: FILAS + BOTONES -->
+            <div class="flex flex-wrap items-center gap-3 w-full lg:w-auto">
+                <!-- Contador de filas movido aquí -->
+                <div class="flex-1 lg:flex-none flex items-center gap-2 px-4 py-3 bg-[#f2f1fb]/50 border border-gray-100 rounded-xl">
+                    <span class="text-gray-400 uppercase tracking-widest text-[10px] font-bold">Filas:</span>
+                    <strong id="stats-count" class="text-sys-title font-bold text-sm">10</strong>
+                </div>
+
+                <button onclick="downloadCSV()" class="flex-1 lg:flex-none flex items-center justify-center gap-2 px-5 py-3 bg-white border border-[#8b84f5]/30 text-sys-title rounded-xl hover:border-sys-primary hover:text-sys-primary hover:shadow-sm font-bold transition-all text-sm" title="Descargar archivo a tu PC">
+                    <i data-lucide="download" class="w-4 h-4"></i>
+                    Descargar CSV
+                </button>
+                <button onclick="copyForSheets()" class="flex-1 lg:flex-none flex items-center justify-center gap-2 px-5 py-3 bg-white border border-[#10b981]/30 text-[#10b981] rounded-xl hover:border-[#10b981] hover:shadow-sm font-bold transition-all text-sm" title="Copiar datos para pegar en Google Sheets">
+                    <i data-lucide="copy" class="w-4 h-4"></i>
+                    Copiar para Sheets
+                </button>
+            </div>
+        </div>
+
+        <!-- TABLA PRINCIPAL -->
+        <div class="bg-white rounded-3xl shadow-soft border border-white overflow-hidden flex flex-col flex-1">
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-[#8b84f5]/10">
+                    <thead class="bg-[#f2f1fb]/50" id="table-head">
+                        <!-- Generado por JS -->
+                    </thead>
+                    <tbody class="divide-y divide-gray-50" id="table-body">
+                        <!-- Generado por JS -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- PAGINATION -->
+            <div id="pagination-container" class="bg-[#f2f1fb]/30 border-t border-gray-100 px-6 py-5 flex items-center justify-between mt-auto hidden">
+                <p class="text-sm text-sys-text font-medium" id="pagination-info">
+                    Mostrando del <span class="font-bold text-sys-title">1</span> al <span class="font-bold text-sys-title">50</span>
+                </p>
+                <div class="flex gap-2">
+                    <button id="btn-prev-page" class="p-2.5 rounded-xl bg-white border border-gray-200 text-sys-title hover:border-[#8b84f5] hover:text-[#8b84f5] transition-all shadow-sm disabled:opacity-50 disabled:shadow-none disabled:hover:border-gray-200 disabled:hover:text-sys-title">
+                        <i data-lucide="chevron-left" class="w-4 h-4"></i>
+                    </button>
+                    <button id="btn-next-page" class="p-2.5 rounded-xl bg-white border border-gray-200 text-sys-title hover:border-[#8b84f5] hover:text-[#8b84f5] transition-all shadow-sm disabled:opacity-50 disabled:shadow-none disabled:hover:border-gray-200 disabled:hover:text-sys-title">
+                        <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lógica JavaScript -->
+    <script>
+        // ==========================================
+        // STATE
+        // ==========================================
+        const state = {
+            rows: [],
+            maxRows: 10, 
+            currentPage: 1,
+            rowsPerPage: 20,
+            uploadingRowId: null
+        };
+
+        // ==========================================
+        // UTILS & TOAST
+        // ==========================================
+        function showToast(type, message, duration = 3000) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            let bgClass = 'bg-white border-gray-100 text-sys-title';
+            let iconHtml = '<i data-lucide="loader-2" class="w-4 h-4 animate-spin text-sys-primary"></i>';
+            
+            if (type === 'success') {
+                bgClass = 'bg-[#10b981] border-[#10b981] text-white shadow-[#10b981]/20';
+                iconHtml = '<i data-lucide="check-circle" class="w-4 h-4"></i>';
+            } else if (type === 'error') {
+                bgClass = 'bg-red-500 border-red-500 text-white shadow-red-500/20';
+                iconHtml = '<i data-lucide="alert-circle" class="w-4 h-4"></i>';
+            }
+
+            toast.className = `toast-enter px-5 py-3 rounded-2xl shadow-lg border text-sm font-bold flex items-center gap-2.5 ${bgClass}`;
+            toast.innerHTML = `${iconHtml} <span>${message}</span>`;
+            
+            container.appendChild(toast);
+            lucide.createIcons({ root: toast });
+
+            if (duration > 0) {
+                setTimeout(() => {
+                    toast.classList.replace('toast-enter', 'toast-exit');
+                    setTimeout(() => toast.remove(), 300);
+                }, duration);
+            }
+            return toast;
+        }
+
+        const createEmptyRow = (id) => ({
+            id: id,
+            productName: '',
+            sku: '',
+            price: '',
+            qty: '1',
+            category: '',
+            isNew: true,
+            description: '',
+            primaryPicture: ''
+        });
+
+        // ==========================================
+        // INITIALIZATION
+        // ==========================================
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            
+            // Inicializar datos iniciales (Start-up)
+            state.rows = Array.from({ length: state.maxRows }, (_, i) => createEmptyRow(i + 1));
+            
+            // Renderizar la tabla por primera vez
+            renderTableHeaders();
+            renderTable();
+
+            // Event Listeners
+            document.getElementById('table-body').addEventListener('input', handleTableInput);
+            document.getElementById('table-body').addEventListener('click', handleTableClick);
+            document.getElementById('fileInput').addEventListener('change', handleFileSelected);
+            document.getElementById('btn-prev-page').addEventListener('click', () => changePage(-1));
+            document.getElementById('btn-next-page').addEventListener('click', () => changePage(1));
+        });
+
+        function handlePlanChange(newVal) {
+            const newMax = parseInt(newVal);
+            const prevMax = state.maxRows;
+            state.maxRows = newMax;
+            
+            // Actualizar el array de filas preservando datos
+            if (newMax > prevMax) {
+                for (let i = prevMax + 1; i <= newMax; i++) {
+                    state.rows.push(createEmptyRow(i));
+                }
+            } else {
+                state.rows = state.rows.slice(0, newMax);
+            }
+
+            state.currentPage = 1;
+            document.getElementById('stats-count').innerText = newMax;
+            
+            renderTable();
+            showToast('success', `Plan actualizado: ${newMax} artículos disponibles.`);
+        }
+
+        // ==========================================
+        // RENDER LOGIC
+        // ==========================================
+        function renderTableHeaders() {
+            const head = document.getElementById('table-head');
+            const html = `
+                <tr>
+                    <th scope="col" class="px-6 py-5 text-left text-xs font-bold text-sys-title uppercase tracking-wider w-16">#</th>
+                    <th scope="col" class="px-6 py-5 text-left text-xs font-bold text-sys-title uppercase tracking-wider w-1/4">Nombre del Producto</th>
+                    <th scope="col" class="px-6 py-5 text-left text-xs font-bold text-sys-title uppercase tracking-wider w-32">SKU</th>
+                    <th scope="col" class="px-6 py-5 text-left text-xs font-bold text-sys-title uppercase tracking-wider w-32">Precio</th>
+                    <th scope="col" class="px-6 py-5 text-left text-xs font-bold text-sys-title uppercase tracking-wider w-24">Cant.</th>
+                    <th scope="col" class="px-6 py-5 text-left text-xs font-bold text-sys-title uppercase tracking-wider w-40">Categoría</th>
+                    <th scope="col" class="px-6 py-5 text-left text-xs font-bold text-sys-title uppercase tracking-wider w-24">Nuevo</th>
+                    <th scope="col" class="px-6 py-5 text-left text-xs font-bold text-sys-title uppercase tracking-wider min-w-[200px]">Descripción</th>
+                    <th scope="col" class="px-6 py-5 text-left text-xs font-bold text-sys-title uppercase tracking-wider w-64">Fotografía Principal</th>
+                </tr>
+            `;
+            head.innerHTML = html;
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('table-body');
+            const startIndex = (state.currentPage - 1) * state.rowsPerPage;
+            const endIndex = startIndex + state.rowsPerPage;
+            const currentRows = state.rows.slice(startIndex, endIndex);
+
+            let html = '';
+            currentRows.forEach(row => {
+                html += `
+                    <tr data-id="${row.id}" class="hover:bg-[#8b84f5]/5 transition-colors group">
+                        <td class="px-6 py-3 whitespace-nowrap text-sm text-[#9ca3af] font-bold">${row.id}</td>
+                        <td class="px-6 py-2">
+                            <input type="text" data-field="productName" value="${escapeHtml(row.productName)}" placeholder="Ej. Bolso de Cuero" class="w-full bg-transparent border border-transparent hover:border-gray-200 focus:border-[#8b84f5] focus:bg-white rounded-lg px-3 py-2 text-sm text-sys-title font-medium placeholder-gray-300 transition-all outline-none" />
+                        </td>
+                        <td class="px-6 py-2">
+                            <input type="text" data-field="sku" value="${escapeHtml(row.sku)}" placeholder="SKU-123" class="w-full bg-transparent border border-transparent hover:border-gray-200 focus:border-[#8b84f5] focus:bg-white rounded-lg px-3 py-2 text-sm text-sys-title font-mono placeholder-gray-300 transition-all outline-none" />
+                        </td>
+                        <td class="px-6 py-2">
+                            <div class="relative flex items-center">
+                                <span class="absolute left-3 text-gray-400 text-sm font-medium">$</span>
+                                <input type="number" data-field="price" value="${row.price}" placeholder="0.00" class="w-full bg-transparent border border-transparent hover:border-gray-200 focus:border-[#8b84f5] focus:bg-white rounded-lg pl-7 pr-3 py-2 text-sm text-sys-title font-medium placeholder-gray-300 transition-all outline-none" />
+                            </div>
+                        </td>
+                        <td class="px-6 py-2">
+                            <input type="number" data-field="qty" value="${row.qty}" placeholder="1" class="w-full bg-transparent border border-transparent hover:border-gray-200 focus:border-[#8b84f5] focus:bg-white rounded-lg px-3 py-2 text-sm text-sys-title font-medium placeholder-gray-300 transition-all outline-none" />
+                        </td>
+                        <td class="px-6 py-2">
+                            <input type="text" data-field="category" value="${escapeHtml(row.category)}" placeholder="Ej. Ropa" class="w-full bg-transparent border border-transparent hover:border-gray-200 focus:border-[#8b84f5] focus:bg-white rounded-lg px-3 py-2 text-sm text-sys-title font-medium placeholder-gray-300 transition-all outline-none" />
+                        </td>
+                        <td class="px-6 py-2">
+                            <label class="flex items-center cursor-pointer ml-2">
+                                <div class="relative">
+                                    <input type="checkbox" data-field="isNew" class="sr-only" ${row.isNew ? 'checked' : ''} />
+                                    <div class="toggle-track block w-9 h-5 rounded-full transition-colors ${row.isNew ? 'bg-[#8b84f5]' : 'bg-gray-200'}"></div>
+                                    <div class="toggle-knob absolute left-1 top-1 bg-white w-3 h-3 rounded-full transition-transform shadow-sm ${row.isNew ? 'transform translate-x-4' : ''}"></div>
+                                </div>
+                                <span class="ml-2 text-xs font-bold text-sys-title toggle-label whitespace-nowrap">${row.isNew ? 'Sí' : 'No'}</span>
+                            </label>
+                        </td>
+                        <td class="px-6 py-2">
+                            <input type="text" data-field="description" value="${escapeHtml(row.description)}" placeholder="Descripción breve..." class="w-full bg-transparent border border-transparent hover:border-gray-200 focus:border-[#8b84f5] focus:bg-white rounded-lg px-3 py-2 text-sm text-sys-title font-medium placeholder-gray-300 transition-all outline-none" />
+                        </td>
+                        <td class="px-6 py-2" id="img-cell-${row.id}">
+                            ${getImageCellHtml(row)}
+                        </td>
+                    </tr>
+                `;
+            });
+
+            tbody.innerHTML = html;
+            lucide.createIcons({ root: tbody });
+            updatePaginationUI();
+        }
+
+        function getImageCellHtml(row) {
+            const isUploading = state.uploadingRowId === row.id;
+            
+            let classes = "relative w-full h-11 border-2 border-dashed rounded-xl cursor-pointer overflow-hidden transition-all image-upload-zone px-4 ";
+            if (row.primaryPicture) classes += "border-[#10b981]/50 bg-[#10b981]/5 ";
+            else classes += "border-gray-200 hover:border-[#8b84f5]/50 bg-white hover:bg-[#f2f1fb] ";
+            if (isUploading) classes += "opacity-50 pointer-events-none";
+
+            if (isUploading) {
+                return `<div class="${classes}">
+                            <div class="w-full h-full flex justify-center items-center gap-2 text-[#8b84f5]">
+                                <i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i>
+                                <span class="text-xs font-bold whitespace-nowrap">Procesando...</span>
+                            </div>
+                        </div>`;
+            } else if (row.primaryPicture) {
+                return `<div class="${classes}">
+                            <div class="flex w-full h-full items-center gap-2 group/img">
+                                <div class="w-8 h-8 rounded-lg bg-white shadow-sm overflow-hidden shrink-0 flex items-center justify-center border border-gray-100">
+                                    <img src="${row.primaryPicture}" alt="preview" class="w-full h-full object-cover" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdib3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2YyZjFmYiIvPjwvc3ZnPg=='" />
+                                </div>
+                                <input type="text" data-field="primaryPicture" value="${row.primaryPicture}" placeholder="URL de la imagen" class="text-[11px] text-[#10b981] font-medium bg-transparent border-none p-0 flex-1 focus:ring-0 truncate outline-none" />
+                                <div class="absolute inset-0 bg-[#4b4998]/80 opacity-0 group-hover/img:opacity-100 flex items-center justify-center transition-opacity cursor-pointer image-replace-trigger">
+                                    <span class="text-white text-xs font-bold flex items-center gap-1.5 pointer-events-none whitespace-nowrap">
+                                        <i data-lucide="upload" class="w-3.5 h-3.5"></i> Reemplazar
+                                    </span>
+                                </div>
+                            </div>
+                        </div>`;
+            } else {
+                return `<div class="${classes}">
+                            <div class="w-full h-full flex justify-center items-center gap-2 text-gray-400 group-hover:text-[#8b84f5] transition-colors">
+                                <i data-lucide="image" class="w-4 h-4"></i>
+                                <span class="text-xs font-bold whitespace-nowrap">Añadir Imagen</span>
+                            </div>
+                        </div>`;
+            }
+        }
+
+        function updatePaginationUI() {
+            const totalPages = Math.ceil(state.maxRows / state.rowsPerPage);
+            const container = document.getElementById('pagination-container');
+            
+            if (totalPages > 1) {
+                container.classList.remove('hidden');
+                const start = (state.currentPage - 1) * state.rowsPerPage + 1;
+                const end = Math.min(state.currentPage * state.rowsPerPage, state.maxRows);
+                document.getElementById('pagination-info').innerHTML = `Mostrando del <span class="font-bold text-sys-title">${start}</span> al <span class="font-bold text-sys-title">${end}</span> de <span class="font-bold text-sys-title">${state.maxRows}</span> filas`;
+                document.getElementById('btn-prev-page').disabled = state.currentPage === 1;
+                document.getElementById('btn-next-page').disabled = state.currentPage === totalPages;
+            } else {
+                container.classList.add('hidden');
+            }
+        }
+
+        function changePage(delta) {
+            const totalPages = Math.ceil(state.maxRows / state.rowsPerPage);
+            let newPage = state.currentPage + delta;
+            if (newPage < 1) newPage = 1;
+            if (newPage > totalPages) newPage = totalPages;
+            if (newPage !== state.currentPage) {
+                state.currentPage = newPage;
+                renderTable();
+            }
+        }
+
+        function handleTableInput(e) {
+            if (e.target.tagName === 'INPUT' && e.target.type !== 'file') {
+                const tr = e.target.closest('tr');
+                if (!tr) return;
+                const rowId = parseInt(tr.dataset.id);
+                const field = e.target.dataset.field;
+                const row = state.rows.find(r => r.id === rowId);
+                if (row && field) {
+                    if (e.target.type === 'checkbox') {
+                        row[field] = e.target.checked;
+                        const track = e.target.nextElementSibling;
+                        const knob = track.nextElementSibling;
+                        const label = e.target.closest('label').querySelector('.toggle-label');
+                        if (e.target.checked) {
+                            track.classList.replace('bg-gray-200', 'bg-[#8b84f5]');
+                            knob.classList.add('transform', 'translate-x-4');
+                            label.innerText = 'Sí';
+                        } else {
+                            track.classList.replace('bg-[#8b84f5]', 'bg-gray-200');
+                            knob.classList.remove('transform', 'translate-x-4');
+                            label.innerText = 'No';
+                        }
+                    } else {
+                        row[field] = e.target.value;
+                        if(field === 'primaryPicture') updateImageCell(rowId);
+                    }
+                }
+            }
+        }
+
+        function handleTableClick(e) {
+            const uploadZone = e.target.closest('.image-upload-zone');
+            const replaceTrigger = e.target.closest('.image-replace-trigger');
+            if (e.target.tagName === 'INPUT' && e.target.type === 'text' && !replaceTrigger) return;
+            if (uploadZone && (!e.target.closest('input') || replaceTrigger)) {
+                const tr = uploadZone.closest('tr');
+                if (tr) {
+                    state.uploadingRowId = parseInt(tr.dataset.id);
+                    document.getElementById('fileInput').click();
+                }
+            }
+        }
+
+        function handleFileSelected(e) {
+            const file = e.target.files[0];
+            if (!file || !state.uploadingRowId) return;
+            const rowId = state.uploadingRowId;
+            const row = state.rows.find(r => r.id === rowId);
+            updateImageCell(rowId);
+            try {
+                const imageUrl = URL.createObjectURL(file);
+                row.primaryPicture = imageUrl;
+                showToast('success', `¡Imagen cargada localmente!`);
+            } catch (error) {
+                showToast('error', `Error al procesar: ${error.message}`);
+            } finally {
+                state.uploadingRowId = null;
+                e.target.value = null; 
+                updateImageCell(rowId); 
+            }
+        }
+
+        function updateImageCell(rowId) {
+            const row = state.rows.find(r => r.id === rowId);
+            const cell = document.getElementById(`img-cell-${rowId}`);
+            if (cell && row) {
+                cell.innerHTML = getImageCellHtml(row);
+                lucide.createIcons({ root: cell });
+            }
+        }
+
+        function getActiveRows() {
+            return state.rows.filter(r => r.productName.trim() !== '' || r.price !== '');
+        }
+
+        function downloadCSV() {
+            const headers = ['ID', 'Product Name', 'SKU', 'Price', 'Qty', 'Category', 'Is New', 'Description', 'Primary Picture URL'];
+            const activeRows = getActiveRows();
+            if(activeRows.length === 0) {
+                showToast('error', 'Agrega información en al menos una fila para descargar.');
+                return;
+            }
+            const csvContent = [
+                headers.join(','),
+                ...activeRows.map(row => [
+                    row.id,
+                    `"${row.productName.replace(/"/g, '""')}"`,
+                    `"${row.sku.replace(/"/g, '""')}"`,
+                    row.price,
+                    row.qty,
+                    `"${row.category.replace(/"/g, '""')}"`,
+                    row.isNew ? 'Yes' : 'No',
+                    `"${row.description.replace(/"/g, '""')}"`,
+                    `"${row.primaryPicture}"`
+                ].join(','))
+            ].join('\n');
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `Catalogo_${new Date().toISOString().split('T')[0]}.csv`;
+            link.click();
+            showToast('success', 'Archivo CSV descargado.');
+        }
+
+        function copyForSheets() {
+            const activeRows = getActiveRows();
+            if(activeRows.length === 0) {
+                showToast('error', 'Agrega información en al menos una fila para copiar.');
+                return;
+            }
+            const headers = ['ID', 'Product Name', 'SKU', 'Price', 'Qty', 'Category', 'Is New', 'Description', 'Primary Picture URL'];
+            let tsvContent = headers.join('\t') + '\n';
+            activeRows.forEach(row => {
+                tsvContent += [
+                    row.id,
+                    row.productName.replace(/\n/g, ' '),
+                    row.sku,
+                    row.price,
+                    row.qty,
+                    row.category.replace(/\n/g, ' '),
+                    row.isNew ? 'TRUE' : 'FALSE',
+                    row.description.replace(/\n/g, ' '),
+                    row.primaryPicture
+                ].join('\t') + '\n';
+            });
+            const textarea = document.createElement('textarea');
+            textarea.value = tsvContent;
+            textarea.style.position = 'fixed'; textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                showToast('success', '¡Copiado! Abre Google Sheets y presiona Ctrl+V.');
+            } catch (err) {
+                showToast('error', 'No se pudo copiar automáticamente.');
+            } finally {
+                document.body.removeChild(textarea);
+            }
+        }
+
+        function escapeHtml(unsafe) {
+            return (unsafe || '').toString()
+                 .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+                 .replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        }
+    </script>
+</body>
+</html>
