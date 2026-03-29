@@ -1,1 +1,359 @@
 
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Paso 6: Sistema de Productos</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: { sans: ['Poppins', 'sans-serif'] },
+      colors: {
+        sys: {
+          bg: '#f2f1fb',
+          primary: '#8b84f5',
+          secondary: '#e07dd1',
+          title: '#4b4998',
+          text: '#707070',
+          card: '#ffffff',
+          success: '#10b981', 
+          pending: '#9ca3af'  
+        }
+      },
+      boxShadow: {
+        'soft': '0 10px 40px -10px rgba(139, 132, 245, 0.1)',
+        'glow': '0 0 15px rgba(139, 132, 245, 0.4)'
+      }
+    }
+  }
+}
+</script>
+
+<style>
+body { background:#f2f1fb; font-family:Poppins; }
+
+.gradient-bg {
+  background: linear-gradient(135deg, #8b84f5, #e07dd1);
+}
+
+.custom-list li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+.custom-list li::before {
+  content: '•';
+  color: #e07dd1;
+  font-weight: bold;
+  font-size: 1.2rem;
+  position: absolute;
+  left: 0;
+  top: -2px;
+}
+
+/* Ocultar barra de scroll */
+.hide-scroll::-webkit-scrollbar {
+  display: none;
+}
+.hide-scroll {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+</style>
+</head>
+
+<body>
+
+<main id="main-content" class="max-w-7xl mx-auto px-6 md:px-10 py-10">
+
+  <!-- HERO SECTION -->
+  <section class="mb-10">
+    <div class="grid md:grid-cols-2 gap-8 items-center">
+      <!-- LEFT -->
+      <div>
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sys-secondary/10 text-sys-secondary font-bold text-sm mb-4">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+          PASO 6
+        </div>
+        <h1 class="text-4xl md:text-5xl font-bold text-sys-title mb-4 leading-tight">
+          Sistema de Productos
+        </h1>
+
+        <p class="text-xl text-sys-primary font-medium mb-4">
+          Completar tu catálogo según tu plan.
+        </p>
+
+        <p class="text-base text-sys-text leading-relaxed max-w-lg mb-8">
+          Aquí se mide tu progreso real. No importa cuántos productos tengas, importa cuántos están listos para vender. Un producto completo es aquel que tiene imagen, precio y descripción.
+        </p>
+
+        <!-- STATS DE DURACIÓN Y DIFICULTAD -->
+        <div class="flex flex-wrap items-center gap-6 pt-6 border-t border-sys-primary/20">
+          <!-- Tiempo -->
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm text-lg">
+              ⏱
+            </div>
+            <div>
+              <p class="text-[10px] font-bold text-sys-text uppercase tracking-wider">Tiempo Estimado</p>
+              <p class="text-sm font-bold text-sys-title">1 a 3 horas</p>
+            </div>
+          </div>
+          
+          <!-- Separador -->
+          <div class="hidden sm:block w-px h-8 bg-sys-primary/20"></div>
+
+          <!-- Dificultad -->
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm text-lg">
+              📊
+            </div>
+            <div>
+              <p class="text-[10px] font-bold text-sys-text uppercase tracking-wider">Dificultad</p>
+              <div class="flex items-center gap-1.5 mt-0.5">
+                <p class="text-sm font-bold text-sys-title leading-none">Baja</p>
+                <div class="flex gap-0.5">
+                  <span class="w-1.5 h-3 rounded-sm bg-yellow-400"></span>
+                  <span class="w-1.5 h-3 rounded-sm bg-gray-300"></span>
+                  <span class="w-1.5 h-3 rounded-sm bg-gray-300"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT (YOUTUBE VIDEO) -->
+      <div class="bg-sys-card rounded-3xl shadow-soft border border-white overflow-hidden p-2">
+        <div class="aspect-video w-full bg-gray-100 rounded-2xl overflow-hidden shadow-inner flex items-center justify-center relative">
+          <iframe 
+            class="w-full h-full" 
+            src="https://www.youtube.com/embed/jfKfPfyJRdk" 
+            title="Video Tutorial - Sistema de Productos" 
+            frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowfullscreen>
+          </iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INSTRUCCIONES & CHECKLIST -->
+  <section class="mb-14">
+    <div class="bg-sys-card p-8 md:p-10 rounded-3xl shadow-soft border border-white">
+      <div class="grid md:grid-cols-2 gap-10 items-stretch">
+        
+        <!-- Columna Izquierda: Instrucciones -->
+        <div class="space-y-8 flex flex-col justify-center">
+          
+          <div>
+            <h3 class="text-xl font-bold text-sys-title mb-4 flex items-center gap-2">
+              <svg class="w-5 h-5 text-sys-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+              Auditoría de Sistema:
+            </h3>
+            <ul class="space-y-4 text-sm text-sys-text">
+              <li class="flex items-start gap-3">
+                <svg class="w-5 h-5 text-sys-secondary shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                <span><strong>Imagen:</strong> Debe ser clara y representativa.</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <svg class="w-5 h-5 text-sys-secondary shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <span><strong>Precio:</strong> Asignado correctamente para la venta.</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <svg class="w-5 h-5 text-sys-secondary shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path></svg>
+                <span><strong>Descripción:</strong> Información detallada para el cliente.</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Capacidad por Plan (TABLA) -->
+          <div class="bg-sys-bg/80 p-5 rounded-xl border border-sys-primary/10">
+            <h3 class="font-bold text-sys-title mb-4 text-sm uppercase tracking-wide">Capacidad por Plan</h3>
+            <div class="overflow-hidden rounded-lg border border-gray-200 shadow-sm bg-white">
+              <table class="w-full text-left text-sm">
+                <thead class="bg-gray-50 border-b border-gray-200 text-sys-title font-bold">
+                  <tr>
+                    <th class="px-4 py-3">Plan</th>
+                    <th class="px-4 py-3">Capacidad</th>
+                  </tr>
+                </thead>
+                <tbody class="text-sys-text divide-y divide-gray-100">
+                  <tr>
+                    <td class="px-4 py-3 font-semibold text-sys-primary">Startup</td>
+                    <td class="px-4 py-3">Hasta 10 productos</td>
+                  </tr>
+                  <tr>
+                    <td class="px-4 py-3 font-semibold text-sys-secondary">Básico</td>
+                    <td class="px-4 py-3">Hasta 100 productos</td>
+                  </tr>
+                  <tr>
+                    <td class="px-4 py-3 font-semibold text-indigo-500">Avanzado</td>
+                    <td class="px-4 py-3">Hasta 2,500 productos</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Nota de progreso -->
+          <div class="bg-white p-4 rounded-lg border-l-4 border-sys-primary shadow-sm">
+            <h4 class="text-xs font-bold text-sys-primary uppercase mb-1">Tu avance se mide así:</h4>
+            <p class="text-sm font-bold text-sys-title">Productos completos / Total permitido</p>
+          </div>
+
+        </div>
+
+        <!-- Columna Derecha: Checklist -->
+        <div class="h-full">
+          <div class="bg-sys-bg p-6 md:p-8 rounded-2xl border border-sys-primary/10 h-full flex flex-col justify-center">
+            <h3 class="font-bold text-sys-title mb-6 text-sm uppercase tracking-wide flex items-center gap-2">
+              <svg class="w-5 h-5 text-sys-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
+              Tu Checklist de Acción
+            </h3>
+            
+            <p class="text-sm text-sys-text mb-4 font-medium">Instrucción: Completa tus productos hasta alcanzar tu capacidad:</p>
+
+            <ul class="space-y-4 mb-8">
+              <li class="checklist-item flex items-center gap-4 bg-white p-4 rounded-xl shadow-sm border border-gray-100 group cursor-pointer hover:border-sys-primary/30 transition" onclick="toggleCheck(this)">
+                <div class="check-circle w-8 h-8 rounded-full bg-sys-bg border-2 border-sys-primary/30 text-transparent flex items-center justify-center font-bold text-sm shrink-0 group-hover:bg-sys-primary group-hover:text-white transition-colors">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <span class="check-text text-sm font-semibold text-sys-title transition-all">Identificar capacidad máxima de mi plan</span>
+              </li>
+              <li class="checklist-item flex items-center gap-4 bg-white p-4 rounded-xl shadow-sm border border-gray-100 group cursor-pointer hover:border-sys-primary/30 transition" onclick="toggleCheck(this)">
+                <div class="check-circle w-8 h-8 rounded-full bg-sys-bg border-2 border-sys-primary/30 text-transparent flex items-center justify-center font-bold text-sm shrink-0 group-hover:bg-sys-primary group-hover:text-white transition-colors">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <span class="check-text text-sm font-semibold text-sys-title transition-all">Validar que cada producto tenga Imagen</span>
+              </li>
+              <li class="checklist-item flex items-center gap-4 bg-white p-4 rounded-xl shadow-sm border border-gray-100 group cursor-pointer hover:border-sys-primary/30 transition" onclick="toggleCheck(this)">
+                <div class="check-circle w-8 h-8 rounded-full bg-sys-bg border-2 border-sys-primary/30 text-transparent flex items-center justify-center font-bold text-sm shrink-0 group-hover:bg-sys-primary group-hover:text-white transition-colors">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <span class="check-text text-sm font-semibold text-sys-title transition-all">Verificar Precio y Descripción completa</span>
+              </li>
+              <li class="checklist-item flex items-center gap-4 bg-white p-4 rounded-xl shadow-sm border border-gray-100 group cursor-pointer hover:border-sys-primary/30 transition" onclick="toggleCheck(this)">
+                <div class="check-circle w-8 h-8 rounded-full bg-sys-bg border-2 border-sys-primary/30 text-transparent flex items-center justify-center font-bold text-sm shrink-0 group-hover:bg-sys-primary group-hover:text-white transition-colors">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <span class="check-text text-sm font-semibold text-sys-title transition-all">Revisar progreso final del catálogo</span>
+              </li>
+            </ul>
+
+            <!-- BOTÓN DE COMPLETAR -->
+            <div class="mt-auto pt-4 border-t border-sys-primary/10 flex flex-col items-center gap-3">
+              <span class="text-sys-text text-sm font-medium">¿Completaste tu inventario?</span>
+              <button onclick="checkAll()" class="w-full inline-flex items-center justify-center gap-2 bg-white border border-gray-200 px-5 py-3 rounded-xl shadow-sm hover:shadow-md hover:border-sys-primary/30 transition-all group">
+                <span class="text-sys-primary font-bold text-sm underline decoration-sys-secondary underline-offset-2">Finalizar este paso</span>
+                <svg class="w-4 h-4 text-sys-primary group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HERRAMIENTA DE CATÁLOGO (IFRAME MODULAR) -->
+  <section class="mb-14">
+    <div class="flex items-center justify-between mb-6">
+      <h3 class="text-xl font-bold text-sys-title flex items-center gap-2">
+        <svg class="w-6 h-6 text-sys-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+        Herramienta: Plantilla de Edición Rápida
+      </h3>
+    </div>
+
+    <!-- Contenedor del Iframe -->
+    <div class="bg-white rounded-3xl shadow-soft border border-sys-primary/20 overflow-hidden w-full h-[600px] relative">
+      <iframe 
+        src="tabla-catalogo.html" 
+        class="w-full h-full border-0 absolute top-0 left-0" 
+        title="Plantilla de Inventario">
+      </iframe>
+    </div>
+  </section>
+
+  <!-- UPSELL / DELEGATION BANNER -->
+  <section class="mb-16">
+    <div class="bg-white p-8 md:p-12 rounded-3xl shadow-soft border border-sys-primary/20 relative overflow-hidden min-h-[300px] flex items-center">
+      
+      <!-- Background Image & Gradient Overlay -->
+      <div class="absolute inset-0 z-0">
+        <img src="https://bucket.mlcdn.com/a/3336/3336910/images/7844605ad7ba48c07937592cc48bbff416477b5d.png" alt="Soporte técnico" class="absolute bottom-0 right-0 w-full md:w-3/4 h-full object-cover object-right">
+        <!-- Fade gradient -->
+        <div class="absolute inset-0 bg-gradient-to-r from-white via-white/95 to-white/20 md:via-white/80 md:to-transparent"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-white via-white/50 to-transparent sm:hidden"></div>
+      </div>
+      
+      <div class="relative z-10 flex flex-col items-start gap-6 w-full md:w-2/3 lg:w-3/5">
+        
+        <!-- Texto Promocional -->
+        <div class="text-left">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sys-primary/10 text-sys-primary font-bold text-xs mb-4 uppercase tracking-wider backdrop-blur-sm bg-white/60">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+            Soporte de Inventario
+          </div>
+          <h2 class="text-2xl md:text-3xl font-bold text-sys-title mb-3">¿Necesitas ayuda con el volumen?</h2>
+          <p class="text-sys-text text-sm md:text-base leading-relaxed font-medium drop-shadow-sm">
+            Si tienes cientos de productos y el tiempo te juega en contra, nuestro equipo puede encargarse de la auditoría y carga masiva para que tu tienda esté lista para vender hoy mismo.
+          </p>
+        </div>
+        
+        <!-- Botón de Acción -->
+        <a href="#" class="w-full sm:w-auto gradient-bg text-white font-semibold text-center text-lg py-3.5 px-8 rounded-xl hover:shadow-lg hover:-translate-y-1 transition duration-300 flex items-center justify-center gap-2 shadow-md">
+          Delegar Auditoría
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  function toggleCheck(element) {
+    const circle = element.querySelector('.check-circle');
+    const text = element.querySelector('.check-text');
+    
+    if(circle.classList.contains('text-transparent')) {
+      circle.classList.remove('bg-sys-bg', 'text-transparent', 'border-sys-primary/30', 'group-hover:bg-sys-primary', 'group-hover:text-white');
+      circle.classList.add('bg-sys-primary', 'text-white', 'border-sys-primary');
+      text.classList.add('text-sys-text', 'line-through');
+      text.classList.remove('text-sys-title');
+      element.classList.add('border-sys-primary/30', 'bg-sys-primary/5');
+      element.classList.remove('border-gray-100');
+    } else {
+      circle.classList.add('bg-sys-bg', 'text-transparent', 'border-sys-primary/30', 'group-hover:bg-sys-primary', 'group-hover:text-white');
+      circle.classList.remove('bg-sys-primary', 'text-white', 'border-sys-primary');
+      text.classList.remove('text-sys-text', 'line-through');
+      text.classList.add('text-sys-title');
+      element.classList.remove('border-sys-primary/30', 'bg-sys-primary/5');
+      element.classList.add('border-gray-100');
+    }
+  }
+
+  function checkAll() {
+    const items = document.querySelectorAll('.checklist-item');
+    items.forEach(item => {
+      const circle = item.querySelector('.check-circle');
+      if(circle.classList.contains('text-transparent')) {
+        toggleCheck(item);
+      }
+    });
+  }
+</script>
+
+</body>
+</html>
