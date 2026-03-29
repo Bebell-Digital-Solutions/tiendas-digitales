@@ -1,10 +1,11 @@
 
+    
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestor de Catálogo</title>
+    <title>Gestor de Catálogo - Beta</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -16,12 +17,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 
-
     
     <!-- Favicon -->
     <link rel="icon" href="https://bucket.mlcdn.com/a/3336/3336910/images/4aaeac9c1efc99109149caec0ad9a42e29f886a4.png">
 
-    
     
     
     <style>
@@ -78,13 +77,17 @@
                     <img src="https://bucket.mlcdn.com/a/3336/3336910/images/c79f591531d936d4d6eaf04c948637e894564d9e.png" alt="Logo" class="w-full h-full object-cover" />
                 </div>
                 <div>
-                    <h1 class="text-2xl font-bold text-sys-title leading-tight mb-1">Gestor de Catálogo</h1>
+                    <div class="flex items-center gap-2 mb-1">
+                        <h1 class="text-2xl font-bold text-sys-title leading-tight">Gestor de Catálogo</h1>
+                        <!-- Distintivo Beta con fondo rosado -->
+                        <span class="px-2 py-0.5 bg-pink-50 text-pink-500 text-[10px] font-black rounded-md uppercase tracking-widest border border-pink-200">Beta</span>
+                    </div>
                     <div class="flex items-center gap-2">
-                        <span class="text-gray-400 uppercase tracking-widest text-[10px] font-bold">Plan:</span>
+                        <span class="text-gray-400 uppercase tracking-widest text-[10px] font-bold">Plan Actual:</span>
                         <select id="plan-selector" onchange="handlePlanChange(this.value)" class="bg-[#8b84f5]/10 text-sys-primary px-2 py-0.5 rounded-md uppercase tracking-wider font-bold outline-none cursor-pointer hover:bg-[#8b84f5]/20 transition-colors border-none text-[11px]">
-                            <option value="10">Start-up</option>
-                            <option value="100">Básico</option>
-                            <option value="2500">Avanzado</option>
+                            <option value="10">Start-up (10)</option>
+                            <option value="100">Básico (100)</option>
+                            <option value="2500">Avanzado (2500)</option>
                         </select>
                     </div>
                 </div>
@@ -92,9 +95,8 @@
 
             <!-- LADO DERECHO: FILAS + BOTONES -->
             <div class="flex flex-wrap items-center gap-3 w-full lg:w-auto">
-                <!-- Contador de filas movido aquí -->
                 <div class="flex-1 lg:flex-none flex items-center gap-2 px-4 py-3 bg-[#f2f1fb]/50 border border-gray-100 rounded-xl">
-                    <span class="text-gray-400 uppercase tracking-widest text-[10px] font-bold">Filas:</span>
+                    <span class="text-gray-400 uppercase tracking-widest text-[10px] font-bold">Filas Disponibles:</span>
                     <strong id="stats-count" class="text-sys-title font-bold text-sm">10</strong>
                 </div>
 
@@ -192,7 +194,6 @@
             price: '',
             qty: '1',
             category: '',
-            isNew: true,
             description: '',
             primaryPicture: ''
         });
@@ -203,14 +204,11 @@
         document.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
             
-            // Inicializar datos iniciales (Start-up)
             state.rows = Array.from({ length: state.maxRows }, (_, i) => createEmptyRow(i + 1));
             
-            // Renderizar la tabla por primera vez
             renderTableHeaders();
             renderTable();
 
-            // Event Listeners
             document.getElementById('table-body').addEventListener('input', handleTableInput);
             document.getElementById('table-body').addEventListener('click', handleTableClick);
             document.getElementById('fileInput').addEventListener('change', handleFileSelected);
@@ -223,7 +221,6 @@
             const prevMax = state.maxRows;
             state.maxRows = newMax;
             
-            // Actualizar el array de filas preservando datos
             if (newMax > prevMax) {
                 for (let i = prevMax + 1; i <= newMax; i++) {
                     state.rows.push(createEmptyRow(i));
@@ -252,7 +249,6 @@
                     <th scope="col" class="px-6 py-5 text-left text-xs font-bold text-sys-title uppercase tracking-wider w-32">Precio</th>
                     <th scope="col" class="px-6 py-5 text-left text-xs font-bold text-sys-title uppercase tracking-wider w-24">Cant.</th>
                     <th scope="col" class="px-6 py-5 text-left text-xs font-bold text-sys-title uppercase tracking-wider w-40">Categoría</th>
-                    <th scope="col" class="px-6 py-5 text-left text-xs font-bold text-sys-title uppercase tracking-wider w-24">Nuevo</th>
                     <th scope="col" class="px-6 py-5 text-left text-xs font-bold text-sys-title uppercase tracking-wider min-w-[200px]">Descripción</th>
                     <th scope="col" class="px-6 py-5 text-left text-xs font-bold text-sys-title uppercase tracking-wider w-64">Fotografía Principal</th>
                 </tr>
@@ -288,16 +284,6 @@
                         </td>
                         <td class="px-6 py-2">
                             <input type="text" data-field="category" value="${escapeHtml(row.category)}" placeholder="Ej. Ropa" class="w-full bg-transparent border border-transparent hover:border-gray-200 focus:border-[#8b84f5] focus:bg-white rounded-lg px-3 py-2 text-sm text-sys-title font-medium placeholder-gray-300 transition-all outline-none" />
-                        </td>
-                        <td class="px-6 py-2">
-                            <label class="flex items-center cursor-pointer ml-2">
-                                <div class="relative">
-                                    <input type="checkbox" data-field="isNew" class="sr-only" ${row.isNew ? 'checked' : ''} />
-                                    <div class="toggle-track block w-9 h-5 rounded-full transition-colors ${row.isNew ? 'bg-[#8b84f5]' : 'bg-gray-200'}"></div>
-                                    <div class="toggle-knob absolute left-1 top-1 bg-white w-3 h-3 rounded-full transition-transform shadow-sm ${row.isNew ? 'transform translate-x-4' : ''}"></div>
-                                </div>
-                                <span class="ml-2 text-xs font-bold text-sys-title toggle-label whitespace-nowrap">${row.isNew ? 'Sí' : 'No'}</span>
-                            </label>
                         </td>
                         <td class="px-6 py-2">
                             <input type="text" data-field="description" value="${escapeHtml(row.description)}" placeholder="Descripción breve..." class="w-full bg-transparent border border-transparent hover:border-gray-200 focus:border-[#8b84f5] focus:bg-white rounded-lg px-3 py-2 text-sm text-sys-title font-medium placeholder-gray-300 transition-all outline-none" />
@@ -388,24 +374,8 @@
                 const field = e.target.dataset.field;
                 const row = state.rows.find(r => r.id === rowId);
                 if (row && field) {
-                    if (e.target.type === 'checkbox') {
-                        row[field] = e.target.checked;
-                        const track = e.target.nextElementSibling;
-                        const knob = track.nextElementSibling;
-                        const label = e.target.closest('label').querySelector('.toggle-label');
-                        if (e.target.checked) {
-                            track.classList.replace('bg-gray-200', 'bg-[#8b84f5]');
-                            knob.classList.add('transform', 'translate-x-4');
-                            label.innerText = 'Sí';
-                        } else {
-                            track.classList.replace('bg-[#8b84f5]', 'bg-gray-200');
-                            knob.classList.remove('transform', 'translate-x-4');
-                            label.innerText = 'No';
-                        }
-                    } else {
-                        row[field] = e.target.value;
-                        if(field === 'primaryPicture') updateImageCell(rowId);
-                    }
+                    row[field] = e.target.value;
+                    if(field === 'primaryPicture') updateImageCell(rowId);
                 }
             }
         }
@@ -456,7 +426,7 @@
         }
 
         function downloadCSV() {
-            const headers = ['ID', 'Product Name', 'SKU', 'Price', 'Qty', 'Category', 'Is New', 'Description', 'Primary Picture URL'];
+            const headers = ['ID', 'Product Name', 'SKU', 'Price', 'Qty', 'Category', 'Description', 'Primary Picture URL'];
             const activeRows = getActiveRows();
             if(activeRows.length === 0) {
                 showToast('error', 'Agrega información en al menos una fila para descargar.');
@@ -471,7 +441,6 @@
                     row.price,
                     row.qty,
                     `"${row.category.replace(/"/g, '""')}"`,
-                    row.isNew ? 'Yes' : 'No',
                     `"${row.description.replace(/"/g, '""')}"`,
                     `"${row.primaryPicture}"`
                 ].join(','))
@@ -490,7 +459,7 @@
                 showToast('error', 'Agrega información en al menos una fila para copiar.');
                 return;
             }
-            const headers = ['ID', 'Product Name', 'SKU', 'Price', 'Qty', 'Category', 'Is New', 'Description', 'Primary Picture URL'];
+            const headers = ['ID', 'Product Name', 'SKU', 'Price', 'Qty', 'Category', 'Description', 'Primary Picture URL'];
             let tsvContent = headers.join('\t') + '\n';
             activeRows.forEach(row => {
                 tsvContent += [
@@ -500,7 +469,6 @@
                     row.price,
                     row.qty,
                     row.category.replace(/\n/g, ' '),
-                    row.isNew ? 'TRUE' : 'FALSE',
                     row.description.replace(/\n/g, ' '),
                     row.primaryPicture
                 ].join('\t') + '\n';
